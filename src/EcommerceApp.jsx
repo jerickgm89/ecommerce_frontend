@@ -1,8 +1,12 @@
+import { AppRouter } from "./router/AppRouter"
+import { AppTheme } from "./theme"
 
 export const EcommerceApp = () => {
   return (
     <>
-        <h1>Hola Equipo Frontend</h1>
+      <AppTheme>
+        <AppRouter />
+      </AppTheme>
     </>
   )
 }
