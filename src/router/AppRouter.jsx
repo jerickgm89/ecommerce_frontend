@@ -7,11 +7,9 @@ export const AppRouter = () => {
     <Routes>
 
         {/* Home */}
-        <Route />
         <Route path="/*" element={ <HomeRoutes/>}/>
 
         {/* Products */}
-        <Route />
         {/* <Route path="" element={ }/> */}
 
         {/* CartShopping */}

@@ -1,8 +1,8 @@
 import { Link as RouterLink } from "react-router-dom"
 import { Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { Google } from "@mui/icons-material"
-import '../css'
 import { AuthLayout } from "../layout/AuthLayout"
+import '../css'
 
 export const LoginPage = () => {
   return (
@@ -52,16 +52,12 @@ export const LoginPage = () => {
                 ¿No tienes una cuenta?
               </Typography>
               <Link component={ RouterLink } color='inherit' to="/auth/register">
-                Registrar
-              </Link>
-              
+                Registrarse
+              </Link>              
             </Grid>
-
+            
           </Grid>
         </form>
     </AuthLayout>
-
-
-     
   )
 }
