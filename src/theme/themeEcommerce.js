@@ -4,7 +4,7 @@ import { createTheme } from "@mui/material";
 export const themeEcommerce = createTheme({
     palette: {
         primary: {
-            main: '#1976d2',
+            main: '#2e8fea',
         },
         secondary: {
             main: '#dc004e',
