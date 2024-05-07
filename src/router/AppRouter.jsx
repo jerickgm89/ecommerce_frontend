@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import { AuthRoutes } from "../auth/routes/"
 import { HomeRoutes } from "../home/routes/";
+import { ProductsRoutes } from "../products/routes/"
 
 export const AppRouter = () => {
   return (
@@ -11,8 +12,8 @@ export const AppRouter = () => {
         <Route path="/*" element={ <HomeRoutes/>}/>
 
         {/* Products */}
-        <Route />
-        {/* <Route path="" element={ }/> */}
+        
+        <Route path="/products/*" element={ <ProductsRoutes/>}/>
 
         {/* CartShopping */}
         <Route />
