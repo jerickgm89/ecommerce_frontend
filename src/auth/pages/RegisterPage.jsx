@@ -24,7 +24,7 @@ const validationSchema = yup.object({
   password: yup
     .string('Ingrese su contraseña')
     .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .required('La contraseña es requerida'),
+    .required('La contraseña es requerida')    
 });
 
 export const RegisterPage = () => {
@@ -135,11 +135,17 @@ export const RegisterPage = () => {
               xs={12}
               sx={{ mt: 2}}
             >
-              <TextField 
+              <TextField
+                id="password"
+                name="password"
                 label="Repite tu contraseña" 
                 type="password" 
                 placeholder="Contraseña" 
                 fullWidth
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
               />
             </Grid>
             <Grid 
