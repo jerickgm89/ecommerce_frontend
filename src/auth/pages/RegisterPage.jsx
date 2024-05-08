@@ -14,19 +14,22 @@ const validationSchema = yup.object({
     .max(8, 'El DNI debe tener como maximo 8 numeros')
     .required('El DNI es requerido'),
   name: yup
-    .string('Ingrese su nombre')
+    .string()
     .required('El nombre es requerido'),
   lastName: yup
-    .string('Ingrese su apellido')
+    .string()
     .required('El apellido es requerido'),
   email: yup
-    .string('Ingrese su correo')
+    .string()
     .email('Ingrese un correo valido')
     .required('El correo es requerido'),
   password: yup
-    .string('Ingrese su contraseña')
+    .string()
     .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .required('La contraseña es requerida')    
+    .required('La contraseña es requerida'),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref('password'), null], 'Las contraseñas deben coincidir'),
 });
 
 export const RegisterPage = () => {
@@ -144,16 +147,16 @@ export const RegisterPage = () => {
               sx={{ mt: 2}}
             >
               <TextField
-                id="password"
-                name="password"
+                id="passwordConfirmation"
+                name="passwordConfirmation"
                 label="Repite tu contraseña" 
                 type="password" 
-                placeholder="Contraseña" 
+                placeholder="Ingresa nuevamente tu contraseña" 
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.password && Boolean(formik.errors.password)}
-                helperText={formik.touched.password && formik.errors.password}
+                error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
+                helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
               />
             </Grid>
             <Grid 
