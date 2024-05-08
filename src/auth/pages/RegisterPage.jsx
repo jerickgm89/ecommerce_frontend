@@ -5,11 +5,13 @@ import { Google } from "@mui/icons-material"
 import { useFormik } from "formik"
 import * as yup from 'yup'
 import '../css'
+import { TermsCondition } from "../components/TermsCondition"
 
 const validationSchema = yup.object({
-  dni: yup
-    .number('Ingrese su DNI')
-    .min(8, 'El DNI debe tener al menos 8 numeros')
+  dni: yup.string()
+    .matches(/^[0-9]+$/, 'El DNI debe ser un numero')
+    .min(5, 'El DNI debe tener al menos 8 numeros')
+    .max(8, 'El DNI debe tener como maximo 8 numeros')
     .required('El DNI es requerido'),
   name: yup
     .string('Ingrese su nombre')
@@ -30,15 +32,22 @@ const validationSchema = yup.object({
 export const RegisterPage = () => {
 
   const formik = useFormik({
+    initialValues: {
+      dni: '',
+      name: '',
+      lastName: '',
+      email: '',
+      password: '',
+    },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      // alert(JSON.stringify(values, null, 2));
+      alert(JSON.stringify(values, null, 2));
     },
   });
 
   return (
     <AuthLayout title='Crear Cuenta'>
-      <form >
+      <form onSubmit={formik.handleSubmit}>
           <Grid container>
             <Grid 
               item 
@@ -46,10 +55,9 @@ export const RegisterPage = () => {
               sx={{ mt: 2}}
             >
               <TextField
-                id="dni"
                 name="dni"
                 label="DNI" 
-                type="number" 
+                type="text" 
                 placeholder="Ingrese su DNI sin puntos" 
                 fullWidth
                 onChange={formik.handleChange}
@@ -101,9 +109,9 @@ export const RegisterPage = () => {
             >
               <TextField
                 id="email"
-                name="email" 
+                name="email"
                 label="Correo" 
-                type="email" 
+                type="email"
                 placeholder="correo@google.com" 
                 fullWidth
                 onChange={formik.handleChange}
@@ -126,8 +134,8 @@ export const RegisterPage = () => {
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
               />
             </Grid>
             <Grid 
@@ -144,8 +152,8 @@ export const RegisterPage = () => {
                 fullWidth
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
               />
             </Grid>
             <Grid 
@@ -168,20 +176,7 @@ export const RegisterPage = () => {
               </Grid>
             </Grid>
 
-            <Grid 
-              container 
-              direction={'row'} 
-              justifyContent='center'
-            >
-              <Typography 
-                sx={{ mr: 1}}
-              >
-                Al crear una cuenta, aceptas nuestros 
-              </Typography>
-              <Link component={ RouterLink } color='inherit' to="/auth/register">
-                Terminos y Condiciones
-              </Link>         
-            </Grid>
+            <TermsCondition />
 
             <Grid 
               container 
