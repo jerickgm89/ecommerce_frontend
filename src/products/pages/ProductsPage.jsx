@@ -3,6 +3,7 @@ import { products } from "../data";
 import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import FiltersCard from '../components/FiltersCard';
+import { UIEcommerce } from '../../ui';
 
 export const ProductsPage = () => {
   const [openCategories, setOpenCategories] = useState(false);
@@ -23,12 +24,11 @@ export const ProductsPage = () => {
     setCart(prevCart => prevCart.map(item => 
       item.id === productId && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item
     ));
-  };
-
-  
+  };  
 
   return (
-    <Box mt={8} mb={8} ml={8} mr={8} sx={{backgroundColor:"#F6F9FC"}}> 
+    <UIEcommerce>
+          <Box mt={8} mb={8} ml={8} mr={8} sx={{backgroundColor:"#F6F9FC"}}> 
       <Typography variant='h3' gutterBottom>Products</Typography> 
       <Grid container spacing={3}>
         
@@ -52,5 +52,6 @@ export const ProductsPage = () => {
         </Grid>
       </Grid>
     </Box>
+    </UIEcommerce>
   );
 };
