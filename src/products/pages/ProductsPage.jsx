@@ -7,9 +7,7 @@ import FiltersCard from '../components/FiltersCard';
 export const ProductsPage = () => {
   const [openCategories, setOpenCategories] = useState(false);
   const [cart, setCart] = useState(products.map(product => ({ ...product, quantity: 0 })));
-  const [selectedProductId, setSelectedProductId] = useState(null); 
 
-  
 
   const handleCategoriesClick = () => {
     setOpenCategories(!openCategories);
@@ -30,7 +28,7 @@ export const ProductsPage = () => {
   
 
   return (
-    <Box mt={4} mb={4} ml={4} mr={4}> 
+    <Box mt={8} mb={8} ml={8} mr={8} sx={{backgroundColor:"#F6F9FC"}}> 
       <Typography variant='h3' gutterBottom>Products</Typography> 
       <Grid container spacing={3}>
         
@@ -42,7 +40,7 @@ export const ProductsPage = () => {
         <Grid item xs={12} sm={6} md={8} lg={9}>
           <Grid container spacing={3}>
             {cart.map(product => (
-              <Grid item key={product.id} xs={12} sm={6} md={4} lg={3}>
+              <Grid item key={product.id} xs={12} sm={12} md={4} lg={4}>
                 <ProductCard
                   product={product}
                   handleAddToCart={handleAddToCart}

@@ -75,7 +75,7 @@ const FiltersCard = ({ openCategories, handleCategoriesClick }) => {
             <FormControlLabel
                 key={rating}
                 control={<Checkbox />}
-                label={<Rating/>}
+                label={<Rating name="read-only" value={rating} readOnly />}
             />
             ))}
         </FormGroup>

@@ -1,17 +1,25 @@
 import { Typography, Box } from '@mui/material';
 import DetailProduct from '../components/DetailProduct';
 import { products } from "../data"; 
+import { useParams } from 'react-router-dom';
 
 export const DetailsProductsPage = () => {
+  
+  const { productId } = useParams();
+
+  const product = products.find(product => product.id === parseInt(productId));
+
+  
+  if (!product) {
+    return <Typography variant="h3">Product not found</Typography>;
+  }
+
   return (
     <Box mt={4} mb={4} ml={4} mr={4}>
       <Typography variant="h3" gutterBottom>Product Details</Typography>
-      {products.map(product => (
-        <DetailProduct key={product.id} product={product} /> 
-      ))}
+      <DetailProduct product={product} /> 
     </Box>
   );
 };
-
 
 
