@@ -82,9 +82,9 @@ export const NavBar = () => {
                               display: { xs: 'block', md: 'none', color: 'black' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <Link to={page === "Home" ? "/" : page === "Products" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none', color: "black" }}>
-                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
+                            {pages.map((page, index) => (
+                                <Link key={index} to={page === "Home" ? "/" : page === "Products" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none', color: "black" }}>
+                                    <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{page}</Typography>
                                     </MenuItem>
                                 </Link>
@@ -113,16 +113,14 @@ export const NavBar = () => {
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Link to={page === "Home" ? "/" : page === "Products" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none' }}>
+                        {pages.map((page, index) => (
+                            <Link key={index} to={page === "Home" ? "/" : page === "Products" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none' }}>
                                 {page === "Chart Shopping" ?
                                     <ShoppingCartIcon 
-                                        key={page}
                                         onClick={handleCloseNavMenu}
                                         sx={{ my: 2, color: 'black', display: 'block', marginLeft: '16px' }}
                                     /> :
                                     <Button
-                                        key={page}
                                         onClick={handleCloseNavMenu}
                                         sx={{ my: 1.5, color: 'black', display: 'block', fontWeight: "bold"}}
                                     >
@@ -155,9 +153,9 @@ export const NavBar = () => {
                             open={Boolean(anchorUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <Link to={setting === "Account" ? "/auth/login" : "/"} style={{ textDecoration: 'none', color: "black" }}>
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                            {settings.map((setting, index) => (
+                                <Link key={index} to={setting === "Account" ? "/auth/login" : "/"} style={{ textDecoration: 'none', color: "black" }}>
+                                    <MenuItem onClick={handleCloseUserMenu}>
                                         <Typography textAlign="center">{setting}</Typography>
                                     </MenuItem>
                                 </Link>

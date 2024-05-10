@@ -1,0 +1,16 @@
+.link {
+    text-decoration: none;
+    color: #C2C2C2;
+}
+
+a:hover {
+    color: white;
+}
+
+.icon {
+    color: #C2C2C2;
+}
+
+.icon:hover {
+    color: white;
+}
