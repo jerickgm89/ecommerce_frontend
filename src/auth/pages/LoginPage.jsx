@@ -4,6 +4,7 @@ import { Google } from "@mui/icons-material"
 import { AuthLayout } from "../layout/AuthLayout"
 import { useFormik } from "formik"
 import * as yup from 'yup'
+import { useAuth0 } from "@auth0/auth0-react"
 import '../css'
 
 const validationSchema = yup.object({
@@ -14,10 +15,11 @@ const validationSchema = yup.object({
   password: yup
     .string()
     .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .required('La contraseña es requerida')    
+    .required('La contraseña es requerida') 
 });
 
 export const LoginPage = () => {
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -28,6 +30,9 @@ export const LoginPage = () => {
       alert(JSON.stringify(values, null, 2));
     },
   });
+
+  const { loginWithRedirect } = useAuth0();
+
   return (
     <AuthLayout title='Iniciar Sesión'>
       <form onSubmit={formik.handleSubmit}>
@@ -73,10 +78,10 @@ export const LoginPage = () => {
                 </Button>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Button variant='contained' fullWidth>
+                <Button variant='contained' fullWidth onClick={() => loginWithRedirect()}>
                   <Google />
                   <Typography>
-                    Google
+                        Google                    
                   </Typography>
                 </Button>
               </Grid>
