@@ -3,6 +3,7 @@ import { AuthRoutes } from "../auth/routes/";
 import { HomeRoutes } from "../home/routes/";
 import { NavBar } from "../components/NavBar/NavBar";
 import { Footer } from "../components/Footer/Footer";
+import { ProductsRoutes } from "../products/routes/"
 
 export const AppRouter = () => {
   return (
@@ -15,6 +16,9 @@ export const AppRouter = () => {
 
           {/* Products */}
           {/* <Route path="/products" element={ <Products /> }/> */}
+        {/* Products */}
+        
+        <Route path="/products/*" element={ <ProductsRoutes/>}/>
 
           {/* CartShopping */}
           {/* <Route path="/cartShopping" element={ <CartShopping /> }/> */}
