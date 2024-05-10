@@ -4,11 +4,15 @@ import { Box, Container, IconButton, Typography, AppBar, Toolbar, Menu, MenuItem
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useAuth0 } from "@auth0/auth0-react"
 
-const pages = ['Home', 'Products', 'Chart Shopping'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
+const settings = ['Perfil', 'Mis pedidos', 'Salir'];
 
 export const NavBar = () => {
+    const { loginWithRedirect } = useAuth0();
+
+
     const [anchorNav, setAnchorNav] = React.useState(null);
     const [anchorUser, setAnchorUser] = React.useState(null);
 
@@ -154,8 +158,12 @@ export const NavBar = () => {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting, index) => (
-                                <Link key={index} to={setting === "Account" ? "/auth/login" : "/"} style={{ textDecoration: 'none', color: "black" }}>
-                                    <MenuItem onClick={handleCloseUserMenu}>
+                                <Link 
+                                    key={index} 
+                                    to={setting === "Perfil" ? "#" : "/"} 
+                                    style={{ textDecoration: 'none', color: "black" }}
+                                >
+                                    <MenuItem onClick={setting === "Perfil" ? loginWithRedirect : handleCloseUserMenu}>
                                         <Typography textAlign="center">{setting}</Typography>
                                     </MenuItem>
                                 </Link>
