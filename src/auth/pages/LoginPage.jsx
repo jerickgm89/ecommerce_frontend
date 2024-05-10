@@ -1,5 +1,4 @@
 import { Link as RouterLink } from "react-router-dom"
-import { useLoginQuery } from "../../store/api"
 import { Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { Google } from "@mui/icons-material"
 import { AuthLayout } from "../layout/AuthLayout"
@@ -16,12 +15,10 @@ const validationSchema = yup.object({
   password: yup
     .string()
     .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .required('La contraseña es requerida')    
+    .required('La contraseña es requerida') 
 });
 
 export const LoginPage = () => {
-
-  const { data, error, isLoading } = useLoginQuery()
 
   const formik = useFormik({
     initialValues: {
