@@ -2,6 +2,7 @@ import {  Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/";
 import { HomeRoutes } from "../home/routes/";
 import { ProductsRoutes } from "../products/routes/"
+import { AdminRoutes } from "../admin/routes/AdminRoutes";
 
 export const AppRouter = () => {
   return (
@@ -19,6 +20,9 @@ export const AppRouter = () => {
 
           {/* Login y Registro */}
           <Route path="/auth/*" element={ <AuthRoutes /> }/>
+
+          {/* Admin */}
+          <Route path="/admin" element={ <AdminRoutes /> }/>
 
       </Routes>
     </div>

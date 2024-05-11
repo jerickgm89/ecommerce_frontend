@@ -12,6 +12,26 @@ export const themeEcommerce = createTheme({
         error: {
             main: '#f44336',
         },
+        icon: {
+            main: '#ffff',
+        },
     },
+    components: {
+        MuiDrawer: {
+          styleOverrides: {
+            paper: {
+              backgroundColor: '#2064a3',
+              color: 'white',
+            },
+          },
+        },
+        MuiListItemIcon: {
+          styleOverrides: {
+            root: {
+              minWidth: '40px',
+            },
+          },
+        },
+      },
 
 })
