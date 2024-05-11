@@ -6,7 +6,10 @@ import { authSlice } from './auth/authSlice';
 export const store = configureStore({
     reducer: {
         auth: authSlice.reducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware()
-            .concat(ecommerceApi.middleware),   
+        [ecommerceApi.reducerPath]: ecommerceApi.reducer,
     },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+    .concat(ecommerceApi.middleware), 
 });
+
+
