@@ -11,6 +11,10 @@ const settings = ['Perfil', 'Mis pedidos', 'Salir'];
 
 export const NavBar = () => {
     const { loginWithRedirect } = useAuth0();
+    const { logout } = useAuth0();
+    const { user, isAuthenticated, isLoading } = useAuth0();
+
+    console.log(user);
 
 
     const [anchorNav, setAnchorNav] = React.useState(null);
@@ -87,7 +91,7 @@ export const NavBar = () => {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <Link key={index} to={page === "Home" ? "/" : page === "Products" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none', color: "black" }}>
+                                <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none', color: "black" }}>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{page}</Typography>
                                     </MenuItem>
@@ -118,8 +122,8 @@ export const NavBar = () => {
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page, index) => (
-                            <Link key={index} to={page === "Home" ? "/" : page === "Products" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none' }}>
-                                {page === "Chart Shopping" ?
+                            <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none' }}>
+                                {page === "Carrito de compras" ?
                                     <ShoppingCartIcon 
                                         onClick={handleCloseNavMenu}
                                         sx={{ my: 2, color: 'black', display: 'block', marginLeft: '16px' }}
@@ -138,37 +142,67 @@ export const NavBar = () => {
                     <Box>
                         <Tooltip>
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                {isAuthenticated ? (
+                                    <>
+                                        <Typography 
+                                            variant="body1" 
+                                            color={user.given_name === "User" ? "error" : "black"}
+                                            sx={{ mr: 1 }}
+                                        >
+                                            {user.given_name}
+                                        </Typography>
+                                        <Avatar alt={user.name} src={user.picture} />
+                                    </>
+                                ) : (
+                                    <>
+                                        <Typography 
+                                            variant="body1" 
+                                            color="black"
+                                            sx={{ mr: 1 }}
+                                            onClick={loginWithRedirect}
+                                        >
+                                            Iniciar sesión
+                                        </Typography>
+                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    </>
+                                )}
                             </IconButton>
                         </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorUser}
-                            anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                            }}
-                            open={Boolean(anchorUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting, index) => (
-                                <Link 
-                                    key={index} 
-                                    to={setting === "Perfil" ? "#" : "/"} 
-                                    style={{ textDecoration: 'none', color: "black" }}
-                                >
-                                    <MenuItem onClick={setting === "Perfil" ? loginWithRedirect : handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                </Link>
-                            ))}
-                        </Menu>
+                        {isAuthenticated ? (
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorUser}
+                                anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                                }}
+                                open={Boolean(anchorUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                {settings.map((setting, index) => (
+                                    <Link 
+                                        key={index} 
+                                        to={setting === "Perfil" ? "#" : "/"} 
+                                        style={{ textDecoration: 'none', color: "black" }}
+                                    >
+                                        <MenuItem 
+                                            onClick={
+                                                setting === "Salir" ? () => logout({ returnTo: window.location.origin }) 
+                                                : handleCloseUserMenu
+                                            }
+                                            >
+                                            <Typography textAlign="center">{setting}</Typography>
+                                        </MenuItem>
+                                    </Link>
+                                ))}
+                            </Menu>
+                        ) : null}
                     </Box>
 
                 </Toolbar>
