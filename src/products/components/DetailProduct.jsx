@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Typography, Box, Grid, Paper, Button, Container, Tab, Tabs } from '@mui/material';
 
+
 const DetailProduct = ({ product }) => {
 
   const [tabValue, setTabValue] = useState(0);
@@ -9,23 +10,22 @@ const DetailProduct = ({ product }) => {
     setTabValue(newValue);
   };
 
+  const formattedPrice = new Intl.NumberFormat('es-ES', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(product.priceProduct);
+
   return (
     <Container>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <img src={product.image} alt={product.name} style={{ width: '100%' }} />
+          <img src={product.imageProducts} alt={product.nameProduct} style={{ width: '100%' }} />
          
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography gutterBottom style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>{product.name}</Typography>
-          {/* <Typography variant="body1" gutterBottom><strong>Brand:</strong> {product.brand}</Typography> */}
-          {/* <Typography variant="body1" gutterBottom><strong>Rated:</strong> {product.rated}</Typography> */}
-          {/* <Typography variant="body1" gutterBottom><strong>Option:</strong> {product.option}</Typography> */}
-          {/* <Typography variant="body1" gutterBottom><strong>Type:</strong> {product.type}</Typography> */}
-          <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${product.price}</Typography>
-          {/* <Typography variant="body1" gutterBottom><strong>Stock:</strong> {product.stock}</Typography> */}
+          <Typography gutterBottom style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>{product.nameProduct}</Typography>
+          <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${formattedPrice}</Typography>
           <Typography variant="body1" gutterBottom><strong>Description:</strong> {product.description}</Typography>
-          {/* <Typography variant="body1" gutterBottom><strong>Review:</strong> {product.review}</Typography> */}
           
           <Box mt={2}>
             <Button 

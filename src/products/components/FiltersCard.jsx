@@ -1,15 +1,58 @@
-import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse } from '@mui/material';
+import { useState } from 'react';
+import { Typography, Select, Paper, MenuItem, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Rating from "@mui/material/Rating";
+import { useGetBrandsQuery } from '../../store/api';
+import { useGetCategoriesQuery } from '../../store/api';
 
-const FiltersCard = ({ openCategories, handleCategoriesClick }) => {
+const FiltersCard = ({ selectedCategory, setSelectedCategory }) => {
+  
+  const { data: brands } = useGetBrandsQuery({orderBy: 'nameBrand', orderDirection: 'ASC'});
+  const { data: categories } = useGetCategoriesQuery();
+
+
+  console.log(brands, "Estas son las marcas")
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+  
+  const [selectedBrands, setSelectedBrands] = useState([]);
+
+
+  const handleBrandChange = (event) => {
+    const brandId = event.target.value;
+    const isChecked = event.target.checked;
+
+    setSelectedBrands((prevSelectedBrands) => {
+      if (isChecked) {
+        return [...prevSelectedBrands, brandId];
+      } else {
+        return prevSelectedBrands.filter((id) => id !== brandId);
+      }
+    });
+  };
+
+
+  // const [openCategories, setOpenCategories] = useState(false);
+  
+  // const handleCategoriesClick = () => {
+  //   setOpenCategories(!openCategories);
+  // };
+
   return (
     <Paper elevation={3} style={{ maxHeight: '100%', padding: '18px 27px', borderRadius:'8px'}}>
 
       <Typography style={{ fontSize: '14px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }} gutterBottom>Categories</Typography>
       
-      <List>
+      <Select value={selectedCategory || ''} onChange={handleCategoryChange} fullWidth>
+        <MenuItem value="">All Categories</MenuItem>
+        {categories && categories.map(category => (
+          <MenuItem key={category.idCategory} value={category.idCategory}>{category.nameCategory}</MenuItem>
+        ))}
+      </Select>
+      {/* <List>
         <ListItemButton onClick={handleCategoriesClick}>
           <ListItemText primary="Apple" />
           {openCategories ? <ExpandLess /> : <ExpandMore />}
@@ -42,7 +85,7 @@ const FiltersCard = ({ openCategories, handleCategoriesClick }) => {
 
         <ListItemButton>
                 <ListItemText primary="Windows" />
-        </ListItemButton>
+        </ListItemButton> */}
 
         <Divider style={{ margin: '16px 0', borderColor:'#F3F5F9'  }} />
 
@@ -58,13 +101,22 @@ const FiltersCard = ({ openCategories, handleCategoriesClick }) => {
 
         <Typography style={{ fontSize: '14px', fontWeight:'500', marginBottom: '16px', color: '#2B3445' }}>Brands</Typography>
        
-        <FormGroup >
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit' }}>Acer</Typography>} />
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit' }}>Asus</Typography>} />
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit' }}>Dell</Typography>} />
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit'}}>Nokia</Typography>} />
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit'}}>Razer</Typography>} />
-        </FormGroup>
+        <FormGroup>
+        {brands &&
+          brands.rows.map((brand) => (
+            <FormControlLabel
+              key={brand.idBrand}
+              control={
+                <Checkbox
+                  checked={selectedBrands.includes(brand.idBrand)}
+                  onChange={handleBrandChange}
+                  value={brand.idBrand}
+                />
+              }
+              label={<Typography style={{ fontSize: '14px', color: 'inherit' }}>{brand.nameBrand}</Typography>}
+            />
+          ))}
+      </FormGroup>
 
         <Divider style={{ margin: '16px 0',  borderColor:'#F3F5F9'  }} />
 

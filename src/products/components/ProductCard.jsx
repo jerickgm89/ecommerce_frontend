@@ -1,15 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Typography, Paper, Box, Button, CardContent, Modal } from '@mui/material';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CloseIcon from '@mui/icons-material/Close';
 import Rating from "@mui/material/Rating";
+import { useGetCategoriesQuery } from '../../store/api';
 
 const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
+
+  const { data: categories } = useGetCategoriesQuery();
+  const [category, setCategory] = useState(null);
+
+  useEffect(() => {
+    if (categories) {
+      const foundCategory = categories.find(cat => cat.idCategory === product.idCategory);
+      setCategory(foundCategory);
+    }
+  }, [categories, product]);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
@@ -29,12 +43,19 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
   const handleMouseLeave = () => {
     setShowIcons(false);
   };
+  
+  const formattedPrice = new Intl.NumberFormat('es-ES', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(product.priceProduct);
+
 
   return (
         <Paper
-          elevation={3}
+          elevation={1}
           sx={{
-            borderRadius: 2,
+            borderRadius: '8px',
+            boxShadow:"rgba(1, 0, 71, 0.3) 0px 1px 3px",
             padding:"10px",
             position: 'relative',
             overflow: 'hidden',
@@ -48,11 +69,11 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <Link to={`/products/details/${product.id}`} style={{ textDecoration: 'none', display: 'block' }}>
+            <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
               <img
-                src={product.image}
-                alt={product.name}
-                style={{ width: '100%', aspectRatio: '4/3', padding:"10px" }}
+                src={product.imageProducts}
+                alt={product.nameProduct}
+                style={{ width: '100%', aspectRatio: '4/3'}}
               />
             </Link>
             <Box
@@ -89,30 +110,40 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
 
               <Typography
                 gutterBottom
-                style={{ fontSize: '16px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
+                style={{ fontSize: '18px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
               >
-                {product.name}
+                {product.nameProduct}
+              </Typography>
+              
+              <Typography
+                gutterBottom
+                style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
+              >
+                {product.stockProduct > 0 ? 'In Stock' : 'Out of Stock'}
               </Typography>
 
               <Rating sx={{ mb: 1 }} />
 
               <Box display="flex" alignItems="center" justifyContent="space-between">
+
+                <Box>
                 <Typography
                   gutterBottom
-                  style={{ fontSize:"16px", marginBottom: '8px', fontWeight:600, color:"#D23F57" }}
+                  variant="caption"
+                  sx={{ fontSize:"18px", marginBottom: '8px', fontWeight:600, color:"#D23F57" }}
                 >
-                  ${product.price}
+                  $ {formattedPrice}
                 </Typography>
-                
-                <Box display="flex"  alignItems="center">
+                </Box>
 
+                <Box display="flex"  alignItems="center">
                   {product.quantity > 0 && ( 
                     <Box display="flex" alignItems="center">
                       
                       <Button
-                        onClick={() => handleRemoveFromCart(product.id)}
-                        startIcon={<IndeterminateCheckBoxOutlinedIcon style={{ color: '#D23F57'}} />}
-                        // size="large"
+                        onClick={() => handleRemoveFromCart(product.idProduct)}
+                        startIcon={<RemoveShoppingCartIcon style={{ color: '#D23F57'}} />}
+                        size="large"
                         sx={{ minWidth: 'auto'}}
                       />
                       <Typography style={{ fontSize: "14px", color: "rgb(43, 52, 69)" }}>
@@ -122,9 +153,9 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
                   )}
 
                   <Button
-                    onClick={() => handleAddToCart(product.id)}
-                    startIcon={<AddBoxOutlinedIcon />}
-                    // size="large"
+                    onClick={() => handleAddToCart(product.idProduct)}
+                    startIcon={<AddShoppingCartIcon />}
+                    size="large"
                     sx={{ minWidth: 'auto', padding: '12px 24px', color: '#D23F57'}}
                   />
                 </Box>
@@ -157,12 +188,16 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
               </Button>
 
               <Typography style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>
-                {product.name}
+                {product.nameProduct}
+              </Typography>
+
+              <Typography style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', color: 'rgb(174, 180, 190)' }}>
+                CATEGORY: {category?.nameCategory}
               </Typography>
               
               <img
-                src={product.image}
-                alt={product.name}
+                src={product.imageProducts}
+                alt={product.nameProduct}
                 style={{ width: '100%', aspectRatio: '4/3', marginTop: '10px' }}
               />
 
@@ -171,7 +206,7 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
               </Typography>
 
               <Typography style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>
-                ${product.price}
+                $ {formattedPrice}
               </Typography>
 
               <Button
@@ -188,7 +223,7 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
                   '&:hover': {
                     backgroundColor: "rgb(210, 63, 87)",
                   }
-                }}onClick={() => { handleAddToCart(product.id); handleToggleModal(); }}>
+                }}onClick={() => { handleAddToCart(product.idProduct); handleToggleModal(); }}>
                 Add to Cart
                 </Button>
             </Box>

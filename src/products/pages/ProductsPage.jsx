@@ -1,56 +1,90 @@
-import { useState } from 'react';
-import { products } from "../data";
+
+import { useState, useEffect} from 'react';
 import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import FiltersCard from '../components/FiltersCard';
 import { UIEcommerce } from '../../ui';
+import { useGetProductsQuery } from '../../store/api';
+// import { useDispatch, useSelector} from 'react-redux';
+// import { setProducts, filterProducts } from '../../store/products/productSlice';
 
 export const ProductsPage = () => {
-  const [openCategories, setOpenCategories] = useState(false);
-  const [cart, setCart] = useState(products.map(product => ({ ...product, quantity: 0 })));
+  const { data: products, isError, isLoading, error } = useGetProductsQuery({ orderBy: 'nameProduct', orderDirection: 'ASC' });
 
 
-  const handleCategoriesClick = () => {
-    setOpenCategories(!openCategories);
-  };
-
+  const [cart, setCart] = useState([]);
+  
   const handleAddToCart = (productId) => {
-    setCart(prevCart => prevCart.map(item => 
-      item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-    ));
+    const productIndex = cart.findIndex(item => item.idProduct === productId);
+    if (productIndex !== -1) {
+      setCart(prevCart => {
+        const updatedCart = [...prevCart];
+        updatedCart[productIndex].quantity += 1;
+        return updatedCart;
+      });
+    } else {
+      const productToAdd = products.rows.find(product => product.idProduct === productId);
+      if (productToAdd) {
+        setCart(prevCart => [...prevCart, { ...productToAdd, quantity: 1 }]);
+      }
+    }
+  };
+  
+  const handleRemoveFromCart = (productId) => {
+    
+    const productIndex = cart.findIndex(item => item.idProduct === productId);
+    
+    if (productIndex !== -1 && cart[productIndex].quantity > 0) {
+      
+      setCart(prevCart => {
+        const updatedCart = [...prevCart];
+        updatedCart[productIndex].quantity -= 1;
+        return updatedCart;
+      });
+    }
   };
 
-  const handleRemoveFromCart = (productId) => {
-    setCart(prevCart => prevCart.map(item => 
-      item.id === productId && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item
-    ));
-  };  
+  if (isError) {
+    return <Typography variant="h3">Error: {error.message}</Typography>;
+  }
+
+  if (isLoading) {
+    return <Typography variant="h3">Loading...</Typography>;
+  }
+
+  if (!products) {
+    return <Typography variant="h3">Waiting for data...</Typography>;
+  }
+  
 
   return (
     <UIEcommerce>
-          <Box mt={8} mb={8} ml={8} mr={8} sx={{backgroundColor:"#F6F9FC"}}> 
-      <Typography variant='h3' gutterBottom>Products</Typography> 
-      <Grid container spacing={3}>
-        
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <FiltersCard openCategories={openCategories} handleCategoriesClick={handleCategoriesClick} />
-        </Grid>
+      <Box mt={6} mb={6} ml={6} mr={6} > 
+        <Typography variant='h3' gutterBottom>Products</Typography> 
+        <Grid container spacing={3}>
+          
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <FiltersCard 
+            />
+          </Grid>
 
-       
-        <Grid item xs={12} sm={6} md={8} lg={9}>
-          <Grid container spacing={3}>
-            {cart.map(product => (
-              <Grid item key={product.id} xs={12} sm={12} md={4} lg={4}>
-                <ProductCard
-                  product={product}
-                  handleAddToCart={handleAddToCart}
-                  handleRemoveFromCart={handleRemoveFromCart}
-                />
-              </Grid>
-            ))}
+        
+          <Grid item xs={12} sm={6} md={8} lg={8.5}>
+            <Grid container spacing={3}>
+
+            {products.rows.map(product => (
+                <Grid item key={product.idProduct} xs={12} sm={12} md={6} lg={4}>
+                  <ProductCard
+                    product={product}
+                    handleAddToCart={handleAddToCart}
+                    handleRemoveFromCart={handleRemoveFromCart}
+                  />
+                </Grid>
+              ))}
+
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
     </Box>
     </UIEcommerce>
   );
