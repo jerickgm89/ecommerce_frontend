@@ -2,7 +2,8 @@ import {  Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/";
 import { HomeRoutes } from "../home/routes/";
 import { ProductsRoutes } from "../products/routes/"
-import { AdminRoutes } from "../admin/routes/AdminRoutes";
+import { AdminRoutes } from "../admin/routes";
+import { UserRoutes } from "../userPanel/routes";
 
 export const AppRouter = () => {
   return (
@@ -23,6 +24,9 @@ export const AppRouter = () => {
 
           {/* Admin */}
           <Route path="/admin" element={ <AdminRoutes /> }/>
+
+          {/* User */}
+          <Route path="/user" element={ <UserRoutes /> }/>
 
       </Routes>
     </div>

@@ -5,7 +5,7 @@ export const UIEcommerce = ({children}) => {
   return (
     <>
         <NavBar />
-        {children}
+          {children}
         <Footer />
     </>
   )

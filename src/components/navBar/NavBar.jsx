@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from "react-router-dom";
-import { Box, Container, IconButton, Typography, AppBar, Toolbar, Menu, MenuItem, Button, Tooltip, Avatar } from '@mui/material';
+import { Box, Container, IconButton, Typography, AppBar, Toolbar, Menu, MenuItem, Button, Tooltip, Avatar, Hidden } from '@mui/material';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -41,25 +41,20 @@ export const NavBar = () => {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
 
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: "black" }}/>
-                    <Typography
-                        variant="h6"
+                    <Box 
+                        component="img"
                         noWrap
-                        component="a"
+                        alt="logo"
                         href="#app-bar-with-responsive-menu"
-                        sx={{
+                        sx={{ 
                             mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'black',
-                            textDecoration: 'none',
+                            height: 80, 
+                            width: 80, 
+                            display: { xs: 'none', md: 'flex'}
                         }}
-                    >
-                        LOGO
-                    </Typography>
-
+                        src="/public/logo.svg"
+                    />
+                  
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
@@ -141,32 +136,43 @@ export const NavBar = () => {
 
                     <Box>
                         <Tooltip>
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            
                                 {isAuthenticated ? (
                                     <>
-                                        <Typography 
-                                            variant="body1" 
-                                            color={user.given_name === "User" ? "error" : "black"}
-                                            sx={{ mr: 1 }}
-                                        >
-                                            {user.given_name}
-                                        </Typography>
-                                        <Avatar alt={user.name} src={user.picture} />
+                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Typography 
+                                                variant="body1" 
+                                                color={user.given_name === "User" ? "error" : "black"}
+                                                sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
+                                            >
+                                                {user.given_name}
+                                            </Typography>
+                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>                                                
+                                                <Avatar alt={user.name} src={user.picture} />
+                                            </IconButton>
+                                            
+                                        </Box>
                                     </>
                                 ) : (
                                     <>
-                                        <Typography 
-                                            variant="body1" 
-                                            color="black"
-                                            sx={{ mr: 1 }}
-                                            onClick={loginWithRedirect}
-                                        >
-                                            Iniciar sesión
-                                        </Typography>
-                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                            <Typography 
+                                                variant="body1" 
+                                                color="black"
+                                                sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
+                                            >
+                                                Iniciar sesión
+                                            </Typography>
+                                            <IconButton 
+                                                sx={{ p: 0 }}
+                                                onClick={loginWithRedirect}
+                                            >
+                                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                            </IconButton>
+                                        </Box>
                                     </>
                                 )}
-                            </IconButton>
+                            
                         </Tooltip>
                         {isAuthenticated ? (
                             <Menu
