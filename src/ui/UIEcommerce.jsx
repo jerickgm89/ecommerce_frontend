@@ -1,11 +1,11 @@
-import { NavBar, Footer } from "../components";
+import { Footer, NavBar } from './../components/';
 
-export const UIEcommerce = ({ children }) => {
-    return (
-        <>
-            <NavBar />
-                {children}
-            <Footer />
-        </>
-    )
+export const UIEcommerce = ({children}) => {
+  return (
+    <>
+        <NavBar />
+          {children}
+        <Footer />
+    </>
+  )
 }
