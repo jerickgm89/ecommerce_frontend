@@ -8,10 +8,16 @@ export const ecommerceApi = createApi({
     // tagTypes: ['Product'],
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: () => '/products',
+            query: () => '/products/index',
             // providesTags: ['Product'],
+        }),
+        getBrands: builder.query({
+            query: () => '/products/brands',
+        }),
+        getCategories: builder.query({
+            query: () => '/products/category',
         }),
     }),
 });
 
-export const { useGetProductsQuery } = ecommerceApi;
+export const { useGetProductsQuery, useGetBrandsQuery, useGetCategoriesQuery } = ecommerceApi;

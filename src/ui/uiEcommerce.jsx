@@ -1,5 +1,5 @@
 
-import { Footer, NavBar } from './../components/';
+import { Footer, NavBar } from '../components';
 
 export const UIEcommerce = ({children}) => {
   return (
