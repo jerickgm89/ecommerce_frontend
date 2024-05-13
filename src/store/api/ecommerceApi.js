@@ -9,9 +9,17 @@ export const ecommerceApi = createApi({
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: () => '/products',
-            // providesTags: ['Product'],
+            providesTags: ['Products'],
         }),
+        createProducts: builder.mutation({
+            query: (newProduct) => ({
+                url: '/products/index',
+                method: 'POST',
+                body: newProduct
+            }) 
+        }),
+        invalidatesTags: ['Products'],
     }),
 });
 
-export const { useGetProductsQuery } = ecommerceApi;
+export const { useGetProductsQuery, useCreateProductsMutation } = ecommerceApi;
