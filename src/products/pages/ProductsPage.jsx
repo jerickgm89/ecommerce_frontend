@@ -4,11 +4,29 @@ import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import FiltersCard from '../components/FiltersCard';
 import { EcommerceUI } from '../../ui';
+import { useFilterProductsQuery } from '../../store/api';
 
 export const ProductsPage = () => {
   const [openCategories, setOpenCategories] = useState(false);
-  const [cart, setCart] = useState(products.map(product => ({ ...product, quantity: 0 })));
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
+  const { data: products, isError, isLoading, error } = useFilterProductsQuery({
+    name: '',
+    price: '',
+    priceMin: minPrice,
+    priceMax: maxPrice,
+    year: '',
+    orderBy: '',
+    orderDirection: 'ASC',
+  });
+
+  console.log(products);
+
+  const applyPriceFilter = (minPrice, maxPrice) => {
+    setMinPrice(minPrice);
+    setMaxPrice(maxPrice);
+  };
 
   const handleCategoriesClick = () => {
     setOpenCategories(!openCategories);
@@ -24,7 +42,19 @@ export const ProductsPage = () => {
     setCart(prevCart => prevCart.map(item => 
       item.id === productId && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item
     ));
-  };  
+  };
+
+  if (isError) {
+    return <Typography variant="h3">Error: {error.message}</Typography>;
+  }
+
+  if (isLoading) {
+    return <Typography variant="h3">Loading...</Typography>;
+  }
+
+  if (!products) {
+    return <Typography variant="h3">Waiting for data...</Typography>;
+  }
 
   return (
     <EcommerceUI>
@@ -33,18 +63,24 @@ export const ProductsPage = () => {
       <Grid container spacing={3}>
         
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <FiltersCard openCategories={openCategories} handleCategoriesClick={handleCategoriesClick} />
+            <FiltersCard 
+              openCategories={openCategories} 
+              handleCategoriesClick={handleCategoriesClick} 
+              applyPriceFilter={applyPriceFilter} // Pasando applyPriceFilter como prop
+            />
         </Grid>
 
        
         <Grid item xs={12} sm={6} md={8} lg={9}>
           <Grid container spacing={3}>
-            {cart.map(product => (
+            {products.rows.map(product => (
               <Grid item key={product.id} xs={12} sm={12} md={4} lg={4}>
                 <ProductCard
                   product={product}
                   handleAddToCart={handleAddToCart}
                   handleRemoveFromCart={handleRemoveFromCart}
+                  minPrice={minPrice}
+                  maxPrice={maxPrice}
                 />
               </Grid>
             ))}
