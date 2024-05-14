@@ -17,7 +17,15 @@ export const ecommerceApi = createApi({
         getCategories: builder.query({
             query: () => '/products/category',
         }),
+        createProducts: builder.mutation({
+            query: (newProduct) => ({
+                url: '/products/index',
+                method: 'POST',
+                body: newProduct
+            }) 
+        }),
+        invalidatesTags: ['Products'],
     }),
 });
 
-export const { useGetProductsQuery, useGetBrandsQuery, useGetCategoriesQuery } = ecommerceApi;
+export const { useGetProductsQuery, useGetBrandsQuery, useGetCategoriesQuery, useCreateProductsMutation } = ecommerceApi;

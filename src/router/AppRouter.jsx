@@ -23,7 +23,7 @@ export const AppRouter = () => {
           <Route path="/auth/*" element={ <AuthRoutes /> }/>
 
           {/* Admin */}
-          <Route path="/admin" element={ <AdminRoutes /> }/>
+          <Route path="/admin/*" element={ <AdminRoutes /> }/>
 
           {/* User */}
           <Route path="/user" element={ <UserRoutes /> }/>
