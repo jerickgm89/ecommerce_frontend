@@ -8,10 +8,24 @@ export const ecommerceApi = createApi({
     // tagTypes: ['Product'],
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: () => '/products',
+            query: () => '/products/index',
             // providesTags: ['Product'],
         }),
+        getBrands: builder.query({
+            query: () => '/products/brands',
+        }),
+        getCategories: builder.query({
+            query: () => '/products/category',
+        }),
+        createProducts: builder.mutation({
+            query: (newProduct) => ({
+                url: '/products/index',
+                method: 'POST',
+                body: newProduct
+            }) 
+        }),
+        invalidatesTags: ['Products'],
     }),
 });
 
-export const { useGetProductsQuery } = ecommerceApi;
+export const { useGetProductsQuery, useGetBrandsQuery, useGetCategoriesQuery, useCreateProductsMutation } = ecommerceApi;

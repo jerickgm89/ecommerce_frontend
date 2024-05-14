@@ -48,10 +48,10 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <Link to={`/products/details/${product.id}`} style={{ textDecoration: 'none', display: 'block' }}>
+            <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
               <img
-                src={product.image}
-                alt={product.name}
+                src={product.imageProducts}
+                alt={product.nameProduct}
                 style={{ width: '100%', aspectRatio: '4/3', padding:"10px" }}
               />
             </Link>
@@ -91,7 +91,7 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
                 gutterBottom
                 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
               >
-                {product.name}
+                {product.nameProduct}
               </Typography>
 
               <Rating sx={{ mb: 1 }} />
@@ -101,28 +101,28 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
                   gutterBottom
                   style={{ fontSize:"16px", marginBottom: '8px', fontWeight:600, color:"#D23F57" }}
                 >
-                  ${product.price}
+                  ${product.priceProduct}
                 </Typography>
                 
                 <Box display="flex"  alignItems="center">
 
-                  {product.quantity > 0 && ( 
+                  {product.stockProduct > 0 && ( 
                     <Box display="flex" alignItems="center">
                       
                       <Button
-                        onClick={() => handleRemoveFromCart(product.id)}
+                        onClick={() => handleRemoveFromCart(product.idProduct)}
                         startIcon={<IndeterminateCheckBoxOutlinedIcon style={{ color: '#D23F57'}} />}
                         // size="large"
                         sx={{ minWidth: 'auto'}}
                       />
                       <Typography style={{ fontSize: "14px", color: "rgb(43, 52, 69)" }}>
-                        {product.quantity}
+                        {product.stockProduct}
                       </Typography>
                     </Box>
                   )}
 
                   <Button
-                    onClick={() => handleAddToCart(product.id)}
+                    onClick={() => handleAddToCart(product.idProduct)}
                     startIcon={<AddBoxOutlinedIcon />}
                     // size="large"
                     sx={{ minWidth: 'auto', padding: '12px 24px', color: '#D23F57'}}
@@ -157,17 +157,17 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
               </Button>
 
               <Typography style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>
-                {product.name}
+                {product.nameProduct}
               </Typography>
               
               <img
-                src={product.image}
-                alt={product.name}
+                src={product.imageProducts}
+                alt={product.nameProduct}
                 style={{ width: '100%', aspectRatio: '4/3', marginTop: '10px' }}
               />
 
               <Typography style={{ fontSize: '15px', marginBottom: '8px', color: '#373F50' }}>
-                {product.description}
+                {product.descriptionProduct}
               </Typography>
 
               <Typography style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>
@@ -188,7 +188,7 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
                   '&:hover': {
                     backgroundColor: "rgb(210, 63, 87)",
                   }
-                }}onClick={() => { handleAddToCart(product.id); handleToggleModal(); }}>
+                }}onClick={() => { handleAddToCart(product.idProduct); handleToggleModal(); }}>
                 Add to Cart
                 </Button>
             </Box>

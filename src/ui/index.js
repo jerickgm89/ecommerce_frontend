@@ -1,1 +1,1 @@
-export * from './UIEcommerce'
+export * from './EcommerceUI'
