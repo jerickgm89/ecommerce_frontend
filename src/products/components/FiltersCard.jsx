@@ -3,10 +3,17 @@ import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGrou
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Rating from "@mui/material/Rating";
+import { useFilterByBrandsQuery, useFilterByCategoriesQuery } from '../../store/api/ecommerceApi';
 
 const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter }) => {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+
+  const { data: filterBrands = [], error,  isLoading } = useFilterByBrandsQuery();
+  const { data: filterCategories = [], error: errorCategories,  isLoading: isLoadingCategories } = useFilterByCategoriesQuery();
+
+  console.log(filterCategories);
+
 
   const handleMinPriceChange = (event) => {
     setMinPrice(event.target.value);
@@ -25,40 +32,19 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter }
 
       <Typography style={{ fontSize: '14px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }} gutterBottom>Categories</Typography>
       
-      <List>
-        <ListItemButton onClick={handleCategoriesClick}>
-          <ListItemText primary="Apple" />
-          {openCategories ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-
-        <Collapse in={openCategories} timeout="auto" unmountOnExit>
-
-          <List component="div" disablePadding>
-
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemText primary="iOS" />
+      <List>        
+        
+        {
+          filterCategories.map(category => (
+            <ListItemButton onClick={() => handleCategoriesClick(category.idCategory)} sx={{ fontSize: '14px', color:'inherit' }}>
+              <ListItemText primary={category.nameCategory} />
             </ListItemButton>
+          ))
+        }
 
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemText primary="macOS" />
-            </ListItemButton>
-          </List>
 
-        </Collapse>
+      </List>
 
-        <ListItemButton sx={{ fontSize: '14px', color:'inherit' }}>
-          <ListItemText primary="Android" />
-        </ListItemButton>
-
-        <ListItemButton>
-          <ListItemText primary="SmartPhone" style={{ fontSize: '14px', color:'inherit' }} />
-        </ListItemButton>
-
-        </List>
-
-        <ListItemButton>
-                <ListItemText primary="Windows" />
-        </ListItemButton>
 
         <Divider style={{ margin: '16px 0', borderColor:'#F3F5F9'  }} />
 
@@ -88,11 +74,11 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter }
         <Typography style={{ fontSize: '14px', fontWeight:'500', marginBottom: '16px', color: '#2B3445' }}>Brands</Typography>
        
         <FormGroup >
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit' }}>Acer</Typography>} />
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit' }}>Asus</Typography>} />
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit' }}>Dell</Typography>} />
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit'}}>Nokia</Typography>} />
-            <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit'}}>Razer</Typography>} />
+            {
+                filterBrands.map(brand => (
+                    <FormControlLabel control={<Checkbox />} label={<Typography style={{ fontSize: '14px', color:'inherit' }}>{brand.nameBrand}</Typography>} />
+                ))
+            }
         </FormGroup>
 
         <Divider style={{ margin: '16px 0',  borderColor:'#F3F5F9'  }} />

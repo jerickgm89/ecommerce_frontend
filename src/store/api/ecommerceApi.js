@@ -32,7 +32,22 @@ export const ecommerceApi = createApi({
                 return queryUrl;
             },
         }),
+
+        filterByBrands: builder.query({
+            query: () => '/products/brands',
+        }),
+        filterByCategories: builder.query({
+            query: () => '/products/category',
+        }),
     }),
 });
 
-export const { useGetProductsQuery, useGetBrandsQuery, useGetCategoriesQuery, useCreateProductsMutation, useFilterProductsQuery } = ecommerceApi;
+export const { 
+    useGetProductsQuery, 
+    useGetBrandsQuery, 
+    useGetCategoriesQuery, 
+    useCreateProductsMutation,
+    useFilterProductsQuery,
+    useFilterByBrandsQuery,
+    useFilterByCategoriesQuery,
+ } = ecommerceApi;
