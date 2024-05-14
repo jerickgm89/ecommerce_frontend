@@ -52,6 +52,6 @@ export const ProductsPage = () => {
         </Grid>
       </Grid>
     </Box>
-    </Ecomme>
+    </EcommerceUI>
   );
 };
