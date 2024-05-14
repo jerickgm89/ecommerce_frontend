@@ -16,6 +16,7 @@ import {
   Notifications as NotificationsIcon, 
   MoreVert      as MoreIcon 
 } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -42,6 +43,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
     };
 
     const menuId = 'primary-search-account-menu';
+
     const renderMenu = (
         <Menu
           anchorEl={anchorEl}
@@ -59,7 +61,9 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
           onClose={handleMenuClose}
         >
           <MenuItem onClick={handleMenuClose}>Mi Perfil</MenuItem>
-          <MenuItem onClick={handleMenuClose}>Salir</MenuItem>
+          <Link to='/' style={{textDecoration: 'none', color: 'black'}}>
+            <MenuItem onClick={handleMenuClose}>Salir del Administrador</MenuItem>
+          </Link>
         </Menu>
     );
 
