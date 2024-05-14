@@ -26,7 +26,6 @@ export const AdminLayout = ({children}) => {
       >
           <Toolbar />
           {children}
-
       </Box>
     </Box>
   )
