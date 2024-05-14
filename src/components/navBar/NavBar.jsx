@@ -6,8 +6,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useAuth0 } from "@auth0/auth0-react"
 
-const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
-const settings = ['Perfil', 'Mis pedidos', 'Salir'];
+const pages = ['Inicio', 'Productos'];
+const settings = ['Perfil', 'Panel Administrador', 'Salir'];
 
 export const NavBar = () => {
     const { loginWithRedirect } = useAuth0();
@@ -141,16 +141,15 @@ export const NavBar = () => {
                                     <>
                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                             <Typography 
-                                                variant="body1" 
-                                                color={user.given_name === "User" ? "error" : "black"}
-                                                sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
+                                            variant="body1" 
+                                            color={user.given_name === "User" ? "error" : "black"}
+                                            sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
                                             >
-                                                {user.given_name}
+                                            {user.given_name}
                                             </Typography>
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>                                                
-                                                <Avatar alt={user.name} src={user.picture} />
-                                            </IconButton>
-                                            
+                                            <Avatar alt={user.name} src={user.picture} />
+                                            </IconButton>                                            
                                         </Box>
                                     </>
                                 ) : (
@@ -194,7 +193,11 @@ export const NavBar = () => {
                                 {settings.map((setting, index) => (
                                     <Link 
                                         key={index} 
-                                        to={setting === "Perfil" ? "#" : "/"} 
+                                        to={
+                                            setting === "Perfil" ? "#" 
+                                            : setting === "Panel Administrador" ? "/admin" 
+                                            : "/"
+                                          } 
                                         style={{ textDecoration: 'none', color: "black" }}
                                     >
                                         <MenuItem 
