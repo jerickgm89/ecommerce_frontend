@@ -11,7 +11,7 @@ export const UserLayout = ({children}) => {
                 justifyContent: 'center', 
                 alignItems: 'center', 
                 height: '100%',
-                bgcolor: '#F6F9FC'
+                bgcolor: '#7D879C'
         }}>
             {children}
         </Box>

@@ -19,7 +19,7 @@ export const UserInfo = () => {
       md={8}
       sx={{display: 'flex', justifyContent: 'left'}}
     >
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -27,11 +27,12 @@ export const UserInfo = () => {
           m: 4,
           p: 5,
           borderRadius: 4,
-          backgroundColor: '#fff'
+          backgroundColor: '#fff',
+          width: '100%',
         }}
       >
         <List component="div">
-          <Typography variant="h6">User</Typography>
+          
           <ListItemButton>
             <ListItemIcon>
               <ShoppingBagIcon />
@@ -53,7 +54,34 @@ export const UserInfo = () => {
             <ListItemText primary="Metodos de Pago" />
           </ListItemButton>
         </List>
-      </Box>
+      </Box> */}
+      <Grid container>
+        <Grid item xs={12} margin={2}>
+          <Typography 
+            variant="h4" 
+            sx={{          
+              mt: 4,
+              pb: 2,
+              mb: 0,
+              borderRadius: 4,
+              display: 'flex', 
+              justifyContent: 'left',
+              fontWeight: 'bold',
+            }}
+            >
+            Mi perfil
+          </Typography>
+          <Grid 
+          sx={{backgroundColor: '#fff', p: 4, borderRadius: 4}}
+          >
+            <Typography variant="h6">Name: {user.name}</Typography>
+            <Typography variant="body1">Email: {user.email}</Typography>
+            <Typography variant="body1">Last Connection: {user.updated_at}</Typography>
+            
+          </Grid>
+        </Grid>
+
+      </Grid>
     </Grid>
    </>
   )

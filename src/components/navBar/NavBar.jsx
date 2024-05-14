@@ -193,7 +193,7 @@ export const NavBar = () => {
                                 {settings.map((setting, index) => (
                                     <Link 
                                         key={index} 
-                                        to={setting === "Perfil" ? "#" : "/"} 
+                                        to={setting === "Perfil" ? "/user" : "/"} 
                                         style={{ textDecoration: 'none', color: "black" }}
                                     >
                                         <MenuItem 
