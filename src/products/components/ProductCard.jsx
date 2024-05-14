@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Typography, Paper, Box, Button, CardContent, Modal } from '@mui/material';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
@@ -8,11 +8,30 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CloseIcon from '@mui/icons-material/Close';
 import Rating from "@mui/material/Rating";
+import { useGetCategoriesQuery } from '../../store/api';
 
-const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
+const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart, minPrice, maxPrice }) => {
+  const { data: categories } = useGetCategoriesQuery();
+  const [category, setCategory] = useState(null);
+
+  const productPrice = parseFloat(product.priceProduct);
+  const min = minPrice === '' ? Number.MIN_SAFE_INTEGER : parseFloat(minPrice);
+  const max = maxPrice === '' ? Number.MAX_SAFE_INTEGER : parseFloat(maxPrice);
+
+  if (productPrice < min || productPrice > max) {
+    return null;
+  }
+
   const [modalOpen, setModalOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
+
+  useEffect(() => {
+    if (categories) {
+      const foundCategory = categories.find(cat => cat.idCategory === product.idCategory);
+      setCategory(foundCategory);
+    }
+  }, [categories, product]);
 
   const handleToggleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -29,6 +48,11 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
   const handleMouseLeave = () => {
     setShowIcons(false);
   };
+
+  const formattedPrice = new Intl.NumberFormat('es-ES', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(product.priceProduct);
 
   return (
         <Paper
@@ -48,11 +72,11 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <Link to={`/products/details/${product.id}`} style={{ textDecoration: 'none', display: 'block' }}>
+            <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
               <img
-                src={product.image}
-                alt={product.name}
-                style={{ width: '100%', aspectRatio: '4/3', padding:"10px" }}
+                src={product.imageProducts}
+                alt={product.nameProduct}
+                style={{ width: '100%', aspectRatio: '4/3'}}
               />
             </Link>
             <Box
@@ -91,18 +115,28 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
                 gutterBottom
                 style={{ fontSize: '16px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
               >
-                {product.name}
+                {product.nameProduct}
+              </Typography>
+
+              <Typography
+                gutterBottom
+                style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
+              >
+                {product.stockProduct > 0 ? 'In Stock' : 'Out of Stock'}
               </Typography>
 
               <Rating sx={{ mb: 1 }} />
 
               <Box display="flex" alignItems="center" justifyContent="space-between">
-                <Typography
-                  gutterBottom
-                  style={{ fontSize:"16px", marginBottom: '8px', fontWeight:600, color:"#D23F57" }}
-                >
-                  ${product.price}
-                </Typography>
+                <Box>
+                  <Typography
+                    gutterBottom
+                    variant="caption"
+                    sx={{ fontSize:"18px", marginBottom: '8px', fontWeight:600, color:"#D23F57" }}
+                  >
+                    $ {formattedPrice}
+                  </Typography>
+                </Box>
                 
                 <Box display="flex"  alignItems="center">
 
@@ -157,12 +191,16 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
               </Button>
 
               <Typography style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>
-                {product.name}
+                {product.nameProduct}
+              </Typography>
+
+              <Typography style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', color: 'rgb(174, 180, 190)' }}>
+                CATEGORY: {category?.nameCategory}
               </Typography>
               
               <img
-                src={product.image}
-                alt={product.name}
+                src={product.imageProducts}
+                alt={product.nameProduct}
                 style={{ width: '100%', aspectRatio: '4/3', marginTop: '10px' }}
               />
 
@@ -171,7 +209,7 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart }) => {
               </Typography>
 
               <Typography style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>
-                ${product.price}
+                ${product.formattedPrice}
               </Typography>
 
               <Button

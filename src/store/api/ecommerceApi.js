@@ -25,7 +25,14 @@ export const ecommerceApi = createApi({
             }) 
         }),
         invalidatesTags: ['Products'],
+
+        filterProducts: builder.query({
+            query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax }) => {
+                const queryUrl = `/filterproducts?name=${name}&price=${price}&year=${year}&orderBy=${orderBy}&orderDirection=${orderDirection}&priceMin${priceMin}&priceMax${priceMax}`;
+                return queryUrl;
+            },
+        }),
     }),
 });
 
-export const { useGetProductsQuery, useGetBrandsQuery, useGetCategoriesQuery, useCreateProductsMutation } = ecommerceApi;
+export const { useGetProductsQuery, useGetBrandsQuery, useGetCategoriesQuery, useCreateProductsMutation, useFilterProductsQuery } = ecommerceApi;
