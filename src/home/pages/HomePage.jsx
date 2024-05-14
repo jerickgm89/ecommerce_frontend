@@ -1,20 +1,35 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { Box, Grid, Typography, Button } from "@mui/material";
 import { EcommerceUI } from "../../ui";
-import { useGetProductsQuery } from '../../store/api';
+import { useFilterProductsQuery } from '../../store/api';
 import Carousel from 'react-material-ui-carousel';
 import { BrandsProductsHome, CategoryProductsHome, ProductsHome, DealsHome } from '../components';
 import ProductCard from '../../products/components/ProductCard';
 
 export const HomePage = () => {
-  const { data, error, isLoading } = useGetProductsQuery();
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+
+  const { data: products, isError, isLoading, error } = useFilterProductsQuery({
+    name: '',
+    price: '',
+    priceMin: minPrice,
+    priceMax: maxPrice,
+    year: '',
+    orderBy: '',
+    orderDirection: 'ASC',
+  });
 
   // Asegúrate de manejar los estados de carga y error adecuadamente
+  if (isError) {
+    return <Typography variant="h3">Error: {error.message}</Typography>;
+  }
   if (isLoading) return <Typography>Cargando...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
 
   // Obtén solo los primeros 9 productos
-  const firstNineProducts = data.slice(0, 9);
+  const firstNineProducts = products.rows.slice(0, 9);
 
   if (!firstNineProducts) return null;
 

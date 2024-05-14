@@ -1,9 +1,25 @@
-import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse } from '@mui/material';
+import React, { useState } from 'react';
+import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse, Button } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Rating from "@mui/material/Rating";
 
-const FiltersCard = ({ openCategories, handleCategoriesClick }) => {
+const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter }) => {
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+
+  const handleMinPriceChange = (event) => {
+    setMinPrice(event.target.value);
+  };
+
+  const handleMaxPriceChange = (event) => {
+    setMaxPrice(event.target.value);
+  };
+
+  const handleApplyFilter = () => {
+    applyPriceFilter(minPrice, maxPrice);
+  };
+
   return (
     <Paper elevation={3} style={{ maxHeight: '100%', padding: '18px 27px', borderRadius:'8px'}}>
 
@@ -49,10 +65,23 @@ const FiltersCard = ({ openCategories, handleCategoriesClick }) => {
         <Typography style={{ fontSize: '14px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }}>Price Range</Typography>
         
         <Box display="flex" alignItems="center">
-            <TextField label="Min Price" variant="outlined" size="small" />
-            <Typography variant="body1" gutterBottom style={{ margin: '0 8px' }}>to</Typography>
-            <TextField label="Max Price" variant="outlined" size="small" />
+          <TextField 
+            label="Min Price" 
+            variant="outlined" 
+            size="small" 
+            value={minPrice}
+            onChange={handleMinPriceChange}
+          />
+          <Typography variant="body1" gutterBottom style={{ margin: '0 8px' }}>to</Typography>
+          <TextField 
+            label="Max Price" 
+            variant="outlined" 
+            size="small" 
+            value={maxPrice}
+            onChange={handleMaxPriceChange}
+          />
         </Box>
+        <Button variant="contained" onClick={handleApplyFilter}>Apply Filter</Button>
 
         <Divider style={{ margin: '16px 0', borderColor:'#F3F5F9' }} />
 
