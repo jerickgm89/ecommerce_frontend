@@ -6,7 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useAuth0 } from "@auth0/auth0-react"
 
-const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
+const pages = ['Inicio', 'Productos'];
 const settings = ['Perfil', 'Mis pedidos', 'Salir'];
 
 export const NavBar = () => {
@@ -43,7 +43,6 @@ export const NavBar = () => {
 
                     <Box 
                         component="img"
-                        noWrap
                         alt="logo"
                         href="#app-bar-with-responsive-menu"
                         sx={{ 
