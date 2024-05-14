@@ -4,7 +4,7 @@ import style from "./Footer.module.css";
 export const Footer = () => {
 
     return (
-        <Grid container sx={{ backgroundColor: "primary.dark", minHeight: "320px" }}>
+        <Grid container sx={{ backgroundColor: "primary.dark", display: 'flex', position: 'relative', bottom: 0, }}>
             <Container style={{ marginTop: "50px"}}>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
