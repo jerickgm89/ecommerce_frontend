@@ -43,7 +43,6 @@ export const NavBar = () => {
 
                     <Box 
                         component="img"
-                        noWrap
                         alt="logo"
                         href="#app-bar-with-responsive-menu"
                         sx={{ 

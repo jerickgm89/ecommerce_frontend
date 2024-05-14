@@ -64,7 +64,7 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
                 timeout="auto" 
                 unmountOnExit
               >
-                <List 
+                <List
                   component="div"
                 >
                   {/* Item 1 */}
