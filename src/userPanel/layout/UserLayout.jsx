@@ -7,12 +7,12 @@ export const UserLayout = ({children}) => {
     <EcommerceUI >
         <Box 
             sx={{
-                display: 'flex', 
-                justifyContent: 'center', 
-                alignItems: 'center', 
-                height: '100%',
+                display: 'flex',  
+                flexDirection: 'column',
+                height: '100vh',
                 bgcolor: '#F6F9FC'
-        }}>
+            }}
+        >
             {children}
         </Box>
     </EcommerceUI>

@@ -43,7 +43,6 @@ export const NavBar = () => {
 
                     <Box 
                         component="img"
-                        noWrap
                         alt="logo"
                         href="#app-bar-with-responsive-menu"
                         sx={{ 
@@ -194,7 +193,7 @@ export const NavBar = () => {
                                     <Link 
                                         key={index} 
                                         to={
-                                            setting === "Perfil" ? "#" 
+                                            setting === "Perfil" ? "/user" 
                                             : setting === "Panel Administrador" ? "/admin" 
                                             : "/"
                                           } 
