@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Box, Grid, Typography, Button } from "@mui/material";
-import { UIEcommerce } from "../../ui";
+import { EcommerceUI } from "../../ui";
 import { useGetProductsQuery } from '../../store/api';
 import Carousel from 'react-material-ui-carousel';
 import { BrandsProductsHome, CategoryProductsHome, ProductsHome, DealsHome } from '../components';
@@ -45,7 +45,7 @@ export const HomePage = () => {
   }; 
 
   return (
-    <UIEcommerce>
+    <EcommerceUI>
       <Box mt={8} mb={8} ml={8} mr={8} sx={{ backgroundColor: "#F6F9FC" }}>
         <Grid container spacing={3}>
           {/* <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
@@ -94,6 +94,6 @@ export const HomePage = () => {
           </Grid>
         </Grid>
       </Box>
-    </UIEcommerce>
+    </EcommerceUI>
   );
 };

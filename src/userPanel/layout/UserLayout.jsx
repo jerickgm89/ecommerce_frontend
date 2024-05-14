@@ -1,10 +1,10 @@
 
 import { Box } from '@mui/material';
-import { UIEcommerce } from './../../ui/UIEcommerce';
+import { EcommerceUI } from '../../ui';
 
 export const UserLayout = ({children}) => {
   return (
-    <UIEcommerce >
+    <EcommerceUI >
         <Box 
             sx={{
                 display: 'flex', 
@@ -15,6 +15,6 @@ export const UserLayout = ({children}) => {
         }}>
             {children}
         </Box>
-    </UIEcommerce>
+    </EcommerceUI>
   )
 }

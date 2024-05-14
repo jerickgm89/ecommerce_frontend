@@ -2,7 +2,7 @@ import { Typography, Box } from '@mui/material';
 import DetailProduct from '../components/DetailProduct';
 import { products } from "../data"; 
 import { useParams } from 'react-router-dom';
-import { UIEcommerce } from '../../ui';
+import { EcommerceUI } from '../../ui';
 
 export const DetailsProductsPage = () => {
   
@@ -17,12 +17,12 @@ export const DetailsProductsPage = () => {
 
   return (
     <>
-      <UIEcommerce>
+      <EcommerceUI>
         <Box mt={4} mb={4} ml={4} mr={4}>
           <Typography variant="h3" gutterBottom>Product Details</Typography>
           <DetailProduct product={product} /> 
         </Box>
-      </UIEcommerce>
+      </EcommerceUI>
     </>
   );
 };
