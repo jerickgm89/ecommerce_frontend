@@ -4,6 +4,7 @@ export const EcommerceUI = ({children}) => {
   return (
     <>
         <NavBar />
+          {children}
         <Footer />
     </>
   )
