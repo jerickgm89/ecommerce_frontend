@@ -33,13 +33,12 @@ const validationSchema = yup.object({
       .matches(/^\d+$/, 'El ID del descuento debe ser un numero entero'),
 		description: yup
       .string(),
-    images: yup
-      .array()
-      .of(yup.object().shape({
-        file: yup.mixed()
-      }))
-      .required('Se requiere al menos una imagen')
-      .min(1, 'Se requiere al menos una imagen'),
+    imageProducts: yup
+      .object()
+      .shape({
+        file: yup.mixed().required('Se requiere una imagen')
+      })
+      .required('Se requiere una imagen'),
     model: yup
       .string()
       .required('El modelo es requerido'),
@@ -70,7 +69,7 @@ export const CreateProducts = () => {
 				idCategory: '',
 				idDiscount: '',
 				description: '',
-        images: [],
+        imageProducts: { file: null },
         model: '',
         color: '',
         size: '',
@@ -80,39 +79,30 @@ export const CreateProducts = () => {
       onSubmit: (values) => {
         alert(JSON.stringify(values, null, 2));
 
-        const product = {
-          nameProduct: values.name,
-          priceProduct: values.price,
-          imageProducts: values.images.map(image => image.file),
-          yearProduct: values.year,
-          descriptionProduct: values.description,
-          SKU: values.sku,
-          stockProduct: values.stock,
-          idReview: values.idReview,
-          idCategory: values.idCategory,
-          IdDiscount: values.idDiscount
-        }
-
-        const characteristics = {
-          modelProduct: values.model,
-          characteristics: {
-            color: values.color,
-            size: values.size,
-          },
-          idBrand: values.idBrand
-        }
-
-        const newProduct = {
-          Products: product,
-          Variants: characteristics,
-        }
-        console.log(newProduct);
-        createProduct(newProduct);
+        const formData = new FormData();
+        formData.append('Products[nameProduct]', values.name);
+        formData.append('Products[priceProduct]', values.price);
+        formData.append('Products[yearProduct]', values.year);
+        formData.append('Products[stockProduct]', values.stock);
+        formData.append('Products[SKU]', values.sku);
+        formData.append('Products[descriptionProduct]', values.description);
+        formData.append('Products[idReview]', values.idReview);
+        formData.append('Products[idCategory]', values.idCategory);
+        formData.append('Products[IdDiscount]', values.idDiscount);
+        formData.append('imageProducts', values.imageProducts.file);
+        formData.append('Variants[modelProduct]', values.model);
+        formData.append('Variants[characteristics]', JSON.stringify({
+          color: values.color,
+          size: values.size,
+        }));
+        formData.append('Variants[idBrand]', values.idBrand);
+        console.log(formData);
+        createProduct(formData);
       },
     });
 
     return (
-        <form onSubmit={formik.handleSubmit} style={{ marginTop: 30, marginBottom: 30, mx: 'auto', maxWidth: 600, border: '1px solid black', padding: 30, borderRadius: '5px' }}>
+        <form onSubmit={formik.handleSubmit} style={{ marginTop: 30, marginBottom: 30, mx: 'auto', maxWidth: 600, border: '1px solid black', padding: 30, borderRadius: '5px' }} encType="multipart/form-data">
 					<Typography sx={{ textAlign: 'center'}}>
 						AGREGAR NUEVOS PRODUCTOS
 					</Typography>
@@ -353,10 +343,10 @@ export const CreateProducts = () => {
               <input
                 accept="image/*"
                 id="contained-button-file"
-                multiple
+                name="imageProducts"                              // Este nombre debe coincidir con el esperado por Multer
                 type="file"
                 onChange={(event) => {
-                  formik.setFieldValue("images", formik.values.images.concat(Array.from(event.currentTarget.files).map(file => ({ file }))));
+                  formik.setFieldValue("imageProducts", { file: event.currentTarget.files[0] });
                 }}
                 onBlur={formik.handleBlur}
                 style={{ display: "none" }}
@@ -366,8 +356,8 @@ export const CreateProducts = () => {
                   Cargar imagen
                 </Button>
               </label>
-              {formik.touched.images && formik.errors.images && (
-                <Typography color="error">{formik.errors.images}</Typography>
+              {formik.touched.imageProducts && formik.errors.imageProducts && (
+                <Typography color="error">{formik.errors.imageProducts}</Typography>
               )}
             </Grid>
 
