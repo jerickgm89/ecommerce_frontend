@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Paper, Box, Button, CardContent, Modal } from '@mui/material';
+
+import { Typography, Paper, Box, Button, CardContent, Modal, Rating } from '@mui/material';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CloseIcon from '@mui/icons-material/Close';
-import Rating from "@mui/material/Rating";
-import { useGetCategoriesQuery } from '../../store/api';
+import {
+  IndeterminateCheckBoxOutlined as IndeterminateCheckBoxOutlinedIcon,
+  RemoveRedEyeOutlined as RemoveRedEyeOutlinedIcon,
+  FavoriteBorder as FavoriteBorderIcon,
+  Favorite as FavoriteIcon,
+  Close as CloseIcon,
+} from '@mui/icons-material';
+
+import { useGetCategoriesQuery } from '../../store/api/ecommerceApi';
 
 const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart, minPrice, maxPrice }) => {
-  const { data: categories } = useGetCategoriesQuery();
+  // const { data: categories } = useGetCategoriesQuery();
   const [category, setCategory] = useState(null);
+
 
   const productPrice = parseFloat(product.priceProduct);
   const min = minPrice === '' ? Number.MIN_SAFE_INTEGER : parseFloat(minPrice);
@@ -26,12 +30,12 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart, minPrice,
   const [isFavorite, setIsFavorite] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
 
-  useEffect(() => {
-    if (categories) {
-      const foundCategory = categories.find(cat => cat.idCategory === product.idCategory);
-      setCategory(foundCategory);
-    }
-  }, [categories, product]);
+  // useEffect(() => {
+  //   if (categories) {
+  //     const foundCategory = categories.find(cat => cat.idCategory === product.idCategory);
+  //     setCategory(foundCategory);
+  //   }
+  // }, [categories, product]);
 
   const handleToggleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -72,7 +76,7 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart, minPrice,
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
+            <Link to={`/products/index/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
               <img
                 src={product.imageProducts}
                 alt={product.nameProduct}
@@ -156,7 +160,7 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart, minPrice,
                   )}
 
                   <Button
-                    onClick={() => handleAddToCart(product.id)}
+                    onClick={() => handleAddToCart(product.idProduct)}
                     startIcon={<AddBoxOutlinedIcon />}
                     // size="large"
                     sx={{ minWidth: 'auto', padding: '12px 24px', color: '#D23F57'}}
@@ -205,7 +209,7 @@ const ProductCard = ({ product, handleAddToCart, handleRemoveFromCart, minPrice,
               />
 
               <Typography style={{ fontSize: '15px', marginBottom: '8px', color: '#373F50' }}>
-                {product.description}
+                {product.descriptionProduct}
               </Typography>
 
               <Typography style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>

@@ -4,6 +4,7 @@ import { HomeRoutes } from "../home/routes/";
 import { ProductsRoutes } from "../products/routes/"
 import { AdminRoutes } from "../admin/routes";
 import { UserRoutes } from "../userPanel/routes";
+import { DetailsProductsPage } from "../products/pages";
 
 export const AppRouter = () => {
   return (
@@ -27,6 +28,9 @@ export const AppRouter = () => {
 
           {/* User */}
           <Route path="/user" element={ <UserRoutes /> }/>
+
+          
+        <Route path="products/index/:id" element={<DetailsProductsPage />} />
 
       </Routes>
     </div>
