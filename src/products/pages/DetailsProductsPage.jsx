@@ -1,14 +1,14 @@
 import { Typography, Box } from '@mui/material';
 import DetailProduct from '../components/DetailProduct';
-import { products } from "../data"; 
 import { useParams } from 'react-router-dom';
 import { EcommerceUI } from '../../ui';
+import { useGetProductByIdQuery } from '../../store/api/ecommerceApi';
 
 export const DetailsProductsPage = () => {
   
-  const { productId } = useParams();
+  const { id } = useParams();
 
-  const product = products.find(product => product.id === parseInt(productId));
+  const { data: product = [], isLoading} = useGetProductByIdQuery(id)
 
   
   if (!product) {
@@ -16,14 +16,19 @@ export const DetailsProductsPage = () => {
   }
 
   return (
-    <>
+    
       <EcommerceUI>
         <Box mt={4} mb={4} ml={4} mr={4}>
           <Typography variant="h3" gutterBottom>Product Details</Typography>
-          <DetailProduct product={product} /> 
+          <DetailProduct
+            idProduct = {product.idProduct}
+            nameProduct = {product.nameProduct}
+            priceProduct = {product.priceProduct}
+            descriptionProduct = {product.descriptionProduct}
+            imageProducts = {product.imageProducts}
+          /> 
         </Box>
       </EcommerceUI>
-    </>
   );
 };
 
