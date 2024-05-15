@@ -11,6 +11,12 @@ export const ecommerceApi = createApi({
             query: () => '/products/index',
             // providesTags: ['Product'],
         }),
+        getProductsLimit: builder.query({
+            query: (page=1) => `/products/index?limit=9&page=${page}`,
+        }),
+        getProductById: builder.query({
+            query: (id) => `/products/index/${id}`,
+        }),
         getBrands: builder.query({
             query: () => '/products/brands',
         }),
@@ -33,21 +39,15 @@ export const ecommerceApi = createApi({
             },
         }),
 
-        filterByBrands: builder.query({
-            query: () => '/products/brands',
-        }),
-        filterByCategories: builder.query({
-            query: () => '/products/category',
-        }),
     }),
 });
 
 export const { 
-    useGetProductsQuery, 
-    useGetBrandsQuery, 
-    useGetCategoriesQuery, 
+    useGetProductsQuery,
+    useGetProductsLimitQuery,
+    useGetProductByIdQuery,
+    useGetBrandsQuery,
+    useGetCategoriesQuery,
     useCreateProductsMutation,
-    useFilterProductsQuery,
-    useFilterByBrandsQuery,
-    useFilterByCategoriesQuery,
+    useFilterProductsQuery
  } = ecommerceApi;

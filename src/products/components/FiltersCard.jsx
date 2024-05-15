@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse, Button } from '@mui/material';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import Rating from "@mui/material/Rating";
-import { useFilterByBrandsQuery, useFilterByCategoriesQuery } from '../../store/api/ecommerceApi';
+import { useGetBrandsQuery, useGetCategoriesQuery } from '../../store/api/ecommerceApi';
 
 const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter }) => {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
 
-  const { data: filterBrands = [], error,  isLoading } = useFilterByBrandsQuery();
-  const { data: filterCategories = [], error: errorCategories,  isLoading: isLoadingCategories } = useFilterByCategoriesQuery();
+  const { data: filterBrands = [] } = useGetBrandsQuery();
+  const { data: filterCategories = [] } = useGetCategoriesQuery();
 
   console.log(filterCategories);
-
 
   const handleMinPriceChange = (event) => {
     setMinPrice(event.target.value);

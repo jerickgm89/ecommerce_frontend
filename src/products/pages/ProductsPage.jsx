@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { products } from "../data";
 import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import FiltersCard from '../components/FiltersCard';
 import { EcommerceUI } from '../../ui';
-import { useFilterProductsQuery } from '../../store/api';
+import { useFilterProductsQuery, useGetProductsLimitQuery } from '../../store/api';
 
 export const ProductsPage = () => {
   const [openCategories, setOpenCategories] = useState(false);
@@ -21,7 +20,12 @@ export const ProductsPage = () => {
     orderDirection: 'ASC',
   });
 
-  console.log(products);
+  const { data: productsLimit = [] } = useGetProductsLimitQuery(1);
+
+  // const [ page, setPage ] = useState(0);
+  // let nexPage = page + 1;
+  // let prevPage = page - 1;
+
 
   const applyPriceFilter = (minPrice, maxPrice) => {
     setMinPrice(minPrice);
@@ -73,8 +77,8 @@ export const ProductsPage = () => {
        
         <Grid item xs={12} sm={6} md={8} lg={9}>
           <Grid container spacing={3}>
-            {products.rows.map(product => (
-              <Grid item key={product.id} xs={12} sm={12} md={4} lg={4}>
+            {productsLimit.map(product => (
+              <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={4}>
                 <ProductCard
                   product={product}
                   handleAddToCart={handleAddToCart}
