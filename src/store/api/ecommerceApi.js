@@ -9,7 +9,7 @@ export const ecommerceApi = createApi({
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: () => '/products/index',
-            // providesTags: ['Product'],
+            providesTags: ['Products'],
         }),
         getProductsLimit: builder.query({
             query: (page=1) => `/products/index?limit=9&page=${page}`,
@@ -28,9 +28,17 @@ export const ecommerceApi = createApi({
                 url: '/products/index',
                 method: 'POST',
                 body: newProduct
-            }) 
+            }),
+            invalidatesTags: ['Products'],
         }),
-        invalidatesTags: ['Products'],
+        deleteProducts: builder.mutation({
+            query: (id) => ({
+                url: `/products/index/${id}`,
+                method: 'DELETE',
+
+            }),
+            invalidatesTags: ['Products'],
+        }),
 
         filterProducts: builder.query({
             query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax }) => {
@@ -49,5 +57,6 @@ export const {
     useGetBrandsQuery,
     useGetCategoriesQuery,
     useCreateProductsMutation,
-    useFilterProductsQuery
+    useFilterProductsQuery,
+    useDeleteProductsMutation,
  } = ecommerceApi;

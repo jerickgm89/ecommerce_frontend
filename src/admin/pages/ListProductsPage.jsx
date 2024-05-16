@@ -1,12 +1,26 @@
 import React from 'react'
 import { AdminLayout } from '../layout/AdminLayout'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, IconButton } from '@mui/material'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { useGetProductsQuery } from '../../store/api'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
+import { useDeleteProductsMutation } from '../../store/api'
 
 export const ListProductsPage = () => {
 
     const { data: products = [], error, isLoading } = useGetProductsQuery()
+
+    const [deleteProduct] = useDeleteProductsMutation()
+
+    const handleDelete = (id) => {
+        console.log('Delete product', id)
+        deleteProduct(id)
+    }
+
+    const handleEdit = (id) => {
+        console.log('Edit product', id)
+    }
 
     const columns = [
         {field: 'id', headerName: 'ID', width: 90},
@@ -16,6 +30,18 @@ export const ListProductsPage = () => {
         {field: 'name', headerName: 'Nombre', width: 150},
         {field: 'price', headerName: 'Precio', width: 150},
         {field: 'stock', headerName: 'Stock', width: 150},
+        {field: 'actions', headerName: 'Acciones', width: 100, renderCell: (params) => {
+            return (
+                <>
+                    <IconButton onClick={() => handleDelete(params.id)}>
+                        <DeleteIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleEdit(params.id)}>
+                        <EditIcon />
+                    </IconButton>
+                </>
+            );
+        }},
     ]
 
     const rows = products.map(product => {
@@ -34,7 +60,7 @@ export const ListProductsPage = () => {
         <Typography variant='h4'>
             Lista de Productos
         </Typography>
-        <Box sx={{height: 650, width: 600, mt:2}}>
+        <Box sx={{height: 650, width: '87.9%', mt:2}}>
             <DataGrid
                 rows={rows}
                 columns={columns}
