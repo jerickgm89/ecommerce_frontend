@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN;
 
 export const ecommerceApi = createApi({
     reducerPath: 'ecommerceApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: DOMAIN,
+        baseUrl: 'http://35.167.78.208',
     }),
     tagTypes: ['Products'],
     endpoints: (builder) => ({
