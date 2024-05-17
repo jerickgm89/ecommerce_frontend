@@ -1,27 +1,38 @@
-import { Route, Routes } from "react-router-dom"
-import { AuthRoutes } from "../auth/routes/"
+import {  Route, Routes } from "react-router-dom";
+import { AuthRoutes } from "../auth/routes/";
 import { HomeRoutes } from "../home/routes/";
+import { ProductsRoutes } from "../products/routes/"
+import { AdminRoutes } from "../admin/routes";
+import { UserRoutes } from "../userPanel/routes";
+import { DetailsProductsPage } from "../products/pages";
 
 export const AppRouter = () => {
   return (
-    <Routes>
+    <div>
+      <Routes>
 
-        {/* Home */}
-        <Route />
-        <Route path="/*" element={ <HomeRoutes/>}/>
+          {/* Home */}
+          <Route path="/*" element={ <HomeRoutes /> }/>
 
-        {/* Products */}
-        <Route />
-        {/* <Route path="" element={ }/> */}
+          {/* Products */}        
+          <Route path="/products/*" element={ <ProductsRoutes/>}/>
 
-        {/* CartShopping */}
-        <Route />
-        {/* <Route path="" element={ }/> */}
+          {/* CartShopping */}
+          {/* <Route path="/cartShopping" element={ <CartShopping /> }/> */}
 
+          {/* Login y Registro */}
+          <Route path="/auth/*" element={ <AuthRoutes /> }/>
 
-        {/* Login y Registro */}
-        <Route path="/auth/*" element={ <AuthRoutes/>}/>
+          {/* Admin */}
+          <Route path="/admin/*" element={ <AdminRoutes /> }/>
 
-    </Routes>
+          {/* User */}
+          <Route path="/user" element={ <UserRoutes /> }/>
+
+          
+        <Route path="products/index/:id" element={<DetailsProductsPage />} />
+
+      </Routes>
+    </div>
   )
 }
