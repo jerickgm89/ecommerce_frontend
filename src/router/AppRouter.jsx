@@ -29,8 +29,8 @@ export const AppRouter = () => {
           {/* User */}
           <Route path="/user" element={ <UserRoutes /> }/>
 
-          
-        <Route path="products/index/:id" element={<DetailsProductsPage />} />
+          {/* DetailProduct */}
+          <Route path="/products/details/:id" element={<DetailsProductsPage />} />
 
       </Routes>
     </div>
