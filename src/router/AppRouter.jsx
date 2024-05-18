@@ -2,6 +2,7 @@ import {  Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/";
 import { HomeRoutes } from "../home/routes/";
 import { ProductsRoutes } from "../products/routes/"
+import { SearchRoutes } from "../search/routes";
 import { AdminRoutes } from "../admin/routes";
 import { UserRoutes } from "../userPanel/routes";
 import { DetailsProductsPage } from "../products/pages";
@@ -16,6 +17,8 @@ export const AppRouter = () => {
 
           {/* Products */}        
           <Route path="/products/*" element={ <ProductsRoutes/>}/>
+
+          <Route path="/search/*" element={ <SearchRoutes/>}/>
 
           {/* CartShopping */}
           {/* <Route path="/cartShopping" element={ <CartShopping /> }/> */}
