@@ -10,6 +10,11 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
     setTabValue(newValue);
   };
 
+  const formattedPrice = (price) => {
+    return new Intl.NumberFormat('es-ES', {
+    }).format(parseFloat(price));
+};
+
   return (
     <Container>
       <Grid container spacing={3}>
@@ -23,7 +28,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
           {/* <Typography variant="body1" gutterBottom><strong>Rated:</strong> {product.rated}</Typography> */}
           {/* <Typography variant="body1" gutterBottom><strong>Option:</strong> {product.option}</Typography> */}
           {/* <Typography variant="body1" gutterBottom><strong>Type:</strong> {product.type}</Typography> */}
-          <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${priceProduct}</Typography>
+          <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${formattedPrice(priceProduct)}</Typography>
           {/* <Typography variant="body1" gutterBottom><strong>Stock:</strong> {product.stock}</Typography> */}
           <Typography variant="body1" gutterBottom><strong>Description:</strong> {descriptionProduct}</Typography>
           {/* <Typography variant="body1" gutterBottom><strong>Review:</strong> {product.review}</Typography> */}

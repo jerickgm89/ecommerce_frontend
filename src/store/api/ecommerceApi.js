@@ -49,6 +49,10 @@ export const ecommerceApi = createApi({
             },
         }),
 
+        searchProductsByName: builder.query({
+            query: (name) => `/filterproducts/?name=${name}`,
+        }),
+
     }),
 });
 
@@ -60,5 +64,6 @@ export const {
     useGetCategoriesQuery,
     useCreateProductsMutation,
     useFilterProductsQuery,
+    useSearchProductsByNameQuery,
     useDeleteProductsMutation,
  } = ecommerceApi;
