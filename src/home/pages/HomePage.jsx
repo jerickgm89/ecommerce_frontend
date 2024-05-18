@@ -8,17 +8,24 @@ import { BrandsProductsHome, CategoryProductsHome, ProductsHome, DealsHome } fro
 import ProductCard from '../../products/components/ProductCard';
 
 export const HomePage = () => {
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [openCategories, setOpenCategories] = useState(false);
+  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+  const [orderDirection, setOrderDirection] = useState('ASC');
+  const [category, setCategory] = useState('');
+  const [brand, setBrand] = useState('');
 
   const { data: products, isError, isLoading, error } = useFilterProductsQuery({
     name: '',
     price: '',
-    priceMin: minPrice,
-    priceMax: maxPrice,
+    priceMin: priceMin,
+    priceMax: priceMax,
     year: '',
-    orderBy: '',
-    orderDirection: 'ASC',
+    orderBy: orderBy,
+    orderDirection: orderDirection,
+    category: category,
+    brand: brand
   });
 
   // Asegúrate de manejar los estados de carga y error adecuadamente
@@ -29,12 +36,12 @@ export const HomePage = () => {
   if (error) return <Typography>Error: {error.message}</Typography>;
 
   // Obtén solo los primeros 9 productos
-  const firstNineProducts = products.rows.slice(0, 9);
+  const firstNineProducts = products.rows.slice(0, 8);
 
   if (!firstNineProducts) return null;
 
   // Aquí puedes decidir cuántos productos quieres mostrar por "slide"
-  const itemsPerSlide = 3;
+  const itemsPerSlide = 4;
   const carouselItems = firstNineProducts.reduce((acc, item, idx) => {
     const chunkIndex = Math.floor(idx / itemsPerSlide);
 
@@ -87,7 +94,7 @@ export const HomePage = () => {
               {carouselItems.map((chunk, index) => (
                 <Grid container spacing={1} key={index} justifyContent={'center'}>
                   {chunk.map(product => (
-                    <Grid item xs={4} sm={6} md={4} lg={3} key={product.idProduct} marginTop={5}>
+                    <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={2.5} marginTop={5}>
                       <ProductCard
                         product={product}
                         handleAddToCart={handleAddToCart}
