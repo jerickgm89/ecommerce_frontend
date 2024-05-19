@@ -53,7 +53,7 @@ export const SearchPages = () => {
                             <Grid item key={product.id} xs={12} sm={6} md={4}>
                                 <Card sx={{ width: '100%', display: 'flex', borderRadius: '10px' }}>
                                     <Box style={{ position: 'relative', width: '60%', aspectRatio: '4/3' }}>
-                                        <Link to={`/products/index/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
+                                        <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
                                             <img
                                                 src={product.imageProducts}
                                                 alt={product.nameProduct}
