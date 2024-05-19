@@ -6,6 +6,7 @@ import { SearchRoutes } from "../search/routes";
 import { AdminRoutes } from "../admin/routes";
 import { UserRoutes } from "../userPanel/routes";
 import { DetailsProductsPage } from "../products/pages";
+import { CartShoppingRoutes } from "../cartShooping/routes/";
 
 export const AppRouter = () => {
   return (
@@ -21,7 +22,7 @@ export const AppRouter = () => {
           <Route path="/search/*" element={ <SearchRoutes/>}/>
 
           {/* CartShopping */}
-          {/* <Route path="/cartShopping" element={ <CartShopping /> }/> */}
+          <Route path="/cartShopping" element={ <CartShoppingRoutes /> }/>
 
           {/* Login y Registro */}
           <Route path="/auth/*" element={ <AuthRoutes /> }/>

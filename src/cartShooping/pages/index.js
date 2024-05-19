@@ -1,1 +1,4 @@
-// aqui va el archivo barril de pages
+export * from './CartShoppingPage'
+
+
+
