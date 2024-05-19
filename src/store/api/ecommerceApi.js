@@ -40,6 +40,14 @@ export const ecommerceApi = createApi({
             }),
             invalidatesTags: ['Products'],
         }),
+        updateProducts: builder.mutation({
+            query: (updatedProduct) => ({
+                url: `/products/index/${updatedProduct.id}`,
+                method: 'PATCH',
+                body: updatedProduct
+            }),
+            invalidatesTags: ['Products'],
+        }),
 
         filterProducts: builder.query({
             query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand }) => {
@@ -66,4 +74,5 @@ export const {
     useFilterProductsQuery,
     useSearchProductsByNameQuery,
     useDeleteProductsMutation,
+    useUpdateProductsMutation,
  } = ecommerceApi;

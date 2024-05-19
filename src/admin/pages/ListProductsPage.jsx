@@ -1,11 +1,11 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AdminLayout } from '../layout/AdminLayout'
 import { Box, Typography, IconButton } from '@mui/material'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
-import { useGetProductsQuery } from '../../store/api'
+import { useGetProductsQuery, useDeleteProductsMutation } from '../../store/api'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
-import { useDeleteProductsMutation } from '../../store/api'
 
 export const ListProductsPage = () => {
 
@@ -13,13 +13,17 @@ export const ListProductsPage = () => {
 
     const [deleteProduct] = useDeleteProductsMutation()
 
+    const navigate = useNavigate()
+
     const handleDelete = (id) => {
         console.log('Delete product', id)
         deleteProduct(id)
     }
 
-    const handleEdit = (id) => {
-        console.log('Edit product', id)
+    const handleEdit = (product) => {
+        console.log('Edit product', product.idProduct)
+        console.log(product);
+        navigate(`/admin/editProducts/${product.idProduct}`)
     }
 
     const columns = [
@@ -31,12 +35,13 @@ export const ListProductsPage = () => {
         {field: 'price', headerName: 'Precio', width: 150},
         {field: 'stock', headerName: 'Stock', width: 150},
         {field: 'actions', headerName: 'Acciones', width: 100, renderCell: (params) => {
+            const product = products.find(p => p.idProduct === params.id)
             return (
                 <>
                     <IconButton onClick={() => handleDelete(params.id)}>
                         <DeleteIcon />
                     </IconButton>
-                    <IconButton onClick={() => handleEdit(params.id)}>
+                    <IconButton onClick={() => handleEdit(product)}>
                         <EditIcon />
                     </IconButton>
                 </>

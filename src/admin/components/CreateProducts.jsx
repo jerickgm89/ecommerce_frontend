@@ -356,9 +356,9 @@ export const CreateProducts = () => {
                   Cargar imagen
                 </Button>
               </label>
-              {formik.touched.imageProducts && formik.errors.imageProducts && (
-                <Typography color="error">{formik.errors.imageProducts}</Typography>
-              )}
+              {formik.touched.imageProducts && formik.errors.imageProducts?.file && (
+                <Typography color="error">{formik.errors.imageProducts.file}</Typography>
+              )}      
             </Grid>
 
 						<Grid
