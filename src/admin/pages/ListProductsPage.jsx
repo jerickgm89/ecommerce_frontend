@@ -12,6 +12,7 @@ export const ListProductsPage = () => {
     const { data: products = [], error, isLoading } = useGetProductsQuery()
 
     const [deleteProduct] = useDeleteProductsMutation()
+    console.log(products)
 
     const navigate = useNavigate()
 
@@ -27,14 +28,14 @@ export const ListProductsPage = () => {
     }
 
     const columns = [
-        {field: 'id', headerName: 'ID', width: 90},
-        {field: 'image', headerName: 'Imagen', width: 100, renderCell: (params) => {
+        {field: 'id', headerName: 'ID', minWidth: 90, flex: 1},
+        {field: 'image', headerName: 'Imagen', minWidth: 100, flex: 1, renderCell: (params) => {
             return <img src={params.value} alt='product' style={{width: '50px', height: '50px'}} />
         }},
-        {field: 'name', headerName: 'Nombre', width: 150},
-        {field: 'price', headerName: 'Precio', width: 150},
-        {field: 'stock', headerName: 'Stock', width: 150},
-        {field: 'actions', headerName: 'Acciones', width: 100, renderCell: (params) => {
+        {field: 'name', headerName: 'Nombre', minWidth: 150, flex: 1},
+        {field: 'price', headerName: 'Precio', minWidth: 150, flex: 1},
+        {field: 'stock', headerName: 'Stock', minWidth: 150, flex: 1},
+        {field: 'actions', headerName: 'Acciones', minWidth: 100, flex: 1, renderCell: (params) => {
             const product = products.find(p => p.idProduct === params.id)
             return (
                 <>
@@ -66,6 +67,7 @@ export const ListProductsPage = () => {
             Lista de Productos
         </Typography>
         <Box sx={{height: 650, width: '87.9%', mt:2}}>
+            <Box sx={{ width: '90%' }}>
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -79,6 +81,7 @@ export const ListProductsPage = () => {
                 pageSizeOptions={[10]}
                 disableRowSelectionOnClick
             />
+            </Box>
         </Box>
     </AdminLayout>
   )
