@@ -5,9 +5,10 @@ import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useAuth0 } from "@auth0/auth0-react"
+import CartShoppingIcon from '../../cartShooping/component/CartShoopingIcon';
 import { SearchBar } from '../searchBar';
 
-const pages = ['Inicio', 'Productos'];
+const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
 const settings = ['Perfil', 'Panel Administrador', 'Salir'];
 
 export const NavBar = () => {
@@ -86,7 +87,7 @@ export const NavBar = () => {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none', color: "black" }}>
+                                <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/cartShopping"} style={{ textDecoration: 'none', color: "black" }}>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{page}</Typography>
                                     </MenuItem>
@@ -117,9 +118,9 @@ export const NavBar = () => {
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page, index) => (
-                            <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none' }}>
-                                {page === "Carrito de compras" ?
-                                    <ShoppingCartIcon 
+                            <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/cartShopping"} style={{ textDecoration: 'none' }}>
+                                {page === "Carrito de Compras" ?
+                                    <CartShoppingIcon 
                                         onClick={handleCloseNavMenu}
                                         sx={{ my: 2, color: 'black', display: 'block', marginLeft: '16px' }}
                                     /> :

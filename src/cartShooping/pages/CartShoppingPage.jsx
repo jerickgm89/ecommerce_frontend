@@ -4,57 +4,33 @@ import { EcommerceUI } from '../../ui';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { useSelector, useDispatch } from 'react-redux'; // Importa useSelector de react-redux
+import { addToCart, clearCart, decreaseCart, removeFromCart } from '../../store/cartShopping/cartSlice';
 
 export const CartShoppingPage = () => {
-  const [cart, setCart] = useState({ products: [], total: 0 });
+    const { cartItems, cartTotalAmount } = useSelector(state => state.cart);
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    
-    fetch('https://dummyjson.com/carts/2') 
-      .then(response => response.json())
-      .then(data => setCart(data));
-  }, []);
-
-  //* Cambiar product.id por product.idProduct
-  //* Cambiar el mapeo por lo que va 
-  //* Cambiar dentro del return para que muestre los datos correctos 
- // (title, description, price, thumbnail, quantity) (nameProduct, descriptionProduct, priceProduct, imageProducts, quantity)
-
-  // Actualiza el total del carrito y el estado del carrito con los productos actualizados
-  const updateCartTotal = (products) => {
-    const total = products.reduce((sum, product) => sum + (product.price * product.quantity), 0);
-    setCart({ ...cart, products, total });
-  };
-
-
-  const handleRemoveFromCart = (cartItem) => {
-    const updatedProducts = cart.products.filter(product => product.id !== cartItem.id);
-    updateCartTotal(updatedProducts);
-  };
-
-  const handleDecreaseCart = (cartItem) => {
-    const updatedProducts = cart.products.map(product => {
-      if (product.id === cartItem.id) {
-        return { ...product, quantity: product.quantity > 1 ? product.quantity - 1 : 1 };
-      }
-      return product;
-    });
-    updateCartTotal(updatedProducts);
-  };
-
-  const handleAddToCart = (cartItem) => {
-    const updatedProducts = cart.products.map(product => {
-      if (product.id === cartItem.id) {
-        return { ...product, quantity: product.quantity + 1 };
-      }
-      return product;
-    });
-    updateCartTotal(updatedProducts);
-  };
-
-  const handleClearCart = () => {
-    setCart({ products: [], total: 0 });
-  };
+    // Función para eliminar un producto del carrito
+    const handleRemoveFromCart = (productId) => {
+        dispatch(removeFromCart({ id: productId }));
+    };
+  
+    // Función para disminuir la cantidad de un producto en el carrito
+    const handleDecreaseCart = (product) => {
+        dispatch(decreaseCart({ id: product.idProduct, priceProduct: product.priceProduct }));
+    };
+  
+    // Función para aumentar la cantidad de un producto en el carrito
+    const handleAddToCart = (product) => {
+        dispatch(addToCart(product));
+    };
+  
+    // Función para vaciar el carrito
+    const handleClearCart = () => {
+      // Implementa la lógica para vaciar el carrito
+      dispatch(clearCart());
+    };
 
   return (
     <EcommerceUI>
@@ -63,7 +39,7 @@ export const CartShoppingPage = () => {
           Carrito de compras
         </Typography>
         
-        {cart.products.length === 0 ? (
+        {cartItems.length === 0 ? ( // Cambia cart.products por cartItems
           <Box textAlign="center" mt={5}>
             <ShoppingCartOutlinedIcon sx={{ fontSize: 80 }} />
             <Typography variant="h6" mt={2}>Agregá productos para armar tu carrito</Typography>
@@ -98,20 +74,20 @@ export const CartShoppingPage = () => {
                     </Grid>
                   </Grid>
 
-                  {cart.products.map((cartItem) => (
-                    <Grid container spacing={2} key={cartItem.id} alignItems="center" sx={{ mb: 2 }}>
+                  {cartItems.map((cartItem) => ( // Cambia cart.products por cartItems
+                    <Grid container spacing={2} key={cartItem.idProduct} alignItems="center" sx={{ mb: 2 }}>
                       <Grid item xs={6}>
                         <Box display="flex" alignItems="center">
-                          <img src={cartItem.thumbnail} alt={cartItem.title} width="80" height="80" />
+                          <img src={cartItem.imageProducts} alt={cartItem.nameProduct} width="80" height="80" />
                           <Box ml={2}>
-                            <Typography variant="subtitle1">{cartItem.title}</Typography>
-                            <Typography variant="body2">{cartItem.description}</Typography>
-                            <Button variant="text" color="secondary" onClick={() => handleRemoveFromCart(cartItem)}>Eliminar</Button>
+                            <Typography variant="subtitle1">{cartItem.nameProduct}</Typography>
+                            <Typography variant="body2">{cartItem.descriptionProduct}</Typography>
+                            <Button variant="text" color="secondary" onClick={() => handleRemoveFromCart(cartItem.idProduct)}>Eliminar</Button>
                           </Box>
                         </Box>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" textAlign="center">${cartItem.price}</Typography>
+                        <Typography variant="body1" textAlign="center">${cartItem.priceProduct}</Typography>
                       </Grid>
                       <Grid item xs={2}>
                         <Box display="flex" justifyContent="center" alignItems="center">
@@ -121,7 +97,7 @@ export const CartShoppingPage = () => {
                         </Box>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" textAlign="center">${cartItem.price * cartItem.quantity}</Typography>
+                        <Typography variant="body1" textAlign="center">${cartItem.priceProduct * cartItem.quantity}</Typography>
                       </Grid>
                     </Grid>
                   ))}
@@ -133,7 +109,7 @@ export const CartShoppingPage = () => {
                   <Divider sx={{ mb: 2 }}/>
                   <Box display="flex" justifyContent="space-between" mb={2}>
                     <Typography variant="h6">Subtotal</Typography>
-                    <Typography variant="h6">${cart.total}</Typography>
+                    <Typography variant="h6">${cartTotalAmount}</Typography> {/* Cambia cart.total por cartTotalAmount */}
                   </Box>
 
                   <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>Continuar compra</Button>

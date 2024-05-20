@@ -44,7 +44,7 @@ export const SideBarUser = () => {
             <ListItemIcon>
               <PaymentIcon />
             </ListItemIcon>
-            <ListItemText primary="Metodos de Pago" />
+            <ListItemText priceMax="Metodos de Pago" />
           </ListItemButton>
         </List>
       </Box>

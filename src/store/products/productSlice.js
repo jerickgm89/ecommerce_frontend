@@ -38,6 +38,9 @@ export const productSlice = createSlice({
         setBrand: (state, action) => {
             state.brand = action.payload;
         },
+        setOpen: (state, action) => {
+            state.open = action.payload;
+        },
     },
 });
 
@@ -48,5 +51,7 @@ export const {
     setpriceMax, 
     setOrderBy, 
     setOrderDirection,
-    setCategory
+    setCategory,
+    setBrand,
+    setOpen,
 } = productSlice.actions;
