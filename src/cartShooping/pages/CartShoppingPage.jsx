@@ -32,6 +32,10 @@ export const CartShoppingPage = () => {
       dispatch(clearCart());
     };
 
+    const formattedPrice = (price) => {
+      return new Intl.NumberFormat('es-ES', {}).format(parseFloat(price));
+    };
+
   return (
     <EcommerceUI>
       <Box sx={{ mt: 8, mb: 8, mx: 'auto', maxWidth: 1200, minHeight: '60vh', display: 'flex', flexDirection: 'column' }}>
@@ -81,13 +85,13 @@ export const CartShoppingPage = () => {
                           <img src={cartItem.imageProducts} alt={cartItem.nameProduct} width="80" height="80" />
                           <Box ml={2}>
                             <Typography variant="subtitle1">{cartItem.nameProduct}</Typography>
-                            <Typography variant="body2">{cartItem.descriptionProduct}</Typography>
+                            {/* <Typography variant="body2">{cartItem.descriptionProduct}</Typography> */}
                             <Button variant="text" color="secondary" onClick={() => handleRemoveFromCart(cartItem.idProduct)}>Eliminar</Button>
                           </Box>
                         </Box>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" textAlign="center">${cartItem.priceProduct}</Typography>
+                        <Typography variant="body1" textAlign="center">$ {formattedPrice(cartItem.priceProduct)}</Typography>
                       </Grid>
                       <Grid item xs={2}>
                         <Box display="flex" justifyContent="center" alignItems="center">
@@ -97,7 +101,7 @@ export const CartShoppingPage = () => {
                         </Box>
                       </Grid>
                       <Grid item xs={2}>
-                        <Typography variant="body1" textAlign="center">${cartItem.priceProduct * cartItem.quantity}</Typography>
+                        <Typography variant="body1" textAlign="center">$ {formattedPrice(cartItem.priceProduct * cartItem.quantity)}</Typography>
                       </Grid>
                     </Grid>
                   ))}
@@ -109,9 +113,9 @@ export const CartShoppingPage = () => {
                   <Divider sx={{ mb: 2 }}/>
                   <Box display="flex" justifyContent="space-between" mb={2}>
                     <Typography variant="h6">Subtotal</Typography>
-                    <Typography variant="h6">${cartTotalAmount}</Typography> {/* Cambia cart.total por cartTotalAmount */}
+                    <Typography variant="h6">$ {formattedPrice(cartTotalAmount)}</Typography> {/* Cambia cart.total por cartTotalAmount */}
                   </Box>
-
+ 
                   <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>Continuar compra</Button>
                   <Button variant="text" color="secondary" fullWidth sx={{ mt: 1 }} onClick={handleClearCart}>Vaciar carrito</Button>
                   <Box mt={2}>
