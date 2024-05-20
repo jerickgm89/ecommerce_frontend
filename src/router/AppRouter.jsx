@@ -23,6 +23,7 @@ export const AppRouter = () => {
 
           {/* CartShopping */}
           <Route path="/cartShopping" element={ <CartShoppingRoutes /> }/>
+          <Route path="/cartShopping" element={ <CartShoppingRoutes /> }/>
 
           {/* Login y Registro */}
           <Route path="/auth/*" element={ <AuthRoutes /> }/>

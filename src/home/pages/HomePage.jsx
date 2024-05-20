@@ -6,6 +6,7 @@ import { useFilterProductsQuery } from '../../store/api';
 import Carousel from 'react-material-ui-carousel';
 import { BrandsProductsHome, CategoryProductsHome, ProductsHome, DealsHome } from '../components';
 import ProductCard from '../../products/components/ProductCard';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const HomePage = () => {
   const [openCategories, setOpenCategories] = useState(false);
@@ -15,6 +16,9 @@ export const HomePage = () => {
   const [orderDirection, setOrderDirection] = useState('ASC');
   const [category, setCategory] = useState('');
   const [brand, setBrand] = useState('');
+
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cartItems);
 
   const { data: products, isError, isLoading, error } = useFilterProductsQuery({
     name: '',
@@ -54,18 +58,6 @@ export const HomePage = () => {
     return acc;
   }, []);
 
-  const handleAddToCart = (productId) => {
-    setCart(prevCart => prevCart.map(item => 
-      item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-    ));
-  };
-
-  const handleRemoveFromCart = (productId) => {
-    setCart(prevCart => prevCart.map(item => 
-      item.id === productId && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item
-    ));
-  }; 
-
   return (
     <EcommerceUI>
       <Box mt={8} mb={8} ml={8} mr={8} sx={{ backgroundColor: "#F6F9FC" }}>
@@ -97,8 +89,8 @@ export const HomePage = () => {
                     <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={2.5} marginTop={5}>
                       <ProductCard
                         product={product}
-                        handleAddToCart={handleAddToCart}
-                        handleRemoveFromCart={handleRemoveFromCart}
+                        dispatch={dispatch}
+                        cart={cart}
                       />
                     </Grid>
                   ))}
