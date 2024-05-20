@@ -70,14 +70,23 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
                 >
                   {/* Item 1 */}
                   <Link to='/admin/' style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <ListItemButton sx={{ pl: 4 }}>
-                    <ListItemIcon sx={{}}>
-                      <Checklist color='icon'/>
-                    </ListItemIcon>                    
-                      <ListItemText primary="Lista de Productos" />                  
-                  </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemIcon sx={{}}>
+                        <Checklist color='icon'/>
+                      </ListItemIcon>                    
+                      <ListItemText primary="Lista de Productos Activos" />                  
+                    </ListItemButton>
                   </Link>
                   {/* Item 2 */}
+                  <Link to='/admin/lockedProducts' style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemIcon sx={{}}>
+                        <Checklist color='icon'/>
+                      </ListItemIcon>                    
+                      <ListItemText primary="Lista de Productos Bloqueados" />                  
+                    </ListItemButton>
+                  </Link>
+                  {/* Item 3 */}
                   <Link to='/admin/createProducts' style={{ textDecoration: 'none', color: 'inherit' }}>
                     <ListItemButton sx={{ pl: 4 }}>
                       <ListItemIcon>
@@ -86,7 +95,6 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
                       <ListItemText primary="Crear Producto" />
                     </ListItemButton>
                   </Link>
-
                 </List>
               </Collapse>
 
