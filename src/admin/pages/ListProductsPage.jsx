@@ -2,8 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AdminLayout } from '../layout/AdminLayout'
 import { Box, Typography, IconButton } from '@mui/material'
-import { DataGrid, GridToolbar } from '@mui/x-data-grid'
-import { useGetProductsQuery, useDeleteProductsMutation } from '../../store/api'
+import { DataGrid } from '@mui/x-data-grid'
+import { useGetProductsQuery, useUnlockProductMutation } from '../../store/api'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 
@@ -11,14 +11,14 @@ export const ListProductsPage = () => {
 
     const { data: products = [], error, isLoading } = useGetProductsQuery()
 
-    const [deleteProduct] = useDeleteProductsMutation()
+    const [unlockProduct] = useUnlockProductMutation()
     console.log(products)
 
     const navigate = useNavigate()
 
     const handleDelete = (id) => {
         console.log('Delete product', id)
-        deleteProduct(id)
+        unlockProduct(id)
     }
 
     const handleEdit = (product) => {
@@ -39,11 +39,11 @@ export const ListProductsPage = () => {
             const product = products.find(p => p.idProduct === params.id)
             return (
                 <>
-                    <IconButton onClick={() => handleDelete(params.id)}>
-                        <DeleteIcon />
-                    </IconButton>
                     <IconButton onClick={() => handleEdit(product)}>
                         <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(params.id)}>
+                        <DeleteIcon />
                     </IconButton>
                 </>
             );
@@ -64,7 +64,7 @@ export const ListProductsPage = () => {
   return (
     <AdminLayout>
         <Typography variant='h4'>
-            Lista de Productos
+            Lista de Productos Activos
         </Typography>
         <Box sx={{height: 650, width: '87.9%', mt:2}}>
             <Box sx={{ width: '90%' }}>

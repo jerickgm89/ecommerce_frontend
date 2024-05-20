@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const ecommerceApi = createApi({
     reducerPath: 'ecommerceApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'http://35.167.78.208',
+        baseUrl: 'http://localhost:3001', //'http://35.167.78.208',
     }),
     tagTypes: ['Products'],
     endpoints: (builder) => ({
@@ -14,6 +14,7 @@ export const ecommerceApi = createApi({
         }),
         getProductsLimit: builder.query({
             query: (page=1) => `/products/index?limit=9&page=${page}`,
+            providesTags: ['Products'],
         }),
         getProductById: builder.query({
             query: (id) => `/products/index/${id}`,
@@ -48,6 +49,24 @@ export const ecommerceApi = createApi({
             }),
             invalidatesTags: ['Products'],
         }),
+        unlockProduct: builder.mutation({
+            query: (id) => ({
+                url: `/products/index/unlock/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Products'],
+          }),
+        restoreProduct: builder.mutation({
+            query: (id) => ({
+                url: `/products/index/restore/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Products'],
+        }),
+        getProductsLocked: builder.query({
+            query: () => '/products/index/deactivate',
+            providesTags: ['Products'],
+        }),
 
         filterProducts: builder.query({
             query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand }) => {
@@ -55,6 +74,7 @@ export const ecommerceApi = createApi({
                 console.log('Parámetros enviados:', { name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand });
                 return queryUrl;
             },
+            providesTags: ['Products'],
         }),
 
         searchProductsByName: builder.query({
@@ -75,4 +95,7 @@ export const {
     useSearchProductsByNameQuery,
     useDeleteProductsMutation,
     useUpdateProductsMutation,
+    useUnlockProductMutation,
+    useRestoreProductMutation,
+    useGetProductsLockedQuery,
  } = ecommerceApi;
