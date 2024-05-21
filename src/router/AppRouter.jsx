@@ -32,7 +32,7 @@ export const AppRouter = () => {
           <Route path="/admin/*" element={ <AdminRoutes /> }/>
 
           {/* User */}
-          <Route path="/user" element={ <UserRoutes /> }/>
+          <Route path="/user/*" element={ <UserRoutes /> }/>
 
           {/* DetailProduct */}
           <Route path="/products/details/:id" element={<DetailsProductsPage />} />

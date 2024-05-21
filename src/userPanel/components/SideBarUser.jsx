@@ -1,17 +1,21 @@
-import { Box, Grid, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material"
+import { Link } from "react-router-dom"
+import { Box, colors, Grid, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material"
 import { 
-  ShoppingBag as ShoppingBagIcon,
+  ShoppingBagOutlined as ShoppingBagIcon,
+  FavoriteBorderOutlined as FavoriteIcon,
+  SupportAgentOutlined as SupportIcon,
   Place as PlaceIcon,
-  Payment as PaymentIcon
+  Payment as PaymentIcon,
+  Person as PersonIcon,
 } from "@mui/icons-material"
 
 export const SideBarUser = () => {
   return (
     <Grid 
       item 
-      xs={6} 
+      xs={12} 
       md={4}
-      sx={{display: 'flex', justifyContent: 'right'}}
+      sx={{display: 'flex', justifyContent: 'right', alignItems: 'flex-start'}}
     >
       <Box
         sx={{
@@ -21,30 +25,71 @@ export const SideBarUser = () => {
           m: 4,
           p: 5,
           borderRadius: 4,
-          backgroundColor: '#fff'
+          backgroundColor: '#fff',
+          width: { xs: '100%'}
         }}
+
       >
         <List component="div">
-          <Typography variant="h6">Configuracion de Perfil</Typography>
+          <Typography variant="h6">DashBoard</Typography>
           <ListItemButton>
             <ListItemIcon>
               <ShoppingBagIcon />
             </ListItemIcon>
-            <ListItemText primary="Información personal" />
+            <ListItemText primary="Ordenes" />
           </ListItemButton>
 
-          <ListItemButton>
+          <Link 
+            to="/user/wishlist" 
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <FavoriteIcon />
+              </ListItemIcon>
+              <ListItemText primary="Lista de deseos" />
+            </ListItemButton>
+
+          </Link>
+
+          {/* <ListItemButton>
             <ListItemIcon>
-              <PlaceIcon />
+              <SupportIcon />
             </ListItemIcon>
-            <ListItemText primary="Direcciones" />
-          </ListItemButton>
+            <ListItemText primary="Soporte" />
+          </ListItemButton> */}
+        </List>
+        <List component="div">
+          <Typography variant="h6">Configuracion de Perfil</Typography>
+          <Link
+            to="/user" 
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText primary="Información personal" textDecoration="none"/>
+            </ListItemButton>
+          </Link>
+
+          <Link 
+            to="/user/address" 
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <PlaceIcon />
+              </ListItemIcon>
+              <ListItemText primary="Direcciones" />
+            </ListItemButton>
+          </Link>
 
           <ListItemButton>
             <ListItemIcon>
               <PaymentIcon />
             </ListItemIcon>
-            <ListItemText priceMax="Metodos de Pago" />
+            <ListItemText primary="Metodos de Pago" />
           </ListItemButton>
         </List>
       </Box>

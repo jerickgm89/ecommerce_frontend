@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth0 } from "@auth0/auth0-react"
 import CartShoppingIcon from '../../cartShooping/component/CartShoopingIcon';
 import { SearchBar } from '../searchBar';
+import { useUserAuthentication } from '../../hooks/useUserAuthentication';
 
 const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
 const settings = ['Perfil', 'Panel Administrador', 'Salir'];
@@ -14,13 +15,15 @@ const settings = ['Perfil', 'Panel Administrador', 'Salir'];
 export const NavBar = () => {
     const { loginWithRedirect } = useAuth0();
     const { logout } = useAuth0();
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { user, isAuthenticated } = useAuth0();
 
-    console.log(user);
-
+    // console.log(user);
+    const userData = useUserAuthentication(user, isAuthenticated);
 
     const [anchorNav, setAnchorNav] = React.useState(null);
     const [anchorUser, setAnchorUser] = React.useState(null);
+
+    
 
     const handleOpenNavMenu = (event) => {
         setAnchorNav(event.currentTarget);
@@ -153,10 +156,10 @@ export const NavBar = () => {
                                             color={user.given_name === "User" ? "error" : "black"}
                                             sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
                                             >
-                                            {user.given_name}
+                                            {userData ? userData.nameUser : user.given_name}
                                             </Typography>
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>                                                
-                                            <Avatar alt={user.name} src={user.picture} />
+                                            <Avatar alt={userData ? userData.nameUser : user.given_name} src={userData ? userData.pictureUser : user.picture} />
                                             </IconButton>                                            
                                         </Box>
                                     </>
@@ -187,25 +190,25 @@ export const NavBar = () => {
                                 id="menu-appbar"
                                 anchorEl={anchorUser}
                                 anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
+                                    vertical: 'top',
+                                    horizontal: 'right',
                                 }}
                                 keepMounted
                                 transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
+                                    vertical: 'top',
+                                    horizontal: 'right',
                                 }}
                                 open={Boolean(anchorUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {settings.map((setting, index) => (
+                                {(userData.isAdmin ? ["Perfil", "Panel Administrador", "Salir"] : ["Perfil", "Salir"]).map((setting, index) => (
                                     <Link 
                                         key={index} 
                                         to={
                                             setting === "Perfil" ? "/user" 
                                             : setting === "Panel Administrador" ? "/admin" 
                                             : "/"
-                                          } 
+                                        } 
                                         style={{ textDecoration: 'none', color: "black" }}
                                     >
                                         <MenuItem 
@@ -213,7 +216,7 @@ export const NavBar = () => {
                                                 setting === "Salir" ? () => logout({ returnTo: window.location.origin }) 
                                                 : handleCloseUserMenu
                                             }
-                                            >
+                                        >
                                             <Typography textAlign="center">{setting}</Typography>
                                         </MenuItem>
                                     </Link>

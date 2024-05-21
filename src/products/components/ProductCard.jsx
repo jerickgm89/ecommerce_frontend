@@ -11,6 +11,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import CloseIcon from '@mui/icons-material/Close';
 import Rating from "@mui/material/Rating";
 import { useGetCategoriesQuery } from '../../store/api';
+import { addFavorite, removeFavorite } from '../utils/localStorage';
 import { useDispatch } from 'react-redux';
 import { addToCart, decreaseCart } from '../../store/cartShopping/cartSlice';
 
@@ -35,12 +36,23 @@ const ProductCard = ({ product, dispatch, cart }) => {
     }
   }, [categories, product]);
 
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    setIsFavorite(favorites.some(fav => fav.idProduct === product.idProduct));
+  }, [product]);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showIcons, setShowIcons] = useState(false);
 
   const handleToggleFavorite = () => {
     setIsFavorite(!isFavorite);
+    if (!isFavorite) {
+      addFavorite(product);
+    } else {
+      removeFavorite(product);
+    }
+
   };
 
   const handleToggleModal = () => {

@@ -14,7 +14,7 @@ export const themeEcommerce = createTheme({
         },
         icon: {
             main: '#ffff',
-        },
+        }
     },
     components: {
         MuiDrawer: {
