@@ -1,13 +1,13 @@
+import { useAuth0 } from "@auth0/auth0-react"
+import { useUserAuthentication } from '../../hooks/useUserAuthentication';
 import * as React from 'react';
 import { Link } from "react-router-dom";
 import { Box, Container, IconButton, Typography, AppBar, Toolbar, Menu, MenuItem, Button, Tooltip, Avatar, Hidden } from '@mui/material';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
 // import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { useAuth0 } from "@auth0/auth0-react"
 import CartShoppingIcon from '../../cartShooping/component/CartShoopingIcon';
 import { SearchBar } from '../searchBar';
-import { useUserAuthentication } from '../../hooks/useUserAuthentication';
 
 const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
 const settings = ['Perfil', 'Panel Administrador', 'Salir'];
@@ -16,9 +16,11 @@ export const NavBar = () => {
     const { loginWithRedirect } = useAuth0();
     const { logout } = useAuth0();
     const { user, isAuthenticated } = useAuth0();
+    
 
     // console.log(user);
-    const userData = useUserAuthentication(user, isAuthenticated);
+    const userData  = useUserAuthentication(user, isAuthenticated);
+ 
 
     const [anchorNav, setAnchorNav] = React.useState(null);
     const [anchorUser, setAnchorUser] = React.useState(null);
@@ -56,7 +58,7 @@ export const NavBar = () => {
                             width: 80, 
                             display: { xs: 'none', md: 'flex'}
                         }}
-                        src="/public/logo.svg"
+                        src="/logo.svg"
                     />
                   
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -201,7 +203,7 @@ export const NavBar = () => {
                                 open={Boolean(anchorUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {(isAuthenticated ? ["Perfil", "Panel Administrador", "Salir"] : ["Perfil", "Salir"]).map((setting, index) => (
+                                {(userData.isAdmin ? ["Perfil", "Panel Administrador", "Salir"] : ["Perfil", "Salir"]).map((setting, index) => (
                                     <Link 
                                         key={index} 
                                         to={
@@ -213,7 +215,7 @@ export const NavBar = () => {
                                     >
                                         <MenuItem 
                                             onClick={
-                                                setting === "Salir" ? () => logout({ returnTo: window.location.origin }) 
+                                                setting === "Salir" ? () => logout({ returnTo: '/' }) 
                                                 : handleCloseUserMenu
                                             }
                                         >
