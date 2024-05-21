@@ -6,7 +6,7 @@ import { EcommerceUI } from '../../ui';
 import { useFilterProductsQuery } from '../../store/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../store/cartShopping/cartSlice';
-import Loading from '../../components/loading/loading';
+import Loading from '../../components/loading/Loading';
 
 // ErrorBoundary component to catch and handle errors
 class ErrorBoundary extends React.Component {
