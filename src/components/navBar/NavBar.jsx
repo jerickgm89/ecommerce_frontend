@@ -197,7 +197,7 @@ export const NavBar = () => {
                                 transformOrigin={{
                                     vertical: 'top',
                                     horizontal: 'right',
-                                }}
+                                }} 
                                 open={Boolean(anchorUser)}
                                 onClose={handleCloseUserMenu}
                             >

@@ -16,7 +16,7 @@ export const UserLayout = ({children}) => {
           <Grid container spacing={2}>
             <SideBarUser/>
             {children}
-          </Grid>
+          </Grid> 
         </Box>
     </EcommerceUI>
   )
