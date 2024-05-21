@@ -81,6 +81,20 @@ export const ecommerceApi = createApi({
             query: (name) => `/filterproducts/?name=${name}`,
         }),
 
+        createOrder: builder.mutation({
+            query: ({ items, payer }) => {
+                const body = { items };
+                if (payer) {
+                    body.payer = payer;
+                }
+                return {
+                    url: '/payment/create_order',
+                    method: 'POST',
+                    body,
+                };
+            },
+        })
+
     }),
 });
 
@@ -97,5 +111,6 @@ export const {
     useUpdateProductsMutation,
     useUnlockProductMutation,
     useRestoreProductMutation,
+    useCreateOrderMutation,
     useGetProductsLockedQuery,
  } = ecommerceApi;

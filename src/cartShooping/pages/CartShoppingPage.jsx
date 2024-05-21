@@ -4,28 +4,81 @@ import { EcommerceUI } from '../../ui';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { useSelector, useDispatch } from 'react-redux'; // Importa useSelector de react-redux
+import { useSelector, useDispatch } from 'react-redux'; 
 import { addToCart, clearCart, decreaseCart, removeFromCart } from '../../store/cartShopping/cartSlice';
+import { useCreateOrderMutation } from '../../store/api';
 
 export const CartShoppingPage = () => {
     const { cartItems, cartTotalAmount } = useSelector(state => state.cart);
     const dispatch = useDispatch();
 
+    const [createOrder] = useCreateOrderMutation();
+    
+
+    const handleCreateOrder = async () => {
+        try {
+                const cartItemsWithPrice = cartItems.map(item => ({
+                  ...item,
+                  priceProduct: parseFloat(item.priceProduct) || 0, // Convierto el precio a número
+              }));
+            const orderData = {
+                items: cartItemsWithPrice.map(item => ({
+                    title: item.nameProduct,
+                    unit_price: item.priceProduct,
+                    quantity: item.quantity,
+                })),
+                payer: {
+                    email: "test_user_1742344360@testuser.com",
+                    identification: {
+                        type: "DNI",
+                        number: "12345678",
+                    },
+                    name: "Test",
+                    surname: "User",
+                    address: {
+                        zip_code: "1234",
+                        street_name: "Test Street",
+                        street_number: 123,
+                    },
+                    phone: {
+                        area_code: "11",
+                        number: 12345678,
+                    },
+                },
+                total: cartTotalAmount,
+            };
+            if (!orderData.payer.email || !orderData.payer.name) {
+                delete orderData.payer;
+            }
+            const response = await createOrder(orderData).unwrap();
+            console.log('Order created:', response);
+            
+            if (response.init_point) {
+              window.location.href = response.init_point;
+              
+          } else {
+              console.error('init_point is missing in the response');
+          }
+        } catch (error) {
+            console.error('Failed to create order:', error);
+        }
+    };
+
     // Función para eliminar un producto del carrito
     const handleRemoveFromCart = (productId) => {
         dispatch(removeFromCart({ id: productId }));
     };
-
+  
     // Función para disminuir la cantidad de un producto en el carrito
     const handleDecreaseCart = (product) => {
         dispatch(decreaseCart({ id: product.idProduct, priceProduct: product.priceProduct }));
     };
-
+  
     // Función para aumentar la cantidad de un producto en el carrito
     const handleAddToCart = (product) => {
         dispatch(addToCart(product));
     };
-
+  
     // Función para vaciar el carrito
     const handleClearCart = () => {
       // Implementa la lógica para vaciar el carrito
@@ -42,7 +95,7 @@ export const CartShoppingPage = () => {
         <Typography variant="h4" gutterBottom>
           Carrito de compras
         </Typography>
-
+        
         {cartItems.length === 0 ? ( // Cambia cart.products por cartItems
           <Box textAlign="center" mt={5}>
             <ShoppingCartOutlinedIcon sx={{ fontSize: 80 }} />
@@ -115,12 +168,13 @@ export const CartShoppingPage = () => {
                     <Typography variant="h6">Subtotal</Typography>
                     <Typography variant="h6">$ {formattedPrice(cartTotalAmount)}</Typography> {/* Cambia cart.total por cartTotalAmount */}
                   </Box>
-
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
+ 
+                  <Button 
+                    variant="contained" 
+                    color="primary" 
+                    fullWidth 
                     sx={{ mt: 2 }}
+                    onClick={handleCreateOrder}
                   >
                     Continuar compra
                   </Button>
