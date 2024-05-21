@@ -201,7 +201,7 @@ export const NavBar = () => {
                                 open={Boolean(anchorUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {(userData.isAdmin ? ["Perfil", "Panel Administrador", "Salir"] : ["Perfil", "Salir"]).map((setting, index) => (
+                                {(isAuthenticated ? ["Perfil", "Panel Administrador", "Salir"] : ["Perfil", "Salir"]).map((setting, index) => (
                                     <Link 
                                         key={index} 
                                         to={
