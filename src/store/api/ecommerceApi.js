@@ -81,8 +81,8 @@ export const ecommerceApi = createApi({
             query: (name) => `/filterproducts/?name=${name}`,
         }),
 
-        createOrder: builder.mutation({
-            query: ({ items, payer }) => {
+        postOrder: builder.mutation({
+            query: ({ items, payer, token }) => {
                 const body = { items };
                 if (payer) {
                     body.payer = payer;
@@ -91,10 +91,12 @@ export const ecommerceApi = createApi({
                     url: '/payment/create_order',
                     method: 'POST',
                     body,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 };
             },
-        })
-
+        }),
     }),
 });
 
@@ -113,4 +115,5 @@ export const {
     useRestoreProductMutation,
     useCreateOrderMutation,
     useGetProductsLockedQuery,
+    usePostOrderMutation,
  } = ecommerceApi;
