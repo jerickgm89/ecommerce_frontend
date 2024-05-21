@@ -95,4 +95,4 @@ export const SideBarUser = () => {
       </Box>
     </Grid>
   )
-}
+} 

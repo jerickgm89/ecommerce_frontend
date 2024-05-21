@@ -58,11 +58,11 @@ export const ecommerceUserApi = createApi({
         // Get user by Token
         getUserByToken: builder.query({
             query: (token) => ({
-                url: `/users/auth/token`,
-                method: 'GET',
-                headers: {
-                    token: `${token}`,
-                },
+              url: `/users/auth/token`,
+              method: 'GET',
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }),
         }),   
         
