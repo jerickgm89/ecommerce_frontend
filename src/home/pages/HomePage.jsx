@@ -7,6 +7,7 @@ import Carousel from 'react-material-ui-carousel';
 import { BrandsProductsHome, CategoryProductsHome, ProductsHome, DealsHome } from '../components';
 import ProductCard from '../../products/components/ProductCard';
 import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/loading/Loading';
 
 export const HomePage = () => {
   const [openCategories, setOpenCategories] = useState(false);
@@ -36,7 +37,7 @@ export const HomePage = () => {
   if (isError) {
     return <Typography variant="h3">Error: {error.message}</Typography>;
   }
-  if (isLoading) return <Typography>Cargando...</Typography>;
+  if (isLoading) return <Loading />;
   if (error) return <Typography>Error: {error.message}</Typography>;
 
   // Obtén solo los primeros 9 productos

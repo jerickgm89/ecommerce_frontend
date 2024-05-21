@@ -104,7 +104,7 @@ const ProductCard = ({ product, dispatch, cart }) => {
           <img
             src={product.imageProducts}
             alt={product.nameProduct}
-            style={{ width: '100%', aspectRatio: '4/4'}}
+            style={{ width: '100%', aspectRatio: '4/3'}}
           />
         </Link>
         <Box

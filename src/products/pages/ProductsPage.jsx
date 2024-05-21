@@ -6,6 +6,7 @@ import { EcommerceUI } from '../../ui';
 import { useFilterProductsQuery } from '../../store/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../store/cartShopping/cartSlice';
+import Loading from '../../components/loading/loading';
 
 // ErrorBoundary component to catch and handle errors
 class ErrorBoundary extends React.Component {
@@ -97,7 +98,7 @@ export const ProductsPage = () => {
                 {isError ? (
                   <Typography variant="h6" textAlign="center" m={30} sx={{ color: 'error.main' }}>No se encontraron productos con el filtro aplicado {error.message}</Typography>
                 ) : isLoading ? (
-                  <Typography variant="h3">Loading...</Typography>
+                  <Loading/>
                 ) : !products ? (
                   <Typography variant="h3">Waiting for data...</Typography>
                 ) : (
