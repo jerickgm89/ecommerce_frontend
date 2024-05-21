@@ -1,15 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 
-
 export const ecommerceApi = createApi({
     reducerPath: 'ecommerceApi',
     baseQuery: fetchBaseQuery({ 
-<<<<<<< Updated upstream
         baseUrl: 'http://localhost:3001', //'http://35.167.78.208',
-=======
-        baseUrl: 'http://localhost:3001',
->>>>>>> Stashed changes
     }),
     tagTypes: ['Products'],
     endpoints: (builder) => ({
@@ -86,8 +81,6 @@ export const ecommerceApi = createApi({
             query: (name) => `/filterproducts/?name=${name}`,
         }),
 
-        
-
     }),
 });
 
@@ -102,11 +95,7 @@ export const {
     useSearchProductsByNameQuery,
     useDeleteProductsMutation,
     useUpdateProductsMutation,
-<<<<<<< Updated upstream
     useUnlockProductMutation,
     useRestoreProductMutation,
     useGetProductsLockedQuery,
-=======
-    useCreateOrderMutation,
->>>>>>> Stashed changes
  } = ecommerceApi;
