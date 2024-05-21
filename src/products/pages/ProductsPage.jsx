@@ -1,97 +1,122 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Typography, Grid, Box } from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import FiltersCard from '../components/FiltersCard';
 import { EcommerceUI } from '../../ui';
-import { useFilterProductsQuery, useGetProductsLimitQuery } from '../../store/api';
+import { useFilterProductsQuery } from '../../store/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../store/cartShopping/cartSlice';
+import Loading from '../../components/loading/Loading';
+
+// ErrorBoundary component to catch and handle errors
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <Typography variant="h3">Something went wrong.</Typography>;
+    }
+
+    return this.props.children; 
+  }
+}
 
 export const ProductsPage = () => {
   const [openCategories, setOpenCategories] = useState(false);
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+  const [orderDirection, setOrderDirection] = useState('ASC');
+  const [category, setCategory] = useState('');
+  const [brand, setBrand] = useState('');
+
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cartItems);
 
   const { data: products, isError, isLoading, error } = useFilterProductsQuery({
     name: '',
     price: '',
-    priceMin: minPrice,
-    priceMax: maxPrice,
+    priceMin: priceMin,
+    priceMax: priceMax,
     year: '',
-    orderBy: '',
-    orderDirection: 'ASC',
+    orderBy: orderBy,
+    orderDirection: orderDirection,
+    category: category,
+    brand: brand
   });
 
-  const { data: productsLimit = [] } = useGetProductsLimitQuery(1);
+  const applyPriceFilter = (priceMin, priceMax) => {
+    setPriceMin(priceMin);
+    setPriceMax(priceMax);
+  };
 
-  // const [ page, setPage ] = useState(0);
-  // let nexPage = page + 1;
-  // let prevPage = page - 1;
-
-
-  const applyPriceFilter = (minPrice, maxPrice) => {
-    setMinPrice(minPrice);
-    setMaxPrice(maxPrice);
+  const applySorting = (orderBy, orderDirection) => {
+    setOrderBy(orderBy);
+    setOrderDirection(orderDirection);
   };
 
   const handleCategoriesClick = () => {
     setOpenCategories(!openCategories);
   };
 
-  const handleAddToCart = (productId) => {
-    setCart(prevCart => prevCart.map(item => 
-      item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-    ));
+  const applyCategoryFilter = (category) => {
+    setCategory(category);
   };
 
-  const handleRemoveFromCart = (productId) => {
-    setCart(prevCart => prevCart.map(item => 
-      item.id === productId && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item
-    ));
+  const applyBrandFilter = (brand) => {
+    setBrand(brand);
   };
-
-  if (isError) {
-    return <Typography variant="h3">Error: {error.message}</Typography>;
-  }
-
-  if (isLoading) {
-    return <Typography variant="h3">Loading...</Typography>;
-  }
-
-  if (!products) {
-    return <Typography variant="h3">Waiting for data...</Typography>;
-  }
 
   return (
     <EcommerceUI>
-          <Box mt={8} mb={8} ml={8} mr={8} sx={{backgroundColor:"#F6F9FC"}}> 
-      <Typography variant='h3' gutterBottom>Products</Typography> 
-      <Grid container spacing={3}>
-        
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-            <FiltersCard 
-              openCategories={openCategories} 
-              handleCategoriesClick={handleCategoriesClick} 
-              applyPriceFilter={applyPriceFilter} // Pasando applyPriceFilter como prop
-            />
-        </Grid>
-
-       
-        <Grid item xs={12} sm={6} md={8} lg={9}>
-          <Grid container spacing={3}>
-            {productsLimit.map(product => (
-              <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={4}>
-                <ProductCard
-                  product={product}
-                  handleAddToCart={handleAddToCart}
-                  handleRemoveFromCart={handleRemoveFromCart}
-                  minPrice={minPrice}
-                  maxPrice={maxPrice}
-                />
+      <ErrorBoundary>
+        <Box m={8} sx={{ backgroundColor: "#F6F9FC" }}>
+          <Typography variant='h3' gutterBottom>Products</Typography>
+          <Grid container spacing={4} justifyContent="center">
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <FiltersCard 
+                openCategories={openCategories} 
+                handleCategoriesClick={handleCategoriesClick} 
+                applyPriceFilter={applyPriceFilter}
+                applySorting={applySorting}
+                applyCategoryFilter={applyCategoryFilter}
+                applyBrandFilter={applyBrandFilter}
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={6} md={8} lg={9}>
+              <Grid container spacing={3} justifyContent="center">
+                {isError ? (
+                  <Typography variant="h6" textAlign="center" m={30} sx={{ color: 'error.main' }}>No se encontraron productos con el filtro aplicado {error.message}</Typography>
+                ) : isLoading ? (
+                  <Loading/>
+                ) : !products ? (
+                  <Typography variant="h3">Waiting for data...</Typography>
+                ) : (
+                  products.rows.map(product => (
+                    <Grid item key={product.idProduct} xs={12} sm={12} md={4.5} lg={3.5}>
+                      <ProductCard
+                        product={product}
+                        dispatch={dispatch}
+                        cart={cart}
+                      />
+                    </Grid>
+                  ))
+                )}
               </Grid>
-            ))}
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-    </Box>
+        </Box>
+      </ErrorBoundary>
     </EcommerceUI>
   );
 };

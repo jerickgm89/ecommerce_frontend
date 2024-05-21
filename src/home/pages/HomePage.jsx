@@ -6,35 +6,47 @@ import { useFilterProductsQuery } from '../../store/api';
 import Carousel from 'react-material-ui-carousel';
 import { BrandsProductsHome, CategoryProductsHome, ProductsHome, DealsHome } from '../components';
 import ProductCard from '../../products/components/ProductCard';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../../components/loading/Loading';
 
 export const HomePage = () => {
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [openCategories, setOpenCategories] = useState(false);
+  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('');
+  const [orderBy, setOrderBy] = useState('');
+  const [orderDirection, setOrderDirection] = useState('ASC');
+  const [category, setCategory] = useState('');
+  const [brand, setBrand] = useState('');
+
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.cartItems);
 
   const { data: products, isError, isLoading, error } = useFilterProductsQuery({
     name: '',
     price: '',
-    priceMin: minPrice,
-    priceMax: maxPrice,
+    priceMin: priceMin,
+    priceMax: priceMax,
     year: '',
-    orderBy: '',
-    orderDirection: 'ASC',
+    orderBy: orderBy,
+    orderDirection: orderDirection,
+    category: category,
+    brand: brand
   });
 
   // Asegúrate de manejar los estados de carga y error adecuadamente
   if (isError) {
     return <Typography variant="h3">Error: {error.message}</Typography>;
   }
-  if (isLoading) return <Typography>Cargando...</Typography>;
+  if (isLoading) return <Loading />;
   if (error) return <Typography>Error: {error.message}</Typography>;
 
   // Obtén solo los primeros 9 productos
-  const firstNineProducts = products.rows.slice(0, 9);
+  const firstNineProducts = products.rows.slice(0, 8);
 
   if (!firstNineProducts) return null;
 
   // Aquí puedes decidir cuántos productos quieres mostrar por "slide"
-  const itemsPerSlide = 3;
+  const itemsPerSlide = 4;
   const carouselItems = firstNineProducts.reduce((acc, item, idx) => {
     const chunkIndex = Math.floor(idx / itemsPerSlide);
 
@@ -46,18 +58,6 @@ export const HomePage = () => {
 
     return acc;
   }, []);
-
-  const handleAddToCart = (productId) => {
-    setCart(prevCart => prevCart.map(item => 
-      item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-    ));
-  };
-
-  const handleRemoveFromCart = (productId) => {
-    setCart(prevCart => prevCart.map(item => 
-      item.id === productId && item.quantity > 0 ? { ...item, quantity: item.quantity - 1 } : item
-    ));
-  }; 
 
   return (
     <EcommerceUI>
@@ -87,11 +87,11 @@ export const HomePage = () => {
               {carouselItems.map((chunk, index) => (
                 <Grid container spacing={1} key={index} justifyContent={'center'}>
                   {chunk.map(product => (
-                    <Grid item xs={4} sm={6} md={4} lg={3} key={product.idProduct} marginTop={5}>
+                    <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={2.5} marginTop={5}>
                       <ProductCard
                         product={product}
-                        handleAddToCart={handleAddToCart}
-                        handleRemoveFromCart={handleRemoveFromCart}
+                        dispatch={dispatch}
+                        cart={cart}
                       />
                     </Grid>
                   ))}

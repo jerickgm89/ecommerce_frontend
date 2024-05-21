@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const ecommerceApi = createApi({
     reducerPath: 'ecommerceApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'https://ecommercetech.software/',
+        baseUrl: 'www.ecommercetech.software', //http://localhost:3001, www.ecommercetech.software
     }),
     tagTypes: ['Products'],
     endpoints: (builder) => ({
@@ -14,6 +14,7 @@ export const ecommerceApi = createApi({
         }),
         getProductsLimit: builder.query({
             query: (page=1) => `/products/index?limit=9&page=${page}`,
+            providesTags: ['Products'],
         }),
         getProductById: builder.query({
             query: (id) => `/products/index/${id}`,
@@ -40,14 +41,62 @@ export const ecommerceApi = createApi({
             }),
             invalidatesTags: ['Products'],
         }),
-
-        filterProducts: builder.query({
-            query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax }) => {
-                const queryUrl = `/filterproducts?name=${name}&price=${price}&year=${year}&orderBy=${orderBy}&orderDirection=${orderDirection}&priceMin${priceMin}&priceMax${priceMax}`;
-                return queryUrl;
-            },
+        updateProducts: builder.mutation({
+            query: (updatedProduct) => ({
+                url: `/products/index/${updatedProduct.id}`,
+                method: 'PATCH',
+                body: updatedProduct
+            }),
+            invalidatesTags: ['Products'],
+        }),
+        unlockProduct: builder.mutation({
+            query: (id) => ({
+                url: `/products/index/unlock/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Products'],
+          }),
+        restoreProduct: builder.mutation({
+            query: (id) => ({
+                url: `/products/index/restore/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Products'],
+        }),
+        getProductsLocked: builder.query({
+            query: () => '/products/index/deactivate',
+            providesTags: ['Products'],
         }),
 
+        filterProducts: builder.query({
+            query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand }) => {
+                const queryUrl = `/filterproducts?name=${name}&price=${price}&year=${year}&orderBy=${orderBy}&orderDirection=${orderDirection}&priceMin=${priceMin}&priceMax=${priceMax}&category=${category}&brand=${brand}`;
+                console.log('Parámetros enviados:', { name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand });
+                return queryUrl;
+            },
+            providesTags: ['Products'],
+        }),
+
+        searchProductsByName: builder.query({
+            query: (name) => `/filterproducts/?name=${name}`,
+        }),
+
+        postOrder: builder.mutation({
+            query: ({ items, payer, token }) => {
+                const body = { items };
+                if (payer) {
+                    body.payer = payer;
+                }
+                return {
+                    url: '/payment/create_order',
+                    method: 'POST',
+                    body,
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+            },
+        }),
     }),
 });
 
@@ -59,5 +108,12 @@ export const {
     useGetCategoriesQuery,
     useCreateProductsMutation,
     useFilterProductsQuery,
+    useSearchProductsByNameQuery,
     useDeleteProductsMutation,
+    useUpdateProductsMutation,
+    useUnlockProductMutation,
+    useRestoreProductMutation,
+    useCreateOrderMutation,
+    useGetProductsLockedQuery,
+    usePostOrderMutation,
  } = ecommerceApi;

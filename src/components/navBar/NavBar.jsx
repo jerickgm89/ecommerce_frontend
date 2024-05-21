@@ -1,24 +1,31 @@
+import { useAuth0 } from "@auth0/auth0-react"
+import { useUserAuthentication } from '../../hooks/useUserAuthentication';
 import * as React from 'react';
 import { Link } from "react-router-dom";
 import { Box, Container, IconButton, Typography, AppBar, Toolbar, Menu, MenuItem, Button, Tooltip, Avatar, Hidden } from '@mui/material';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuIcon from '@mui/icons-material/Menu';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { useAuth0 } from "@auth0/auth0-react"
+// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import CartShoppingIcon from '../../cartShooping/component/CartShoopingIcon';
+import { SearchBar } from '../searchBar';
 
-const pages = ['Inicio', 'Productos'];
+const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
 const settings = ['Perfil', 'Panel Administrador', 'Salir'];
 
 export const NavBar = () => {
     const { loginWithRedirect } = useAuth0();
     const { logout } = useAuth0();
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { user, isAuthenticated } = useAuth0();
+    
 
-    console.log(user);
-
+    // console.log(user);
+    const userData  = useUserAuthentication(user, isAuthenticated);
+ 
 
     const [anchorNav, setAnchorNav] = React.useState(null);
     const [anchorUser, setAnchorUser] = React.useState(null);
+
+    
 
     const handleOpenNavMenu = (event) => {
         setAnchorNav(event.currentTarget);
@@ -51,7 +58,7 @@ export const NavBar = () => {
                             width: 80, 
                             display: { xs: 'none', md: 'flex'}
                         }}
-                        src="/public/logo.svg"
+                        src="/logo.svg"
                     />
                   
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -85,7 +92,7 @@ export const NavBar = () => {
                             }}
                         >
                             {pages.map((page, index) => (
-                                <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none', color: "black" }}>
+                                <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/cartShopping"} style={{ textDecoration: 'none', color: "black" }}>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{page}</Typography>
                                     </MenuItem>
@@ -116,9 +123,9 @@ export const NavBar = () => {
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page, index) => (
-                            <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/chartShopping"} style={{ textDecoration: 'none' }}>
-                                {page === "Carrito de compras" ?
-                                    <ShoppingCartIcon 
+                            <Link key={index} to={page === "Inicio" ? "/" : page === "Productos" ? "/products" : "/cartShopping"} style={{ textDecoration: 'none' }}>
+                                {page === "Carrito de Compras" ?
+                                    <CartShoppingIcon 
                                         onClick={handleCloseNavMenu}
                                         sx={{ my: 2, color: 'black', display: 'block', marginLeft: '16px' }}
                                     /> :
@@ -133,6 +140,13 @@ export const NavBar = () => {
                         ))}
                     </Box>
 
+                
+
+                     {/* Insert the SearchBar component */}
+                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+                        <SearchBar />   
+                    </Box>
+
                     <Box>
                         <Tooltip>
                             
@@ -144,10 +158,10 @@ export const NavBar = () => {
                                             color={user.given_name === "User" ? "error" : "black"}
                                             sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
                                             >
-                                            {user.given_name}
+                                            {userData ? userData.nameUser : user.given_name}
                                             </Typography>
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>                                                
-                                            <Avatar alt={user.name} src={user.picture} />
+                                            <Avatar alt={userData ? userData.nameUser : user.given_name} src={userData ? userData.pictureUser : user.picture} />
                                             </IconButton>                                            
                                         </Box>
                                     </>
@@ -178,33 +192,33 @@ export const NavBar = () => {
                                 id="menu-appbar"
                                 anchorEl={anchorUser}
                                 anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
+                                    vertical: 'top',
+                                    horizontal: 'right',
                                 }}
                                 keepMounted
                                 transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                                }}
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }} 
                                 open={Boolean(anchorUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {settings.map((setting, index) => (
+                                {(userData && userData.isAdmin ? ["Perfil", "Panel Administrador", "Salir"] : ["Perfil", "Salir"]).map((setting, index) => (
                                     <Link 
                                         key={index} 
                                         to={
                                             setting === "Perfil" ? "/user" 
                                             : setting === "Panel Administrador" ? "/admin" 
                                             : "/"
-                                          } 
+                                        } 
                                         style={{ textDecoration: 'none', color: "black" }}
                                     >
                                         <MenuItem 
                                             onClick={
-                                                setting === "Salir" ? () => logout({ returnTo: window.location.origin }) 
+                                                setting === "Salir" ? () => logout({ returnTo: '/' }) 
                                                 : handleCloseUserMenu
                                             }
-                                            >
+                                        >
                                             <Typography textAlign="center">{setting}</Typography>
                                         </MenuItem>
                                     </Link>

@@ -6,8 +6,11 @@ export const productSlice = createSlice({
         products: [],
         filteredProducts: [],
         cart: [],
-        minPrice: '',
-        maxPrice: '',
+        priceMin: '',
+        priceMax: '',
+        orderBy: '',
+        orderDirection: 'ASC',
+        category: '',
     },
     reducers: {
         setProducts: (state, action) => {
@@ -17,13 +20,38 @@ export const productSlice = createSlice({
         setFilteredProducts: (state, action) => {
             state.filteredProducts = action.payload;
         },
-        setMinPrice: (state, action) => {
-            state.minPrice = action.payload;
+        setPriceMin: (state, action) => {
+            state.priceMin = action.payload;
         },
-        setMaxPrice: (state, action) => {
-            state.maxPrice = action.payload;
+        setPriceMax: (state, action) => {
+            state.priceMax = action.payload;
+        },
+        setOrderBy: (state, action) => {
+            state.orderBy = action.payload;
+        },
+        setOrderDirection: (state, action) => {
+            state.orderDirection = action.payload;
+        },
+        setCategory: (state, action) => {
+            state.category = action.payload;
+        },
+        setBrand: (state, action) => {
+            state.brand = action.payload;
+        },
+        setOpen: (state, action) => {
+            state.open = action.payload;
         },
     },
 });
 
-export const { setProducts, setFilteredProducts, setMinPrice, setMaxPrice } = productSlice.actions;
+export const { 
+    setProducts, 
+    setFilteredProducts, 
+    setpriceMin, 
+    setpriceMax, 
+    setOrderBy, 
+    setOrderDirection,
+    setCategory,
+    setBrand,
+    setOpen,
+} = productSlice.actions;
