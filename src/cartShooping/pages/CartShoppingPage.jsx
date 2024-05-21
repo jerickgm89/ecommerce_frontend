@@ -15,17 +15,17 @@ export const CartShoppingPage = () => {
     const handleRemoveFromCart = (productId) => {
         dispatch(removeFromCart({ id: productId }));
     };
-  
+
     // Función para disminuir la cantidad de un producto en el carrito
     const handleDecreaseCart = (product) => {
         dispatch(decreaseCart({ id: product.idProduct, priceProduct: product.priceProduct }));
     };
-  
+
     // Función para aumentar la cantidad de un producto en el carrito
     const handleAddToCart = (product) => {
         dispatch(addToCart(product));
     };
-  
+
     // Función para vaciar el carrito
     const handleClearCart = () => {
       // Implementa la lógica para vaciar el carrito
@@ -42,7 +42,7 @@ export const CartShoppingPage = () => {
         <Typography variant="h4" gutterBottom>
           Carrito de compras
         </Typography>
-        
+
         {cartItems.length === 0 ? ( // Cambia cart.products por cartItems
           <Box textAlign="center" mt={5}>
             <ShoppingCartOutlinedIcon sx={{ fontSize: 80 }} />
@@ -115,8 +115,15 @@ export const CartShoppingPage = () => {
                     <Typography variant="h6">Subtotal</Typography>
                     <Typography variant="h6">$ {formattedPrice(cartTotalAmount)}</Typography> {/* Cambia cart.total por cartTotalAmount */}
                   </Box>
- 
-                  <Button variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>Continuar compra</Button>
+
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                  >
+                    Continuar compra
+                  </Button>
                   <Button variant="text" color="secondary" fullWidth sx={{ mt: 1 }} onClick={handleClearCart}>Vaciar carrito</Button>
                   <Box mt={2}>
                     <MuiLink component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>

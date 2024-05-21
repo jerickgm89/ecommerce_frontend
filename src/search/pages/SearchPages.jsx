@@ -3,13 +3,13 @@ import { useLocation, Link } from 'react-router-dom';
 import { useSearchProductsByNameQuery } from '../../store/api';
 import { Grid, Card, CardContent, Typography, Box, Button } from '@mui/material';
 import { EcommerceUI } from '../../ui';
-import { useDispatch } from 'react-redux';
+import Loading from '../../components/loading/Loading';
 
 export const SearchPages = () => {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const name = params.get('name') || '';
-    
+
     const { data, isLoading, refetch, error } = useSearchProductsByNameQuery(name, {
         refetchOnMountOrArgChange: true,
     });
@@ -18,39 +18,38 @@ export const SearchPages = () => {
         if (name) {
             refetch();
         }
-    }, [name, refetch, location.search]);
-
-    console.log('Valor de name:', name);
-
-
-    if (isLoading) return <div>Loading...</div>;
-
-    
+    }, [name, refetch]);
 
     const formattedPrice = (price) => {
         return new Intl.NumberFormat('es-ES', {}).format(parseFloat(price));
     };
 
+    if (isLoading) return <Loading/>;
+
     return (
         <EcommerceUI>
             <Box 
-             sx={{ 
-                mt: 8, 
-                mb: 8, 
-                ml: 8, 
-                mr: 8, 
-                minHeight: '60vh', 
-                display: 'flex', 
-                flexDirection: 'column' 
-            }}
+                sx={{ 
+                    mt: 8, 
+                    mb: 8, 
+                    ml: 8, 
+                    mr: 8, 
+                    minHeight: '60vh', 
+                    display: 'flex', 
+                    flexDirection: 'column' 
+                }}
             >
                 <Typography variant='h4' gutterBottom>Resultados</Typography>
                 <Grid container spacing={3} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                    {(!data || data.rows.length === 0) ? (
+                    {error ? (
+                        <Box>
+                        <Typography variant='h6' color='textSecondary'>No se encontraron productos con el nombre "{name}".</Typography>
+                        </Box>
+                    ) : (!data || data.rows.length === 0) ? (
                         <Typography variant='h6' color='textSecondary'>No se encontraron productos con el nombre "{name}".</Typography>
                     ) : (
                         data.rows.map((product) => (
-                            <Grid item key={product.id} xs={12} sm={6} md={4}>
+                            <Grid item key={product.idProduct} xs={12} sm={6} md={4}>
                                 <Card sx={{ width: '100%', display: 'flex', borderRadius: '10px' }}>
                                     <Box style={{ position: 'relative', width: '60%', aspectRatio: '4/3' }}>
                                         <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
@@ -101,8 +100,9 @@ export const SearchPages = () => {
                         ))
                     )}
                 </Grid>
-             </Box>
+            </Box>
         </EcommerceUI>
-
     );
 };
+
+export default SearchPages;
