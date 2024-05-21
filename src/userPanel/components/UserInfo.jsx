@@ -1,51 +1,15 @@
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material"
 import { Person as PersonIcon } from "@mui/icons-material"
-import { useAuth0 } from "@auth0/auth0-react";
-import { useGetUserByEmailQuery, usePostCreateUserMutation, useGetTokenByEmailQuery, useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi";
-import { useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react"
+import { useUserAuthentication } from './../../hooks/useUserAuthentication';
+import { Link } from "react-router-dom";
 
 
 
 export const UserInfo = () => {
 
   const { user, isAuthenticated } = useAuth0();
-  const [createUser, {isLoading}] = usePostCreateUserMutation();
-  const { data: existingUser, error } = useGetUserByEmailQuery(user?.email, { skip: isAuthenticated });
-  const doesUserExist = Boolean(existingUser);
-  const { data: tokenData } = useGetTokenByEmailQuery(user?.email, { skip: !isAuthenticated || !existingUser });
-  const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
-  const { data: userData } = useGetUserByTokenQuery(token, { skip: !token }); // Realizar la consulta
-
-  useEffect(() => {
-    if (isAuthenticated && !doesUserExist && !isLoading) {
-      console.log('Creating user...');
-      let postDataUser = {
-        email: user.email,
-        email_verified: user.email_verified,
-        family_name: user.family_name,
-        given_name: user.given_name,
-        picture: user.picture
-      }
-      createUser(postDataUser)
-        .then(token => {
-          // Guardar el token en el almacenamiento local
-          localStorage.setItem('token', token.data);
-          console.log(token.data);
-          if (userData) {
-            // Mostrar el datos del usuario por token
-            console.log('User data:', userData);
-          }
-        })
-        .catch(error => {
-          // Manejar cualquier error que pueda ocurrir
-          console.error(error);
-        });
-    } else if (isAuthenticated && doesUserExist) {
-      console.log('User already exists');
-      // Si el usuario ya existe, obtener el token
-      console.log('User data:', userData);
-      }
-  }, []);
+  const userData = useUserAuthentication(user, isAuthenticated);
 
   return (
    <>
@@ -75,7 +39,9 @@ export const UserInfo = () => {
                   <PersonIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
                   Mi perfil
                 </div>
-                <Button variant="outlined">Editar perfil</Button>
+                <Link to="/user/editUser" style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <Button variant="outlined">Editar perfil</Button>
+                </Link>
               </Typography>
               <Grid container spacing={5} gap={5} sx={{mt:1}}>
                 <Grid 
@@ -90,7 +56,7 @@ export const UserInfo = () => {
                         alignItems: 'center',
                         m: 3,
                         }}>
-                      <Avatar alt={userData.nameUser}  src={userData.pictureUser} sx={{width: 40}} />                                          
+                      <Avatar alt={userData.nameUser}  src={userData.pictureUser} sx={{width: 40, height: 40}} />                                          
                       <Typography 
                         variant="body1" 
                         sx={{ 

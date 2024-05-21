@@ -33,10 +33,10 @@ export const ecommerceUserApi = createApi({
         }),
         // Update user
         putUpdateUser: builder.mutation({
-            query: (id) => ({
+            query: ({ id, ...fields }) => ({
                 url: `/users/${id}`,
                 method: 'PUT',
-                body: id
+                body: fields
             }),
             invalidatesTags: ['Users'],
         }),

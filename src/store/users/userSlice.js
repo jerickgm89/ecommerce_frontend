@@ -6,6 +6,7 @@ export const userSlice = createSlice({
         user: null,
         isAuthenticated: false,
         isLoading: true,
+        userData: null,
     },
     reducers: {
         setUser: (state, action) => {
@@ -17,13 +18,17 @@ export const userSlice = createSlice({
         setLoading: (state, action) => {
             state.isLoading = action.payload;
         },
+        setUserData: (state, action) => {
+            state.userData = action.payload;
+        },
     }
 });
 
 export const { 
     setUser, 
     setAuthenticated, 
-    setLoading 
+    setLoading,
+    setUserData
 } = userSlice.actions;
 
 
