@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const ecommerceApi = createApi({
     reducerPath: 'ecommerceApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'www.ecommercetech.software', //http://localhost:3001, www.ecommercetech.software
+        baseUrl: 'https://www.ecommercetech.software', //http://localhost:3001, www.ecommercetech.software
     }),
     tagTypes: ['Products'],
     endpoints: (builder) => ({
