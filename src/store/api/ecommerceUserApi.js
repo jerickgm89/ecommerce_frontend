@@ -48,6 +48,27 @@ export const ecommerceUserApi = createApi({
             }),
             invalidatesTags: ['Users'],
         }),
+        // Blocked user
+        unlockUser: builder.mutation({
+            query: (id) => ({
+                url: `/users/blocked/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Users'],
+          }),
+        // Restore user
+        restoreUser: builder.mutation({
+            query: (id) => ({
+                url: `/users/restore/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Users'],
+        }),
+        // Get users blocked
+        getUsersBlocked: builder.query({
+            query: () => '/users/deactive',
+            providesTags: ['Users'],
+        }),
         
         // JWT Peticiones
         // Get user by Token    
@@ -77,6 +98,9 @@ export const {
     usePostCreateUserMutation,
     usePutUpdateUserMutation,
     useDeleteUserMutation,
+    useUnlockUserMutation,
+    useRestoreUserMutation,
+    useGetUsersBlockedQuery,
     // JWT Peticiones
     useGetTokenByEmailQuery,
     useGetUserByTokenQuery,

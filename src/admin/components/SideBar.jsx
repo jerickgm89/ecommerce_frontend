@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
 import { Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Collapse, Typography } from '@mui/material';
 import { Checklist, Create, ExpandLess, ExpandMore, MoveToInbox as InboxIcon } from '@mui/icons-material';
+import GroupIcon from '@mui/icons-material/Group';
 
 export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [openUsers, setOpenUsers] = useState(false)
 
-    const handleClick = () => {
-      setOpen(!open);
-    };
+  const handleClick = () => {
+    setOpen(!open)
+  }
+
+  const handleClickUsers = () => {
+    setOpenUsers(!openUsers)
+  }
   
-    
   return (
     <Box sx={{ display: 'flex', }}>
       <Box
@@ -50,6 +54,7 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
             <Divider />
 
             <List>
+
               <ListItemButton onClick={handleClick}>
                 <ListItemIcon>
                   <InboxIcon color='icon'/>
@@ -98,7 +103,51 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
                 </List>
               </Collapse>
 
-            </List>           
+            </List>        
+
+            <List>
+
+              <ListItemButton onClick={handleClickUsers}>
+                <ListItemIcon>
+                  <GroupIcon color='icon' />
+                </ListItemIcon>
+                <ListItemText primary="Usuarios" />
+                {
+                  openUsers ? <ExpandLess /> : <ExpandMore />
+                }
+              </ListItemButton>
+
+              <Collapse 
+                in={openUsers} 
+                timeout="auto" 
+                unmountOnExit
+              >
+                <List 
+                  component="div"
+                >
+                  {/* Item 1 */}
+                  <Link to='/admin/users' style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemIcon sx={{}}>
+                        <Checklist color='icon'/>
+                      </ListItemIcon>                    
+                      <ListItemText primary="Lista de Usuarios Activos" />                  
+                    </ListItemButton>
+                  </Link>
+                  {/* Item 2 */}
+                  <Link to='/admin/lockedUsers' style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemIcon sx={{}}>
+                        <Checklist color='icon'/>
+                      </ListItemIcon>                    
+                      <ListItemText primary="Lista de Usuarios Bloqueados" />                  
+                    </ListItemButton>
+                  </Link>
+                </List>
+              </Collapse>
+              
+            </List> 
+                
         </Drawer>
       </Box>
     </Box>

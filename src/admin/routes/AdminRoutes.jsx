@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import { AdminPages, CreateProductsPage, EditProductsPage, ListProductsPage, LockedProductsPage } from "../pages"
+import { AdminPages, CreateProductsPage, EditProductsPage, ListProductsPage, LockedProductsPage, ListUsersPage, LockedUsersPage } from "../pages"
 
 export const AdminRoutes = () => {
   return (
@@ -8,6 +8,8 @@ export const AdminRoutes = () => {
         <Route path="/createProducts" element={<CreateProductsPage />} />
         <Route path="/editProducts/:id" element={<EditProductsPage />} />
         <Route path="/lockedProducts" element={<LockedProductsPage />} />
+        <Route path="/users" element={<ListUsersPage />} />
+        <Route path="/lockedUsers" element={<LockedUsersPage />} />
 
         <Route path='/admin/*' element={ <Navigate to="/product/" /> } />
     </Routes>
