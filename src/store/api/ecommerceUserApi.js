@@ -17,6 +17,7 @@ export const ecommerceUserApi = createApi({
          // Get user by id
          getUserById: builder.query({
             query: (id)  => `/users/${id}`,
+            providesTags: (result, error, id) => [{ type: 'Users', id }],
         }),
         // Get user by email
         getUserByEmail: builder.query({
@@ -38,7 +39,7 @@ export const ecommerceUserApi = createApi({
                 method: 'PUT',
                 body: fields
             }),
-            invalidatesTags: ['Users'],
+            invalidatesTags: (result, error, { id }) => [{ type: 'Users', id }],
         }),
         // Delete user
         deleteUser: builder.mutation({
@@ -46,7 +47,7 @@ export const ecommerceUserApi = createApi({
                 url: `/users/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['Users'],
+            invalidatesTags: (result, error, id) => [{ type: 'Users', id }],
         }),
         // Blocked user
         unlockUser: builder.mutation({
@@ -54,7 +55,7 @@ export const ecommerceUserApi = createApi({
                 url: `/users/blocked/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['Users'],
+            invalidatesTags: (result, error, id) => [{ type: 'Users', id }],
           }),
         // Restore user
         restoreUser: builder.mutation({
@@ -62,7 +63,7 @@ export const ecommerceUserApi = createApi({
                 url: `/users/restore/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['Users'],
+            invalidatesTags: (result, error, id) => [{ type: 'Users', id }],
         }),
         // Get users blocked
         getUsersBlocked: builder.query({
@@ -75,6 +76,7 @@ export const ecommerceUserApi = createApi({
         // Get user Token by Email
         getTokenByEmail: builder.query({
             query: (emailUser) => `/users/verify/${emailUser}`,
+            providesTags: (result, error, emailUser) => [{ type: 'Users', id: result?.id }],
           }),
         // Get user by Token
         getUserByToken: builder.query({
@@ -84,6 +86,7 @@ export const ecommerceUserApi = createApi({
               headers: {
                 Authorization: `Bearer ${token}`,
               },
+              providesTags: (result, error, token) => [{ type: 'Users', id: result?.id }],
             }),
         }),   
         
