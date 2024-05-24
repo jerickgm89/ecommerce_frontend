@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react"
+import { useNavigate, Link } from 'react-router-dom';
 import { Avatar, Box, Button, Grid, IconButton, TextField, Typography } from "@mui/material";
 import { 
   Person as PersonIcon,
@@ -7,11 +8,8 @@ import { usePutUpdateUserMutation } from './../../store/api/ecommerceUserApi'
 import { useUserAuthentication } from "../../hooks/useUserAuthentication";
 import { useFormik } from "formik"
 import * as yup from 'yup'
-import { Link } from "react-router-dom";
 
 const validationSchema = yup.object({
-  id: yup
-    .number(),
   nameUser: yup
     .string()
     .required('El nombre es requerido'),
@@ -34,27 +32,41 @@ const validationSchema = yup.object({
 });
 
 export const UserEditProfile = () => {
+
+  const navigate = useNavigate();
+
   const { user, isAuthenticated } = useAuth0();
   const userData = useUserAuthentication(user, isAuthenticated);
-  const [updateUserMutation] = usePutUpdateUserMutation();
+  const [updateUserMutation, { isSuccess, isError, error }] = usePutUpdateUserMutation();
 
   const formik = useFormik({
     initialValues: {
-      idUser: userData.idUser,
-      nameUser: userData.nameUser,
-      lastNameUser: userData.lastNameUser,
-      emailUser: userData.emailUser,
-      numberMobileUser: userData.numberMobileUser,
-      DNI: userData.DNI,
+      nameUser: userData ? userData.nameUser : '',
+      lastNameUser: userData ? userData.lastNameUser : '',
+      emailUser: userData ? userData.emailUser : '',
+      numberMobileUser: userData ? userData.numberMobileUser : '',
+      DNI: userData ? userData.DNI : '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {      
-      updateUserMutation(values);
+      updateUserMutation({id:userData.idUser,...values})
+        .unwrap()
+        .then(response => {
+          console.log(response)
+          navigate('/user');
+          window.location.reload();
+        })
+        .catch(error => {
+          console.log(error)
+        })
     },
+    
   });
 
   return (
     <>
+        {isError && <div>Something went wrong: {error.message}</div>}
+        {isSuccess && <div>Update successful!</div>}
         <Grid 
           item 
           xs={6} 
@@ -96,22 +108,13 @@ export const UserEditProfile = () => {
                   <form onSubmit={formik.handleSubmit}>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
-                      <Avatar alt={userData.nameUser}  src={userData.pictureUser} sx={{width: 56, height: 56}} />
+                      <Avatar 
+                        alt={userData ? userData.nameUser : 'Default Alt'}  
+                        src={userData ? userData.pictureUser : 'Default Picture URL'} 
+                        sx={{width: 56, height: 56}} 
+                      />
                       </Grid>
-                      <Grid item xs={6} hidden>
-                        <TextField 
-                          name="idUser"
-                          label="Id"
-                          type="text"
-                          placeholder="Ingrese su id"
-                          fullWidth
-                          value={formik.values.idUser}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          error={formik.touched.idUser && Boolean(formik.errors.idUser)}
-                          helperText={formik.touched.idUser && formik.errors.idUser}
-                        />
-                      </Grid>
+                      
                       <Grid item xs={6}>
                         <TextField 
                           name="nameUser"
@@ -152,6 +155,7 @@ export const UserEditProfile = () => {
                           onBlur={formik.handleBlur}
                           error={formik.touched.emailUser && Boolean(formik.errors.emailUser)}
                           helperText={formik.touched.emailUser && formik.errors.emailUser}
+                          disabled
                         />
                       </Grid>
                       <Grid item xs={6}>
