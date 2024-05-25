@@ -26,18 +26,17 @@ export const userSlice = createSlice({
             state.isSaving = true;
             state.messageSaved = '';
         },
-        // updateUser: (state, action) => {
-        //     state.isSaving = false;
-        //     state.userData = state.userData.map((user) => {
-        //         if (user.id === action.payload.id) {
-        //             return action.payload;
-        //         }
-        //         return user;
-        //     });
+        updateUserData: (state, action) => {
+            state.userData = action.payload;
+            state.isSaving = false;
 
-        //     state.messageSaved = `${action.payload.title}, actualizada correctamente!`
-
-        // },
+            if (action.payload) {
+                state.messageSaved = 'User data saved successfully';
+                window.location.reload();
+            } else {
+                state.messageSaved = 'Error saving user data';
+            }
+        },
     }
 });
 
@@ -45,7 +44,8 @@ export const {
     setUser, 
     setAuthenticated, 
     setLoading,
-    setUserData
+    setUserData,
+    updateUserData
 } = userSlice.actions;
 
 

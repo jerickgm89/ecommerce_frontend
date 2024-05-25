@@ -14,7 +14,8 @@ export const SideBarUser = () => {
     <Grid 
       item 
       xs={12} 
-      md={4}
+      md={12}
+      lg={4}
       sx={{display: 'flex', justifyContent: 'right', alignItems: 'flex-start'}}
     >
       <Box

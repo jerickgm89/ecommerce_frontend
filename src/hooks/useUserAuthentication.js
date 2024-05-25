@@ -38,7 +38,7 @@ export const useUserAuthentication = (user, isAuthenticated) => {
         console.log('User data:', userData);
       }
     }
-  }, [isAuthenticated, doesUserExist, isLoading]);
+  }, [isAuthenticated, doesUserExist, isLoading, token, refetchUserData]);
 
   return userData;
 }
