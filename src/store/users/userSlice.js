@@ -7,6 +7,7 @@ export const userSlice = createSlice({
         isAuthenticated: false,
         isLoading: true,
         userData: null,
+        isSaving: false,
     },
     reducers: {
         setUser: (state, action) => {
@@ -21,6 +22,21 @@ export const userSlice = createSlice({
         setUserData: (state, action) => {
             state.userData = action.payload;
         },
+        setSaving: (state) => {
+            state.isSaving = true;
+            state.messageSaved = '';
+        },
+        updateUserData: (state, action) => {
+            state.userData = action.payload;
+            state.isSaving = false;
+
+            if (action.payload) {
+                state.messageSaved = 'User data saved successfully';
+                window.location.reload();
+            } else {
+                state.messageSaved = 'Error saving user data';
+            }
+        },
     }
 });
 
@@ -28,7 +44,8 @@ export const {
     setUser, 
     setAuthenticated, 
     setLoading,
-    setUserData
+    setUserData,
+    updateUserData
 } = userSlice.actions;
 
 

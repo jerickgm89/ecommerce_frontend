@@ -13,7 +13,7 @@ export const UserLayout = ({children}) => {
                 bgcolor: '#F6F9FC'
             }}
         >
-          <Grid container spacing={2}>
+          <Grid container spacing={2} >
             <SideBarUser/>
             {children}
           </Grid> 

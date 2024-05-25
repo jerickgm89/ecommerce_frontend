@@ -5,14 +5,14 @@ export const ecommerceUserApi = createApi({
     baseQuery: fetchBaseQuery({ 
         baseUrl: 'http://localhost:3001'
     }),
-    tagTypes: ['Users'],
+    tagTypes: ['Users', 'Post'],
     endpoints: (builder) => ({
 
         // CRUD USERS
         // Get all users
         getUsers: builder.query({
             query: () => '/users',
-            providesTags: ['Users'],
+            providesTags: ['Post', 'Users'],
         }),
          // Get user by id
          getUserById: builder.query({
@@ -76,7 +76,7 @@ export const ecommerceUserApi = createApi({
         // Get user Token by Email
         getTokenByEmail: builder.query({
             query: (emailUser) => `/users/verify/${emailUser}`,
-            providesTags: (result, error, emailUser) => [{ type: 'Users', id: result?.id }],
+            providesTags: (result, error, emailUser) => [{ type: 'Post', id: result?.id }],
           }),
         // Get user by Token
         getUserByToken: builder.query({
@@ -86,7 +86,7 @@ export const ecommerceUserApi = createApi({
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-              providesTags: (result, error, token) => [{ type: 'Users', id: result?.id }],
+              providesTags: (result, error, token) => [{ type: 'Post', id: result?.id }],
             }),
         }),   
         
