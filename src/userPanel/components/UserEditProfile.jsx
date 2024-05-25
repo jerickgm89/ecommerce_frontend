@@ -8,6 +8,7 @@ import { usePutUpdateUserMutation } from './../../store/api/ecommerceUserApi'
 import { useUserAuthentication } from "../../hooks/useUserAuthentication";
 import { useFormik } from "formik"
 import * as yup from 'yup'
+import Swal from 'sweetalert2'
 
 const validationSchema = yup.object({
   nameUser: yup
@@ -48,13 +49,21 @@ export const UserEditProfile = () => {
       DNI: userData ? userData.DNI : '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {      
+    onSubmit: (values) => {     
       updateUserMutation({id:userData.idUser,...values})
         .unwrap()
         .then(response => {
           console.log(response)
-          navigate('/user');
-          window.location.reload();
+          Swal.fire({
+            icon: 'success',
+            title: 'Usuario actualizado',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          setTimeout(function(){
+            navigate('/user');
+            window.location.reload();
+          }, 2000);
         })
         .catch(error => {
           console.log(error)
@@ -65,8 +74,6 @@ export const UserEditProfile = () => {
 
   return (
     <>
-        {isError && <div>Something went wrong: {error.message}</div>}
-        {isSuccess && <div>Update successful!</div>}
         <Grid 
           item 
           xs={6} 
@@ -108,11 +115,11 @@ export const UserEditProfile = () => {
                   <form onSubmit={formik.handleSubmit}>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
-                      <Avatar 
-                        alt={userData ? userData.nameUser : 'Default Alt'}  
-                        src={userData ? userData.pictureUser : 'Default Picture URL'} 
-                        sx={{width: 56, height: 56}} 
-                      />
+`                        <Avatar 
+                          alt={userData ? userData.nameUser : 'Default Alt'}  
+                          src={userData ? userData.pictureUser : 'Default Picture URL'} 
+                          sx={{width: 56, height: 56}} 
+                        />
                       </Grid>
                       
                       <Grid item xs={6}>

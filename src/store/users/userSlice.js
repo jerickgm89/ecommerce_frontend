@@ -7,6 +7,7 @@ export const userSlice = createSlice({
         isAuthenticated: false,
         isLoading: true,
         userData: null,
+        isSaving: false,
     },
     reducers: {
         setUser: (state, action) => {
@@ -21,6 +22,22 @@ export const userSlice = createSlice({
         setUserData: (state, action) => {
             state.userData = action.payload;
         },
+        setSaving: (state) => {
+            state.isSaving = true;
+            state.messageSaved = '';
+        },
+        // updateUser: (state, action) => {
+        //     state.isSaving = false;
+        //     state.userData = state.userData.map((user) => {
+        //         if (user.id === action.payload.id) {
+        //             return action.payload;
+        //         }
+        //         return user;
+        //     });
+
+        //     state.messageSaved = `${action.payload.title}, actualizada correctamente!`
+
+        // },
     }
 });
 
