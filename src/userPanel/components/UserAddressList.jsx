@@ -5,6 +5,7 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 
 export const UserAddressList = () => {
@@ -37,7 +38,9 @@ export const UserAddressList = () => {
                     <PlaceIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
                     Mis direcciones
                   </div>
-                  <Button variant="outlined">Agregar direcciones</Button>
+                  <Link to="/user/addAddress" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <Button variant="outlined">Agregar direcciones</Button>
+                  </Link>
                 </Typography>
                 <Grid container spacing={1} sx={{mt:1}}>
                   <Grid 
