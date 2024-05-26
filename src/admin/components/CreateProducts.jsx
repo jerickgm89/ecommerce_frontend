@@ -265,7 +265,10 @@ export const CreateProducts = () => {
                           error={formik.touched.idCategory && Boolean(formik.errors.idCategory)}
                         >
                           {categoriesLoading ? (
-                           <MenuItem value="">Cargando categorías...</MenuItem>
+                            <MenuItem value="">
+                              <CircularProgress size={18} />
+                              Cargando categorías...
+                            </MenuItem>
                           ) : (
                             categories.map((category) => (
                               <MenuItem key={category.idCategory} value={category.idCategory}>
@@ -392,7 +395,10 @@ export const CreateProducts = () => {
                                 error={formik.touched.idBrand && Boolean(formik.errors.idBrand)}
                             >
                                 {brandsLoading ? (
-                                    <MenuItem value="">Cargando marcas...</MenuItem>
+                                    <MenuItem value="">
+                                      <CircularProgress size={18} />
+                                      Cargando marcas...
+                                    </MenuItem>
                                 ) : (
                                     brands.map((brand) => (
                                         <MenuItem key={brand.idBrand} value={brand.idBrand}>
