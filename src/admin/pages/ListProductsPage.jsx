@@ -83,6 +83,9 @@ export const ListProductsPage = () => {
                                     pageSize: 10,
                                 },
                             },
+                            sorting: {
+                                sortModel: [{ field: 'id', sort: 'desc' }],
+                            },
                         }}
                         pageSizeOptions={[10]}
                         disableRowSelectionOnClick
