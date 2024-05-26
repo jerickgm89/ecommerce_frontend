@@ -6,12 +6,19 @@ export const ecommerceApi = createApi({
     baseQuery: fetchBaseQuery({ 
         baseUrl: 'http://localhost:3001',//'http://35.167.78.208',
     }),
-    tagTypes: ['Products'],
+    tagTypes: ['Products', 'Categories', 'Brands'],
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: () => '/products/index',
             providesTags: ['Products'],
         }),
+
+        getProductsOrderDesc: builder.query({
+            query: () => '/filterproducts?orderBy=idProduct&orderDirection=DESC',
+            providesTags: ['Products'],
+        }),
+
+        
         getProductsLimit: builder.query({
             query: (page=1) => `/products/index?limit=9&page=${page}`,
             providesTags: ['Products'],
@@ -24,6 +31,7 @@ export const ecommerceApi = createApi({
         }),
         getCategories: builder.query({
             query: () => '/products/category',
+            providesTags: ['Categories'],
         }),
         createProducts: builder.mutation({
             query: (newProduct) => ({
@@ -97,11 +105,30 @@ export const ecommerceApi = createApi({
                 };
             },
         }),
+
+        createCategory: builder.mutation({
+            query: (newCategory) => ({
+                url: '/products/category',
+                method: 'POST',
+                body: newCategory
+            }),
+            invalidatesTags: ['Categories'],
+        }),
+
+        createBrand: builder.mutation({
+            query: (newBrand) => ({
+                url: '/products/brands',
+                method: 'POST',
+                body: newBrand
+            }),
+            invalidatesTags: ['Brands'],
+        }),
     }),
 });
 
 export const { 
     useGetProductsQuery,
+    useGetProductsOrderDescQuery,
     useGetProductsLimitQuery,
     useGetProductByIdQuery,
     useGetBrandsQuery,
@@ -113,7 +140,8 @@ export const {
     useUpdateProductsMutation,
     useUnlockProductMutation,
     useRestoreProductMutation,
-    useCreateOrderMutation,
+    useCreateCategoryMutation,
+    useCreateBrandMutation,
     useGetProductsLockedQuery,
     usePostOrderMutation,
  } = ecommerceApi;

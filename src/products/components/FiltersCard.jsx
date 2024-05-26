@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse, Button, MenuItem } from '@mui/material';
+import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse, Button, MenuItem, ListItemAvatar} from '@mui/material';
 import Rating from "@mui/material/Rating";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import { useGetBrandsQuery, useGetCategoriesQuery } from '../../store/api/ecommerceApi';
@@ -192,7 +192,11 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
             <ListItemText primary="Select Brand" />
           </ListItemButton>
           {filterBrands.map(brand => (
+
             <ListItemButton key={brand.idBrand} onClick={() => handleBrandChange(brand.idBrand)} sx={{ pl: 4 }}>
+              <ListItemAvatar>
+                <img src={brand.logoBrand} alt=''  style={{ width: 20, marginRight: 10 }}/>
+              </ListItemAvatar>
               <ListItemText primary={brand.nameBrand} />
             </ListItemButton>
           ))}
