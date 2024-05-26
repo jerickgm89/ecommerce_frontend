@@ -47,7 +47,9 @@ export const NavBar = () => {
         <AppBar position="static" sx={{ backgroundColor: 'white' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-
+        
+                
+                <Link to="/">
                     <Box 
                         component="img"
                         alt="logo"
@@ -60,6 +62,7 @@ export const NavBar = () => {
                         }}
                         src="/logo.svg"
                     />
+                </Link>
                   
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
