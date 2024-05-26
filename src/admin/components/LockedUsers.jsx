@@ -1,23 +1,31 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { useGetUsersBlockedQuery } from '../../store/api/ecommerceUserApi'
-import { useRestoreUserMutation } from '../../store/api/ecommerceUserApi'
+import { useGetUsersBlockedQuery, useRestoreUserMutation } from '../../store/api/ecommerceUserApi'
 import RestoreIcon from '@mui/icons-material/Restore'
 
 export const LockedUsers = () => {
 
-    const { data: usersLocked = [], error, isLoading } = useGetUsersBlockedQuery()
+    const { data: usersLocked = [], error, isLoading, refetch } = useGetUsersBlockedQuery()
     console.log(usersLocked)
     const [restoreUser] = useRestoreUserMutation()
 
-    const handleRestore = (id) => {
-        restoreUser(id)
+    // const handleRestore = (id) => {
+    //     restoreUser(id)
+    // }
+
+    const handleRestore = async (id) => {
+        try {
+            await restoreUser(id).unwrap();
+            refetch()
+        } catch (error) {
+            console.error("Failed to restore user: ", error)
+        }
     }
 
     const columns = [
         {field: 'id', headerName: 'ID', minWidth: 90, flex: 1},
         {field: 'image', headerName: 'Imagen', minWidth: 100, flex: 1, renderCell: (params) => {
-            return <img src={params.value} alt='product' style={{width: '50px', height: '50px'}} />
+            return <img src={params.value} alt='user' style={{width: '50px', height: '50px'}} />
         }},
         {field: 'name', headerName: 'Nombres', minWidth: 150, flex: 1},
         {field: 'lastname', headerName: 'Apellidos', minWidth: 150, flex: 1},

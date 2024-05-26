@@ -9,16 +9,21 @@ import EditIcon from '@mui/icons-material/Edit'
 
 export const ListProductsPage = () => {
 
-    const { data: products = [], error, isLoading } = useGetProductsQuery()
+    const { data: products = [], error, isLoading, refetch } = useGetProductsQuery()
 
     const [unlockProduct] = useUnlockProductMutation()
     console.log(products)
 
     const navigate = useNavigate()
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         console.log('Delete product', id)
-        unlockProduct(id)
+        try {
+            await unlockProduct(id).unwrap()
+            refetch()
+        } catch (error) {
+            console.error('Failed to delete the product:', error)
+        }
     }
 
     const handleEdit = (product) => {
@@ -61,28 +66,29 @@ export const ListProductsPage = () => {
     })
 
     console.log(rows);
-  return (
-    <AdminLayout>
-        <Typography variant='h4'>
-            Lista de Productos Activos
-        </Typography>
-        <Box sx={{height: 650, width: '87.9%', mt:2}}>
-            <Box sx={{ width: '90%' }}>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                initialState={{
-                    pagination: {
-                        paginationModel: {
-                            pageSize: 10,
-                        },
-                    },
-                }}
-                pageSizeOptions={[10]}
-                disableRowSelectionOnClick
-            />
+
+    return (
+        <AdminLayout>
+            <Typography variant='h4'>
+                Lista de Productos Activos
+            </Typography>
+            <Box sx={{height: 650, width: '87.9%', mt:2}}>
+                <Box sx={{ width: '90%' }}>
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        initialState={{
+                            pagination: {
+                                paginationModel: {
+                                    pageSize: 10,
+                                },
+                            },
+                        }}
+                        pageSizeOptions={[10]}
+                        disableRowSelectionOnClick
+                    />
+                </Box>
             </Box>
-        </Box>
-    </AdminLayout>
-  )
+        </AdminLayout>
+    )
 }

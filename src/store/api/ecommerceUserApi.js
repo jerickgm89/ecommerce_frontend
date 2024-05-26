@@ -55,7 +55,8 @@ export const ecommerceUserApi = createApi({
                 url: `/users/blocked/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (result, error, id) => [{ type: 'Users', id }],
+            //invalidatesTags: (result, error, id) => [{ type: 'Users', id }],
+            invalidatesTags: ['Users', 'UsersBlocked'],
           }),
         // Restore user
         restoreUser: builder.mutation({
@@ -63,12 +64,13 @@ export const ecommerceUserApi = createApi({
                 url: `/users/restore/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (result, error, id) => [{ type: 'Users', id }],
+            //invalidatesTags: (result, error, id) => [{ type: 'Users', id }],
+            invalidatesTags: ['Users', 'UsersBlocked'],
         }),
         // Get users blocked
         getUsersBlocked: builder.query({
             query: () => '/users/deactive',
-            providesTags: ['Users'],
+            providesTags: ['UsersBlocked'],
         }),
         
         // JWT Peticiones

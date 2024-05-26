@@ -23,7 +23,6 @@ export const LockedProducts = () => {
         {field: 'price', headerName: 'Precio', minWidth: 150, flex: 1},
         {field: 'stock', headerName: 'Stock', minWidth: 150, flex: 1},
         {field: 'actions', headerName: 'Restaurar', minWidth: 100, flex: 1, renderCell: (params) => {
-            const product = productsLocked.find(p => p.idProduct === params.id)
             return (
                 <>
                     <IconButton onClick={() => handleRestore(params.id)}>

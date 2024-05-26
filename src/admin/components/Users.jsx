@@ -1,7 +1,6 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { useGetUsersQuery } from '../../store/api/ecommerceUserApi'
-import { useUnlockUserMutation } from '../../store/api/ecommerceUserApi'
+import { useGetUsersQuery, useUnlockUserMutation } from '../../store/api/ecommerceUserApi'
 import DeleteIcon from '@mui/icons-material/Delete'
 //import EditIcon from '@mui/icons-material/Edit'
 
@@ -15,15 +14,24 @@ export const Users = () => {
 
     // }
 
-    const handleDelete = async(id) => {
-        await unlockUser(id)
-        refetch()
+    // const handleDelete = async(id) => {
+    //     await unlockUser(id)
+    //     refetch()
+    // }
+
+    const handleDelete = async (id) => {
+        try {
+            await unlockUser(id).unwrap();
+            refetch()
+        } catch (error) {
+            console.error("Failed to blocked user: ", error)
+        }
     }
 
     const columns = [
         {field: 'id', headerName: 'ID', minWidth: 90, flex: 1},
         {field: 'image', headerName: 'Imagen', minWidth: 100, flex: 1, renderCell: (params) => {
-            return <img src={params.value} alt='product' style={{width: '50px', height: '50px'}} />
+            return <img src={params.value} alt='user' style={{width: '50px', height: '50px'}} />
         }},
         {field: 'name', headerName: 'Nombres', minWidth: 150, flex: 1},
         {field: 'lastname', headerName: 'Apellidos', minWidth: 150, flex: 1},
@@ -52,6 +60,9 @@ export const Users = () => {
             email: user.emailUser,
         }
     })
+
+    // if (isLoading) return <div>Loading...</div>
+    // if (error) return <div>Error loading users</div>
 
     return (
         <>
