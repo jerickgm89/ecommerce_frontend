@@ -1,23 +1,22 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useGetUsersQuery, useUnlockUserMutation } from '../../store/api/ecommerceUserApi'
+import { useNavigate } from 'react-router-dom'
 import DeleteIcon from '@mui/icons-material/Delete'
-//import EditIcon from '@mui/icons-material/Edit'
+import EditIcon from '@mui/icons-material/Edit'
 
 export const Users = () => {
 
     const { data: users = [], error, isLoading, refetch } = useGetUsersQuery()
     console.log(users)
     const [unlockUser] = useUnlockUserMutation()
+    const navigate = useNavigate()
 
-    // const handleEdit = (user) => {
-
-    // }
-
-    // const handleDelete = async(id) => {
-    //     await unlockUser(id)
-    //     refetch()
-    // }
+    const handleEdit = (user) => {
+        console.log('Edit user', user.idUser)
+        console.log(user);
+        navigate(`/admin/updateUsers/${user.idUser}`)
+    }
 
     const handleDelete = async (id) => {
         try {
@@ -40,9 +39,9 @@ export const Users = () => {
             const user = users.find(p => p.idUser === params.id)
             return (
                 <>
-                    {/* <IconButton onClick={() => handleEdit(user)}>
+                    <IconButton onClick={() => handleEdit(user)}>
                         <EditIcon />
-                    </IconButton> */}
+                    </IconButton>
                     <IconButton onClick={() => handleDelete(params.id)}>
                         <DeleteIcon />
                     </IconButton>
