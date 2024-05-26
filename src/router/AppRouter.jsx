@@ -7,6 +7,7 @@ import { AdminRoutes } from "../admin/routes";
 import { UserRoutes } from "../userPanel/routes";
 import { DetailsProductsPage } from "../products/pages";
 import { CartShoppingRoutes } from "../cartShooping/routes/";
+import { NotFoundRoutes } from "../notFound/routes";
 
 export const AppRouter = () => {
   return (
@@ -14,7 +15,7 @@ export const AppRouter = () => {
       <Routes>
 
           {/* Home */}
-          <Route path="/*" element={ <HomeRoutes /> }/>
+          <Route path="/" element={ <HomeRoutes /> }/>
 
           {/* Products */}        
           <Route path="/products/*" element={ <ProductsRoutes/>}/>
@@ -22,7 +23,6 @@ export const AppRouter = () => {
           <Route path="/search/*" element={ <SearchRoutes/>}/>
 
           {/* CartShopping */}
-          <Route path="/cartShopping" element={ <CartShoppingRoutes /> }/>
           <Route path="/cartShopping" element={ <CartShoppingRoutes /> }/>
 
           {/* Login y Registro */}
@@ -36,6 +36,9 @@ export const AppRouter = () => {
 
           {/* DetailProduct */}
           <Route path="/products/details/:id" element={<DetailsProductsPage />} />
+
+          {/* Not Found 404*/}
+          <Route path="*" element={<NotFoundRoutes />} />
 
       </Routes>
     </div>
