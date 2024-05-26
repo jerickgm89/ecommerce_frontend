@@ -13,10 +13,7 @@ export const ecommerceApi = createApi({
             providesTags: ['Products'],
         }),
 
-        getProductsOrderDesc: builder.query({
-            query: () => '/filterproducts?orderBy=idProduct&orderDirection=DESC',
-            providesTags: ['Products'],
-        }),
+        
 
         
         getProductsLimit: builder.query({
