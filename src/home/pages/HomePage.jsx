@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/loading/Loading';
 import { ImageSlider } from '../components/ImageSlider';
 import { BannerInfo } from '../components/BannerInfo';
+import { BannerItems } from '../components/BannerItems';
 
 
 export const HomePage = () => {
@@ -65,12 +66,17 @@ export const HomePage = () => {
   return (
     <EcommerceUI>
       <ImageSlider />
+      <BannerItems/>
       <Divider />
       <BannerInfo/>
       <Divider />
       
 
         <Box mt={8} mb={8}   >
+
+        <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
+              <CategoryProductsHome />
+            </Grid>
 
 
           <Grid container spacing={3}>
@@ -80,6 +86,7 @@ export const HomePage = () => {
               </Typography>
               <DealsHome />
             </Grid> */}
+            
             
 
 
@@ -125,10 +132,7 @@ export const HomePage = () => {
               {/* <Typography variant="h5" gutterBottom>Marcas</Typography> */}
               <BrandsProductsHome />
             </Grid>
-            <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
-              <Typography variant="h5" gutterBottom>Categorias</Typography>
-              <CategoryProductsHome />
-            </Grid>
+           
           </Grid>
         </Box>
     </EcommerceUI>
