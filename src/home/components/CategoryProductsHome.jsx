@@ -1,10 +1,10 @@
 import { Typography, Grid, Box } from "@mui/material";
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import KitchenIcon from '@mui/icons-material/Kitchen';
-import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
-import SmartphoneIcon from '@mui/icons-material/Smartphone';
-import LaptopIcon from '@mui/icons-material/Laptop';
-import HvacIcon from '@mui/icons-material/Hvac';
+// import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+// import KitchenIcon from '@mui/icons-material/Kitchen';
+// import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
+// import SmartphoneIcon from '@mui/icons-material/Smartphone';
+// import LaptopIcon from '@mui/icons-material/Laptop';
+// import HvacIcon from '@mui/icons-material/Hvac';
 import '../css';
 import { useGetCategoriesQuery } from "../../store/api";
 
@@ -35,16 +35,22 @@ export const CategoryProductsHome = () => {
                 {data.map(category => (
                     <Box className="containerIcon" sx={{ 
                         textAlign: 'center', 
-                        border: '4px solid #000',
-                        borderRadius: '20px',
+                        // border: '4px solid #000',k
+                        borderRadius: '0 30px 0 30px',
+                        color:'#646464',
+                        fontSize: "16px",
                         p: 2,
                         m: 1,
-                        transition: 'background-color 0.3s',
+                        transition: 'all 0.3s',
                         '&:hover': {
-                            backgroundColor: 'primary.main',
+                            backgroundColor: '#fff',
+                            boxShadow: "4px 4px 10px" ,
                         },
                     }}>
-                        {/* <img src={marca.logo} alt={marca.nameBrand} style={{ maxWidth: "100%", maxHeight: "100px" }} /> */}
+                        <img 
+                            src={category.imageCategory} 
+                            alt="" 
+                            style={{ maxWidth: "100%", maxHeight: "100px"}} />
                         <Typography variant="subtitle1">{category.nameCategory}</Typography>
                     </Box>
                 ))}

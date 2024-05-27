@@ -26,10 +26,11 @@ export const BrandsProductsHome = () => {
     return (
         <Carousel  
              animation="slide" indicators={true} 
-            
+             
+        
         >
             {carouselItems.map((chunk, index) => (
-                <Grid container key={index} justifyContent="center">
+                <Grid container key={index} justifyContent="center" >
                     {chunk.map(marca => (
                         <Grid item xs={12} sm={6} md={2} key={marca.id} sx={{ 
                             textAlign: 'center', 
@@ -43,7 +44,7 @@ export const BrandsProductsHome = () => {
                         }}>
                             <Box textAlign="center" p="5px"> 
                                 {/* <Paper sx={{height:"60px", boxShadow:"0 3px 8px rgba(0, 0, 0, .24)", borderRadius: "0 30px", justifyContent: "center", alignItems:"center"}} > */}
-                                <img src={marca.logoBrand} alt={marca.nameBrand} style={{ width: 100 }} />
+                                <img src={marca.logoBrand} alt={marca.nameBrand} style={{ width: 100, marginLeft: 10}} />
                                 {/* <Typography variant="subtitle1">{marca.nameBrand}</Typography> */}
                                 {/* </Paper> */}
                             </Box>
