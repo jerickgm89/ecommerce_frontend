@@ -24,13 +24,16 @@ export const BrandsProductsHome = () => {
     }, []);
 
     return (
-        <Carousel>
+        <Carousel  
+             animation="slide" indicators={false} 
+            
+        >
             {carouselItems.map((chunk, index) => (
                 <Grid container key={index} justifyContent="center">
                     {chunk.map(marca => (
                         <Grid item xs={12} sm={6} md={2} key={marca.id} sx={{ 
                             textAlign: 'center', 
-                            border: '4px solid #000',
+                            // border: '4px solid #000',
                             borderRadius: '20px',
                             p: 2,
                             m: 1,
@@ -40,8 +43,8 @@ export const BrandsProductsHome = () => {
                             },
                         }}>
                             <Box textAlign="center">
-                                {/* <img src={marca.logo} alt={marca.nameBrand} style={{ maxWidth: "100%", maxHeight: "100px" }} /> */}
-                                <Typography variant="subtitle1">{marca.nameBrand}</Typography>
+                                <img src={marca.logoBrand} alt={marca.nameBrand} style={{ width: 100, marginRight: 10 }} />
+                                {/* <Typography variant="subtitle1">{marca.nameBrand}</Typography> */}
                             </Box>
                         </Grid>
                     ))}
