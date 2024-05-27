@@ -8,6 +8,8 @@ import { BrandsProductsHome, CategoryProductsHome, ProductsHome, DealsHome } fro
 import ProductCard from '../../products/components/ProductCard';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/loading/Loading';
+import { ImageSlider } from '../components/ImageSlider';
+
 
 export const HomePage = () => {
   const [openCategories, setOpenCategories] = useState(false);
@@ -61,7 +63,7 @@ export const HomePage = () => {
 
   return (
     <EcommerceUI>
-      <Box mt={8} mb={8} ml={8} mr={8} sx={{ backgroundColor: "#F6F9FC" }}>
+      <Box mt={8} mb={8} ml={8} mr={8} >
         <Grid container spacing={3}>
           {/* <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
             <Typography variant="h5" gutterBottom>
@@ -69,6 +71,8 @@ export const HomePage = () => {
             </Typography>
             <DealsHome />
           </Grid> */}
+
+          <ImageSlider />
 
           <Grid item xs={12} marginTop={5} marginBottom={5}>
             <Grid container justifyContent="space-between" alignItems="center">
@@ -100,7 +104,7 @@ export const HomePage = () => {
             </Carousel>
           </Grid>
           <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
-            <Typography variant="h5" gutterBottom>Marcas</Typography>
+            {/* <Typography variant="h5" gutterBottom>Marcas</Typography> */}
             <BrandsProductsHome />
           </Grid>
           <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
