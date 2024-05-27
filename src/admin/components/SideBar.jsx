@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Collapse, Typography } from '@mui/material';
 import { Checklist, Create, ExpandLess, ExpandMore, MoveToInbox as InboxIcon } from '@mui/icons-material';
 import GroupIcon from '@mui/icons-material/Group';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 
 export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
@@ -141,6 +142,15 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
                         <Checklist color='icon'/>
                       </ListItemIcon>                    
                       <ListItemText primary="Lista de Usuarios Bloqueados" />                  
+                    </ListItemButton>
+                  </Link>
+                  {/* Item 3 */}
+                  <Link to='/admin/postUsers' style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <ListItemButton sx={{ pl: 4 }}>
+                      <ListItemIcon>
+                        <PersonAddAltIcon color='icon'/>
+                      </ListItemIcon>
+                      <ListItemText primary="Crear Usuario" />
                     </ListItemButton>
                   </Link>
                 </List>
