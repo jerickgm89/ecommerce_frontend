@@ -1,11 +1,10 @@
 import { useNavigate, Link } from 'react-router-dom'
-import { Avatar, Button, Grid, TextField, Typography } from "@mui/material"
-import { Person as PersonIcon } from "@mui/icons-material"
-import { usePutUpdateUserMutation, useGetUserByIdQuery } from '../../store/api/ecommerceUserApi'
+import { Button, Grid, TextField, Typography } from "@mui/material"
+import { usePostCreateUserMutation } from '../../store/api/ecommerceUserApi'
 import { useFormik } from "formik"
-import { useEffect } from 'react'
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 
 const validationSchema = yup.object({
     nameUser: yup
@@ -22,43 +21,55 @@ const validationSchema = yup.object({
         .string()
         .matches(/^[0-9]+$/, 'El telefono debe ser un numero')
         .required('El telefono es requerido'),
-    DNI: yup.string()
+    DNI: yup
+        .string()
         .matches(/^[0-9]+$/, 'El DNI debe ser un numero')
         .min(8, 'El DNI debe tener al menos 8 numeros')
         .max(8, 'El DNI debe tener como maximo 8 numeros'),
-  });
+    pictureUser: yup
+        .object()
+        .shape({
+            file: yup.mixed().required('Se requiere una imagen')
+        })
+        .required('Se requiere una imagen'),
+  })
 
-export const EditUsers = ({ id }) => {
+export const PostUsers = () => {
+    const [postUser] = usePostCreateUserMutation()
     const navigate = useNavigate()
-
-    const { data: user, errorUser, isLoading, refetch } = useGetUserByIdQuery(id)
-    const [updateUserMutation, { isSuccess, isError, error }] = usePutUpdateUserMutation()
 
     const fields = [
         { name: 'nameUser', label: 'Nombres', type: 'text', placeholder: 'Ingrese sus nombres' },
         { name: 'lastNameUser', label: 'Apellidos', type: 'text', placeholder: 'Ingrese sus apellidos' },
-        { name: 'emailUser', label: 'Correo', type: 'email', placeholder: 'Ingrese su correo electronico', disabled: true },
+        { name: 'emailUser', label: 'Correo', type: 'email', placeholder: 'Ingrese su correo electronico' },
         { name: 'numberMobileUser', label: 'Telefono', type: 'number', placeholder: 'Ingrese su telefono' },
         { name: 'DNI', label: 'DNI', type: 'number', placeholder: 'Ingrese su DNI sin puntos' },
     ]
 
     const formik = useFormik({
         initialValues: {
-            nameUser: user ? user.nameUser : '',
-            lastNameUser: user ? user.lastNameUser : '',
-            emailUser: user ? user.emailUser : '',
-            numberMobileUser: user ? user.numberMobileUser : '',
-            DNI: user ? user.DNI : '',
+            nameUser: '',
+            lastNameUser: '',
+            emailUser: '',
+            numberMobileUser: '',
+            DNI: '',
+            pictureUser: { file: null },
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {     
-            updateUserMutation({id:user.idUser,...values})
+        onSubmit: (values) => {    
+            const formData = new FormData()
+            formData.append('email', values.emailUser)
+            formData.append('given_name', values.nameUser)
+            formData.append('family_name', values.lastNameUser)
+            formData.append('email_verified', true)
+            formData.append('pictureUser', values.pictureUser.file)
+            postUser(formData)
                 .unwrap()
                 .then(response => {
                     console.log(response)
                     Swal.fire({
                         icon: 'success',
-                        title: 'Usuario actualizado',
+                        title: 'Usuario creado',
                         showConfirmButton: false,
                         timer: 1500
                     })
@@ -73,30 +84,23 @@ export const EditUsers = ({ id }) => {
         },
     })
 
-    useEffect(() => {
-        if (user) {
-            formik.setValues({
-                nameUser: user.nameUser || '',
-                lastNameUser: user.lastNameUser || '',
-                emailUser: user.emailUser || '',
-                numberMobileUser: user.numberMobileUser || '',
-                DNI: user.DNI || '',
-            });
-        }
-    }, [user])
-
     return (
-        <>
+        <Grid
+            container 
+            justifyContent="center" 
+            alignItems="center"
+            style={{ minHeight: '70vh' }}
+        >
             <Grid
                 item 
                 xs={12} 
-                md={12}
-                lg={8}
+                md={8}
+                lg={6}
                 sx={{display: 'flex'}}
-                maxWidth="sm"
             >
-                <Grid container>
-                    <Grid marginBottom={4}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} marginBottom={4}>
+
                         <Typography
                             variant="h4" 
                             sx={{          
@@ -110,34 +114,28 @@ export const EditUsers = ({ id }) => {
                             }}
                         >
                             <div>
-                                <PersonIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark', marginLeft: '15px'}}/>
-                                Editar Usuario
+                                <PersonAddIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
+                                Crear Usuario
                             </div>
                             <Link to="/admin/users" style={{ textDecoration: 'none', color: 'inherit', marginRight: '25px' }}>
                                 <Button variant="outlined">Volver</Button>
                             </Link>
                         </Typography>
 
-                        <Grid container spacing={1} sx={{mt:1}}>
+                        <Grid container spacing={3} sx={{mt:1}}>
                             <Grid
+                                item xs={12}
                                 sx={{
                                     backgroundColor: '#fff', 
                                     borderRadius:2,
                                     p: 3,                
                                 }}
                             >
-                                <form onSubmit={formik.handleSubmit}>
-                                    <Grid container spacing={3}>
-                                        <Grid item xs={12}>
-                                            <Avatar 
-                                                alt={user ? user.nameUser : 'Default Alt'}  
-                                                src={user ? user.pictureUser : 'Default Picture URL'} 
-                                                sx={{width: 56, height: 56}} 
-                                            />
-                                        </Grid>
+                                <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+                                    <Grid container spacing={2}>
 
                                         {fields.map((field, index) => (
-                                            <Grid item md={6} key={index}>
+                                            <Grid item xs={12} sm={6} key={index}>
                                                 <TextField 
                                                     name={field.name}
                                                     label={field.label}
@@ -149,16 +147,38 @@ export const EditUsers = ({ id }) => {
                                                     onBlur={formik.handleBlur}
                                                     error={formik.touched[field.name] && Boolean(formik.errors[field.name])}
                                                     helperText={formik.touched[field.name] && formik.errors[field.name]}
-                                                    disabled={field.disabled}
                                                 />
                                             </Grid>
                                         ))}
 
                                         <Grid item xs={12}>
-                                            <Button variant="contained" color="primary" type="submit" disabled={!formik.dirty}>
-                                                Guardar cambios
+                                            <input
+                                                accept="image/*"
+                                                id="contained-button-file"
+                                                name="pictureUser"
+                                                type="file"
+                                                onChange={(event) => {
+                                                    formik.setFieldValue("pictureUser", { file: event.currentTarget.files[0] });
+                                                }}
+                                                onBlur={formik.handleBlur}
+                                                style={{ display: "none" }}
+                                            />
+                                            <label htmlFor="contained-button-file">
+                                                <Button variant="contained" component="span" fullWidth>
+                                                    Cargar imagen
+                                                </Button>
+                                            </label>
+                                            {formik.touched.pictureUser && formik.errors.pictureUser?.file && (
+                                                <Typography color="error">{formik.errors.pictureUser.file}</Typography>
+                                            )}
+                                        </Grid>
+
+                                        <Grid item xs={12}>
+                                            <Button variant="contained" color="primary" type="submit" fullWidth disabled={!formik.dirty}>
+                                                Crear usuario
                                             </Button>
                                         </Grid>
+
                                     </Grid>
                                 </form>
                             </Grid>
@@ -166,6 +186,6 @@ export const EditUsers = ({ id }) => {
                     </Grid>
                 </Grid>
             </Grid>
-        </>
+        </Grid>
     )
 }
