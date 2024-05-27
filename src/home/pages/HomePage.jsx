@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { Box, Grid, Typography, Button } from "@mui/material";
+import { Box, Grid, Typography, Button, Divider } from "@mui/material";
 import { EcommerceUI } from "../../ui";
 import { useFilterProductsQuery } from '../../store/api';
 import Carousel from 'react-material-ui-carousel';
@@ -9,6 +9,7 @@ import ProductCard from '../../products/components/ProductCard';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../../components/loading/Loading';
 import { ImageSlider } from '../components/ImageSlider';
+import { BannerInfo } from '../components/BannerInfo';
 
 
 export const HomePage = () => {
@@ -63,56 +64,73 @@ export const HomePage = () => {
 
   return (
     <EcommerceUI>
-      <Box mt={8} mb={8} ml={8} mr={8} >
-        <Grid container spacing={3}>
-          {/* <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
-            <Typography variant="h5" gutterBottom>
-              Ofertas del día
-            </Typography>
-            <DealsHome />
-          </Grid> */}
+      <ImageSlider />
+      <Divider />
+      <BannerInfo/>
+      <Divider />
+      
 
-          <ImageSlider />
+        <Box mt={8} mb={8}   >
 
-          <Grid item xs={12} marginTop={5} marginBottom={5}>
-            <Grid container justifyContent="space-between" alignItems="center">
-              <Grid item marginLeft={2}>
-                <Typography variant="h5" gutterBottom>
-                  Productos
-                </Typography>
-              </Grid>
-              <Grid item marginRight={2}>
-                <Link to={'/products'} style={{ textDecoration: 'none' }}>
-                  <Button sx={{ backgroundColor: 'primary.main', transition: 'background-color 0.3s', '&:hover': { backgroundColor: '#277AC9' }, color: '#F3F3F3' }}>Todos los productos</Button>
-                </Link>
-              </Grid>
-            </Grid>
-            <Carousel>
-              {carouselItems.map((chunk, index) => (
-                <Grid container spacing={1} key={index} justifyContent={'center'}>
-                  {chunk.map(product => (
-                    <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={2.5} marginTop={5}>
-                      <ProductCard
-                        product={product}
-                        dispatch={dispatch}
-                        cart={cart}
-                      />
-                    </Grid>
-                  ))}
+
+          <Grid container spacing={3}>
+            {/* <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
+              <Typography variant="h5" gutterBottom>
+                Ofertas del día
+              </Typography>
+              <DealsHome />
+            </Grid> */}
+            
+
+
+            <Grid item xs={12} marginTop={5} marginBottom={5}>
+              <Grid container justifyContent="end" alignItems="center">
+                {/* <Grid item marginLeft={2}>
+                  <Typography variant="h5" gutterBottom>
+                    Productos
+                  </Typography>
+                </Grid> */}
+                <Grid item marginRight={6}>
+                  <Link to={'/products'} style={{ textDecoration: 'none' }}>
+                    <Button 
+                      variant="contained"
+                      sx={{ 
+                        // backgroundColor: 'primary.main',
+                        transition: 'background-color 0.3s', 
+                        '&:hover': { backgroundColor: '#277AC9' }, 
+                        color: '#F3F3F3' }}>
+                          Todos los productos
+                    </Button>
+                  </Link>
                 </Grid>
-              ))}
-            </Carousel>
+              </Grid>
+              <Carousel>
+                {carouselItems.map((chunk, index) => (
+                  <Grid container spacing={1} key={index} justifyContent={'center'}>
+                    {chunk.map(product => (
+                      <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={2.5} marginTop={5}>
+                        <ProductCard
+                          product={product}
+                          dispatch={dispatch}
+                          cart={cart}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                ))}
+              </Carousel>
+            </Grid>
+
+            <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
+              {/* <Typography variant="h5" gutterBottom>Marcas</Typography> */}
+              <BrandsProductsHome />
+            </Grid>
+            <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
+              <Typography variant="h5" gutterBottom>Categorias</Typography>
+              <CategoryProductsHome />
+            </Grid>
           </Grid>
-          <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
-            {/* <Typography variant="h5" gutterBottom>Marcas</Typography> */}
-            <BrandsProductsHome />
-          </Grid>
-          <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
-            <Typography variant="h5" gutterBottom>Categorias</Typography>
-            <CategoryProductsHome />
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
     </EcommerceUI>
   );
 };

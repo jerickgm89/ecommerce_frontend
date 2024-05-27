@@ -52,8 +52,8 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     width: '100%',
     height: '100%',
-    borderRadius: 20,
-    border: '1px solid #eee',
+    // borderRadius: 20,
+    // border: '1px solid #eee',
     overflow: 'hidden',
   },
   image: {
@@ -107,7 +107,9 @@ export const ImageSlider = () => {
       });
     } else {
       const isLastSlide = currentIndex === data.length - 1;
-      if (!isLastSlide) {
+      if (isLastSlide) {
+        setCurrentIndex(0); 
+      } else {
         setCurrentIndex(curr => curr + 1);
       }
     }
