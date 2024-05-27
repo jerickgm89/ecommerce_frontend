@@ -11,6 +11,7 @@ import Loading from '../../components/loading/Loading';
 import { ImageSlider } from '../components/ImageSlider';
 import { BannerInfo } from '../components/BannerInfo';
 import { BannerItems } from '../components/BannerItems';
+import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
 
 
 export const HomePage = () => {
@@ -90,7 +91,7 @@ export const HomePage = () => {
             
 
 
-            <Grid item xs={12} marginTop={5} marginBottom={5}>
+            <Grid item xs={12} marginTop={5} >
               <Grid container justifyContent="end" alignItems="center">
                 {/* <Grid item marginLeft={2}>
                   <Typography variant="h5" gutterBottom>
@@ -99,15 +100,45 @@ export const HomePage = () => {
                 </Grid> */}
                 <Grid item marginRight={6}>
                   <Link to={'/products'} style={{ textDecoration: 'none' }}>
-                    <Button 
-                      variant="contained"
-                      sx={{ 
-                        // backgroundColor: 'primary.main',
-                        transition: 'background-color 0.3s', 
-                        '&:hover': { backgroundColor: '#277AC9' }, 
-                        color: '#F3F3F3' }}>
-                          Todos los productos
-                    </Button>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      color: '#2B3445',
+                      fontSize: '14px',
+                      transition: 'color 0.3s',
+                      '&:hover': { color: '#4a4a4a' },
+                      position: 'relative',
+
+                      '&:hover::after': {
+                        content: '""',
+                        position: 'absolute',
+                        width: '100%',
+                        height: '2px',
+                        bottom: '-2px',
+                        left: 0,
+                        backgroundColor: '#4a4a4a',
+                        transform: 'scaleX(1)',
+                        transition: 'transform 0.3s ease',
+                        transformOrigin: 'bottom left',
+                      },
+                      '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        width: '100%',
+                        height: '2px',
+                        bottom: '-2px',
+                        left: 0,
+                        backgroundColor: '#4a4a4a',
+                        transform: 'scaleX(0)',
+                        transition: 'transform 0.3s ease',
+                        transformOrigin: 'bottom left',
+                      }
+                    }}
+                  >
+                    Más productos <ArrowForwardOutlinedIcon sx={{ ml: 1 }} />
+                  </Typography>
                   </Link>
                 </Grid>
               </Grid>
