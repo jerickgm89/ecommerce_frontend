@@ -79,7 +79,7 @@ export const ProductsPage = () => {
   return (
     <EcommerceUI>
       <ErrorBoundary>
-        <Box m={8} sx={{ backgroundColor: "#F6F9FC" }}>
+        <Box m={8} >
           <Typography variant='h3' gutterBottom>Products</Typography>
           <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} sm={6} md={4} lg={3}>

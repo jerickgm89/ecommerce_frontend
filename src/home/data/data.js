@@ -12,7 +12,7 @@ export const data = [
       id: 4, imgUrl: "https://d28hi93gr697ol.cloudfront.net/9ef84dda-32dd-4016-7da3-1c0a824fffb4/modulos/banner-motorola-web-6616d8d8e6294.webp"
     },
     {
-      id: 5, imgUrl: "https://acdn.mitiendanube.com/stores/896/208/themes/amazonas/1-slide-1693872535371-4125481094-9b79d6b632534dd7339ba8ed9d74d7fa1693872572-1920-1920.webp?1113910160"
+      id: 5, imgUrl: "https://tecstore.pe/media/Flashfish/TEC-STORE_Semana-3_Banner-Web-Cat-Desktop.jpg"
     },
     {
       id: 6, imgUrl: "https://images.ctfassets.net/weuwbjv1v9lc/3Pe0XyXKh4KrYfG2BuGd6r/0bcfad506c5e41d072a5a3d750685876/samsung-galaxy-ia-tienda-claro-desktop.webp"
@@ -22,6 +22,9 @@ export const data = [
     },
     {
       id: 8, imgUrl: "https://cdn-xiaomi.waugi.com.ar/img/cms/Banners/20240509/Redmi-13C-slider-desktop%201%20(1).jpg"
+    },
+    {
+      id: 9, imgUrl: "https://tecstore.pe/media/banner-tecstore-1430x450-huawei_1.jpg"
     },
   ];
   

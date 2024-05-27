@@ -5,7 +5,7 @@ export const EcommerceUI = ({children}) => {
   return (
     <>
         <NavBar />
-        <Grid sx={{px: { xs: 1, sm: 2, md: 3, lg: 8 }}}>
+        <Grid>
           {children}
         </Grid>
         <Footer />
