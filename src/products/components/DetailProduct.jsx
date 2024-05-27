@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { Typography, Box, Grid, Button, Container, Tab, Tabs } from '@mui/material';
+import { Typography, Box, Grid, Button, Container, Tab, Tabs, Divider, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux'; // Importa useDispatch desde react-redux
 import { addToCart } from '../../store/cartShopping/cartSlice';
+import { ReviewList } from './ReviewList';
+import { QuestionsProduct } from './QuestionsProduct';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts }) => {
   const [tabValue, setTabValue] = useState(0);
@@ -26,6 +29,8 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
     dispatch(addToCart(product)); // Despacha la acción addToCart con los detalles del producto
   };
 
+  const queryClient = new QueryClient();
+  
   return (
     <Container>
       <Grid container spacing={3}>
@@ -59,7 +64,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
           </Box>
         </Grid>
 
-        <Box sx={{ width: '100%' }}>
+        {/* <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs
               value={tabValue}
@@ -69,24 +74,41 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
               textColor="secondary"
             >
 
-              <Tab label="Description" sx={{ textTransform: 'none' }} />
-              <Tab label="Review" sx={{ textTransform: 'none' }} />
+              <Tab label="Descripcion" sx={{ textTransform: 'none' }} />
+              <Tab label="Comentarios" sx={{ textTransform: 'none' }} />
+              <Tab label="Reseña" sx={{ textTransform: 'none' }} />
             </Tabs>
           </Box>
           {tabValue === 0 && (
             <Box p={3}>
-              <Typography variant="body1" gutterBottom><strong>Description:</strong> {descriptionProduct}</Typography>
+              <Typography variant="body1" gutterBottom><strong>Descripcion:</strong> {descriptionProduct}</Typography>
             </Box>
           )}
           {tabValue === 1 && (
             <Box p={3}>
-              <Typography variant="body1" gutterBottom><strong>Review:</strong>
+              <Typography variant="body1" gutterBottom><strong>Comentarios</strong>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero eveniet distinctio ipsa cumque ab dolore, quod pariatur deserunt, mollitia iste similique tempore delectus magnam facere inventore accusamus fugiat officiis cum.
               </Typography>
             </Box>
           )}
-        </Box>
+          {tabValue === 2 && (
+            <Box p={3}>
+
+              <ReviewList />
+            </Box>
+          )}
+        </Box> */}
       </Grid>
+      <Divider sx={{mt:2}}/>
+      <Box p={3}>
+              <Typography variant="body1" gutterBottom><strong>Descripcion:</strong> {descriptionProduct}</Typography>
+            </Box>
+      <Divider sx={{mt:2}}/>
+      <QuestionsProduct />
+      <Divider sx={{mt:2, mb:3}}/>
+      <QueryClientProvider client={queryClient}>
+        <ReviewList />
+      </QueryClientProvider>
     </Container>
   );
 };
