@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { data } from '../data/data';
 import { makeStyles } from '@mui/styles';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: 280,
     margin: '0 auto',
-    overflow: 'hidden', // Agregado para prevenir desplazamiento no deseado
+    overflow: 'hidden', 
   },
   sliderContainer: {
     position: 'relative',
