@@ -1,10 +1,11 @@
+import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi"
+import { usePostCreateReviewMutation } from "../../store/api/ecommerceReviewApi";
 import { useState } from "react";
 import { Box, Button, Rating, TextField, Typography } from "@mui/material"
 import { Star as StarIcon} from "@mui/icons-material";
 import { useFormik } from "formik"
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
-import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi"
 import { useParams } from "react-router-dom"
 
 
@@ -21,7 +22,7 @@ const labels = {
   }
 
 const validationSchema = yup.object({
-    review: yup
+    descriptionReview: yup
         .string()
         .required('La reseña es requerida'),
 });
@@ -36,28 +37,37 @@ export const AddNewReview = () => {
     console.log('puntaje ' + puntaje);
 
     const { data: userData, error, isLoading } = useGetUserByTokenQuery(TOKEN);
-    console.log(userData);
+    const idUser = userData ? userData.idUser : '';
+    console.log(idUser);
 
     const { id } = useParams();
     const idProduct = id;
     console.log('Idproducto ' +idProduct);
 
+    const [createReview, { isSuccess, isError, error: errorReview }] = usePostCreateReviewMutation();
+
     const formik = useFormik({
         initialValues: {
             idProduct: idProduct,
-            idUser: userData ? userData.idUser : '',
-            valueRate: 0,
-            review: '',
+            idUser: idUser,
+            scoreReview: 0,
+            descriptionReview: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
-            Swal.fire({
-                icon: 'success',
-                title: 'Reseña enviada correctamente',
-                showConfirmButton: false,
-                timer: 1500
-            })
+        onSubmit: (values, { resetForm }) => {
+            createReview(values).unwrap()
+                .then(response => {
+                    console.log(response);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Reseña enviada correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    resetForm();
+                })
+            // alert(JSON.stringify(values, null, 2));
+
         },
     });
 
@@ -74,7 +84,7 @@ export const AddNewReview = () => {
                     getLabelText={getLabelText}
                     onChange={(event, newValue) => {
                         setvalue(newValue);
-                        formik.setFieldValue('valueRate', newValue);
+                        formik.setFieldValue('scoreReview', newValue);
                     }}
                     onChangeActive={(event, newHover) => {
                         setHover(newHover);
@@ -89,11 +99,11 @@ export const AddNewReview = () => {
             <form onSubmit={formik.handleSubmit}>
                 <TextField
                     label="Escribe tu reseña"
-                    name="review"
+                    name="descriptionReview"
                     type="text"
-                    value={formik.values.review}
+                    value={formik.values.descriptionReview}
                     onChange={formik.handleChange}
-                    error={formik.touched.review && Boolean(formik.errors.review)}
+                    error={formik.touched.descriptionReview && Boolean(formik.errors.descriptionReview)}
                     multiline
                     fullWidth
                     sx={{mb: 2}}

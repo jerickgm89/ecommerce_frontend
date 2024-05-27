@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'; // Importa useDispatch desde react-re
 import { addToCart } from '../../store/cartShopping/cartSlice';
 import { ReviewList } from './ReviewList';
 import { QuestionsProduct } from './QuestionsProduct';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts }) => {
   const [tabValue, setTabValue] = useState(0);
@@ -28,6 +29,8 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
     dispatch(addToCart(product)); // Despacha la acción addToCart con los detalles del producto
   };
 
+  const queryClient = new QueryClient();
+  
   return (
     <Container>
       <Grid container spacing={3}>
@@ -103,7 +106,9 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
       <Divider sx={{mt:2}}/>
       <QuestionsProduct />
       <Divider sx={{mt:2, mb:3}}/>
-      <ReviewList />
+      <QueryClientProvider client={queryClient}>
+        <ReviewList />
+      </QueryClientProvider>
     </Container>
   );
 };

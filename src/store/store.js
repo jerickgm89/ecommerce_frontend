@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { ecommerceApi, ecommerceUserApi } from "./api";
+import { ecommerceApi, ecommerceReviewApi, ecommerceUserApi } from "./api";
 import { productSlice } from './products/productSlice'; 
 import { userSlice } from './users/userSlice';
 import { searchBarSlice } from './searchBar/searchBarSlice';
@@ -16,11 +16,13 @@ export const store = configureStore({
         searchBar: searchBarSlice.reducer,
         [ecommerceApi.reducerPath]: ecommerceApi.reducer,
         [ecommerceUserApi.reducerPath]: ecommerceUserApi.reducer,
+        [ecommerceReviewApi.reducerPath]: ecommerceReviewApi.reducer,
     },
     middleware: (getDefaultMiddleware) => 
         getDefaultMiddleware()
             .concat(ecommerceApi.middleware)
-            .concat(ecommerceUserApi.middleware),
+            .concat(ecommerceUserApi.middleware)
+            .concat(ecommerceReviewApi.middleware),
 });
 
 
