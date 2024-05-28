@@ -120,6 +120,18 @@ export const ecommerceApi = createApi({
             }),
             invalidatesTags: ['Brands'],
         }),
+
+        updateCategory: builder.mutation({
+            query: ({ id, updatedCategory }) => ({
+                url: `/products/category/${id}`,
+                method: 'PUT',
+                body: updatedCategory
+            }),
+            invalidatesTags: ['Categories'],
+        }),
+
+       
+
     }),
 });
 
@@ -141,4 +153,5 @@ export const {
     useCreateBrandMutation,
     useGetProductsLockedQuery,
     usePostOrderMutation,
+    useUpdateCategoryMutation
  } = ecommerceApi;

@@ -36,10 +36,11 @@ export const BrandsProductsHome = () => {
                             textAlign: 'center', 
                             // border: '4px solid #000',
                             borderRadius: '20px',
-                            
+                            color: '#646464',
                             transition: 'background-color 0.5s',
                             '&:hover': {
-                              backgroundColor: 'primary.main',
+                              backgroundColor: '#fff',
+                            //   boxShadow: "4px 4px 10px"
                             },
                         }}>
                             <Box textAlign="center" p="5px"> 

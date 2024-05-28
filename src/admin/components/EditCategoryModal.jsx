@@ -1,56 +1,44 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
-import { useCreateCategoryMutation, useGetCategoriesQuery } from "../../store/api";
+import {useUpdateCategoryMutation } from "../../store/api";
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 
-const CreateCategoryModal = ({ open, handleClose }) => {
-    const [createCategory] = useCreateCategoryMutation();
-    const { data: categories } = useGetCategoriesQuery();
+export const EditCategoryModal = ({ open, handleClose, category }) => {
+    const [editCategory] = useUpdateCategoryMutation();
 
     const validationSchema = yup.object({
         nameCategory: yup.string()
             .required('El nombre de la categoría es requerido')
-            .test('uniqueName', 'Ya existe una categoría con este nombre', function(value) {
-                // Verificar si ya existe una categoría con el mismo nombre
-                return !categories.some(category => category.nameCategory === value);
-            }),
-            
+            .matches(/^[A-Z][a-zA-Z]*$/, 'La primera letra debe ser mayúscula'),
         descriptionCategory: yup.string().required('La descripción de la categoría es requerida'),
     });
 
     const formik = useFormik({
         initialValues: {
-            nameCategory: '',
-            descriptionCategory: '',
-            imageCategory: null,
+            nameCategory: category.nameCategory,
+            descriptionCategory: category.descriptionCategory,
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
             try {
-                const formData = new FormData();
-                formData.append('nameCategory', values.nameCategory);
-                formData.append('descriptionCategory', values.descriptionCategory);
-                if (values.imageCategory) {
-                    formData.append('imageCategory', values.imageCategory);
-                }
-                await createCategory(formData);
+                await editCategory({
+                    id: category.id,
+                    nameCategory: values.nameCategory,
+                    descriptionCategory: values.descriptionCategory,
+                });
                 handleClose();
             } catch (error) {
-                console.error('Error creando la categoría:', error);
+                console.error('Error editando la categoría:', error);
             }
         },
     });
 
-    const handleFileChange = (event) => {
-        formik.setFieldValue('imageCategory', event.currentTarget.files[0]);
-    };
-
     return (
         <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>Crear Nueva Categoría</DialogTitle>
+            <DialogTitle>Editar Categoría</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-                    Por favor, ingresa el nombre y la descripción de la nueva categoría.
+                    Edita el nombre y la descripción de la categoría.
                 </DialogContentText>
                 <TextField
                     autoFocus
@@ -77,19 +65,13 @@ const CreateCategoryModal = ({ open, handleClose }) => {
                     error={formik.touched.descriptionCategory && Boolean(formik.errors.descriptionCategory)}
                     helperText={formik.touched.descriptionCategory && formik.errors.descriptionCategory}
                 />
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    style={{ marginTop: 20 }}
-                />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Cancelar</Button>
-                <Button onClick={formik.handleSubmit}>Crear</Button>
+                <Button onClick={formik.handleSubmit}>Guardar Cambios</Button>
             </DialogActions>
         </Dialog>
     );
 };
 
-export default CreateCategoryModal;
+
