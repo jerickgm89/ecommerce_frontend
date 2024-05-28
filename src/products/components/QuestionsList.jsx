@@ -1,4 +1,4 @@
-import { useGetUsersByIdsQuery } from "../../hooks/useGetUsersByIdsQuery";
+import { useGetProductsQuery } from "../../hooks/useGetProductsByIdsQuery";
 import { useGetQuestionsQuery } from "../../store/api/ecommerceQuestionsApi";
 import { useGetUserByTokenQuery } from "../../store/api";
 import { useState } from "react";
@@ -12,17 +12,25 @@ const Token = localStorage.getItem('token');
 
 export const QuestionsList = () => {
     const { data: userData, error, isLoading } = useGetUserByTokenQuery(Token);
+    const { id } = useParams();
+    const productId = id;
     console.log(userData);
     const [showResponseInput, setShowResponseInput] = useState(false);
     const [responseIndex, setResponseIndex] = useState(null);
     
     const { data: questionData = [], error: errorQuestion } = useGetQuestionsQuery();
     console.log(questionData);
+    const idProductQuestion = [...new Set(questionData.map(question => question.idProduct))];
+    console.log(idProductQuestion);
+    const { data: productData, error: errorProduct } = useGetProductsQuery(idProductQuestion);
+    console.log(productData);
     const [isHovered, setIsHovered] = useState(new Array(questionData.length).fill(false));
   return (
     <>
         {
-            userData && questionData.map((question, index) => (
+            questionData
+                .filter(question => question.idProduct === Number(productId))
+                .map((question, index) => (
                 <Box 
                     key={index} 
                     sx={{mt: 3}}

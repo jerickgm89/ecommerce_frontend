@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import { Box, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Collapse, Typography } from '@mui/material';
 import { Checklist, Create, ExpandLess, ExpandMore, MoveToInbox as InboxIcon } from '@mui/icons-material';
 import GroupIcon from '@mui/icons-material/Group';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 
 export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
   const [open, setOpen] = useState(false)
   const [openUsers, setOpenUsers] = useState(false)
+  const [openQuestions, setOpenQuestions] = useState(false)
 
   const handleClick = () => {
     setOpen(!open)
@@ -16,6 +18,10 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
   const handleClickUsers = () => {
     setOpenUsers(!openUsers)
+  }
+
+  const handleClickQuestions = () => {
+    setOpenQuestions(!openQuestions)
   }
 
   const menuItems = [
@@ -40,7 +46,16 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
         { name: "Lista de Usuarios Bloqueados", link: "/admin/lockedUsers", icon: <Checklist color='icon'/> },
         { name: "Crear Usuario", link: "/admin/postUsers", icon: <PersonAddAltIcon color='icon'/> }
       ]
-    }
+    },
+    {
+      name: "Preguntas",
+      icon: <QuestionMarkIcon color='icon'/>,
+      open: openQuestions,
+      handleClick: handleClickQuestions,
+      subItems: [
+        { name: "Lista de Preguntas", link: "/admin/questions", icon: <Checklist color='icon'/> }
+      ]
+    },
   ]
 
   return (
