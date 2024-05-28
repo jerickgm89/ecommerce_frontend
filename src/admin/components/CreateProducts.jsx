@@ -74,6 +74,7 @@ export const CreateProducts = () => {
 
     const [openCategoryModal, setOpenCategoryModal] = useState(false);
     const [openBrandModal, setOpenBrandModal] = useState(false);
+    
 
     useEffect(() => {
       // Refrescar marcas después de crear una nueva

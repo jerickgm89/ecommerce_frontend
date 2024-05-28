@@ -43,8 +43,7 @@ const validationSchema = yup.object({
 	description: yup
         .string(),
     imageProducts: yup
-        .string()
-        .required('Se requiere una imagen'),
+            .string().url('La URL de la imagen no es válida').required('La imagen es requerida'),
     model: yup
         .string()
         .required('El modelo es requerido'),
