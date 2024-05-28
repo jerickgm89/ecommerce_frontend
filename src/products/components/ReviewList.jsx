@@ -1,4 +1,4 @@
-import {useGetUsersByIdsQuery}  from "../../hooks/useGetUsersByIdsQuery"
+import { useGetUsersByIdsQuery }  from "../../hooks/useGetUsersByIdsQuery"
 import { useGetUsersQuery, useGetUserByIdQuery } from "../../store/api/ecommerceUserApi"
 import { useGetReviewsQuery } from "../../store/api/ecommerceReviewApi"
 import { Avatar, Box, Rating, Typography } from "@mui/material"
@@ -13,22 +13,16 @@ console.log(TOKEN);
 
 export const ReviewList = () => {
     const { data: userData, error, isLoading } = useGetUsersQuery();
-    console.log(userData);
     const idUser = userData ? userData.idUser : '';
-    console.log(idUser);
 
     const { id } = useParams();
     const idProductPage = id;
-    console.log(idProductPage);
 
     const { data: reviewData = [], error: errorReview, isLoading: isLoadingReview } = useGetReviewsQuery();
-    console.log(reviewData);
     
     const idUserReview = [...new Set(reviewData.map(review => review.idUser))];
-    console.log(idUserReview);
 
     const { data: userDataReview, error: errorUserReview, isLoading: isLoadingUserReview } = useGetUsersByIdsQuery(idUserReview);
-    console.log(userDataReview);
   return (
     <>
        {
