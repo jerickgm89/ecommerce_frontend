@@ -1,44 +1,56 @@
+import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi"
+import { usePostCreateQuestionMutation } from "../../store/api/ecommerceQuestionsApi";
+import { useParams } from "react-router-dom"
 import { Box, Button, Grid, TextField, Typography } from "@mui/material"
 import { useFormik } from "formik"
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
-import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi"
-import { useParams } from "react-router-dom"
 
 const validationSchema = yup.object({
-    question: yup
-      .string()
-      .required('La pregunta es requerida'),
+  comments: yup
+    .string()
+    .required('La pregunta es requerida'),
 });
 
 const TOKEN = localStorage.getItem('token');
-
+console.log(TOKEN);
 
 export const QuestionsProduct = () => {
 
   const { id } = useParams();
-  const { data: userData, error, isLoading, isSuccess } = useGetUserByTokenQuery(TOKEN);
+  const { data: userData, error, isLoading: isLoadingToken } = useGetUserByTokenQuery(TOKEN);
   const idUser = userData ? userData.idUser : '';
+  console.log(idUser);
   const idProduct = id;
 
+  const [createQuestion, { isSuccess: successQuestion, isError: errorQuestion }] = usePostCreateQuestionMutation();
+  
   const formik = useFormik({
     initialValues: {
       idProduct: idProduct,
       idUser: idUser,
-      question: '',
+      comments: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {     
-      alert(JSON.stringify(values, null, 2));
-      Swal.fire({
-        icon: 'success',
-        title: 'Pregunta enviada correctamente',
-        showConfirmButton: false,
-        timer: 1500
+    onSubmit: (values, { resetForm }) => {     
+      createQuestion(values).unwrap()
+      .then(response => {
+        console.log(response);
+        Swal.fire({
+          icon: 'success',
+          title: 'Pregunta enviada correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        resetForm();
+        window.location.reload();
       })
     },
   });
+
   return (
+    isLoadingToken ? 
+    <Typography variant="h6">Cargando...</Typography> :
     <>
       <Grid item xs={12} sx={{mt:2}}>
         <Typography variant="h5" gutterBottom> Preguntas </Typography>
@@ -46,12 +58,12 @@ export const QuestionsProduct = () => {
           <Typography variant="h7"> ¿Tienes alguna pregunta sobre este producto? </Typography>
           <form onSubmit={formik.handleSubmit}>
             <TextField
-              name="question"
+              name="comments"
               label="Escribe tu pregunta"
               type="text"
-              value={formik.values.question}
+              value={formik.values.comments}
               onChange={formik.handleChange}
-              error={formik.touched.question && Boolean(formik.errors.question)}
+              error={formik.touched.comments && Boolean(formik.errors.comments)}
               multiline
               fullWidth
               sx={{mt: 1, mb: 2}}

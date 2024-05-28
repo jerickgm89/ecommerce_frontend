@@ -5,6 +5,7 @@ import { addToCart } from '../../store/cartShopping/cartSlice';
 import { ReviewList } from './ReviewList';
 import { QuestionsProduct } from './QuestionsProduct';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import { QuestionsList } from './QuestionsList';
 
 const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts }) => {
   const [tabValue, setTabValue] = useState(0);
@@ -105,8 +106,9 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
             </Box>
       <Divider sx={{mt:2}}/>
       <QuestionsProduct />
-      <Divider sx={{mt:2, mb:3}}/>
       <QueryClientProvider client={queryClient}>
+        <QuestionsList />
+          <Divider sx={{mt:2, mb:3}}/>
         <ReviewList />
       </QueryClientProvider>
     </Container>

@@ -34,15 +34,12 @@ export const AddNewReview = () => {
     const [value, setvalue] = useState(2)
     const [hover, setHover] = useState(-1)
     const puntaje = value;
-    console.log('puntaje ' + puntaje);
 
     const { data: userData, error, isLoading } = useGetUserByTokenQuery(TOKEN);
     const idUser = userData ? userData.idUser : '';
-    console.log(idUser);
 
     const { id } = useParams();
     const idProduct = id;
-    console.log('Idproducto ' +idProduct);
 
     const [createReview, { isSuccess, isError, error: errorReview }] = usePostCreateReviewMutation();
 
