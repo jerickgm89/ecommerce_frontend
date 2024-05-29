@@ -10,6 +10,7 @@ import CartShoppingIcon from '../../cartShooping/component/CartShoopingIcon';
 import { SearchBar } from '../searchBar';
 import { useGetIsActiveQuery } from "../../store/api/ecommerceUserApi";
 import Swal from 'sweetalert2';
+import styles from './NavBar.module.css';
 
 const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
 const settings = ['Perfil', 'Panel Administrador', 'Salir'];
@@ -52,7 +53,10 @@ export const NavBar = () => {
                 icon: 'error',
                 title: '¡Cuenta bloqueada!',
                 text: 'Su cuenta está bloqueada. Por favor, contacte al soporte',
-                confirmButtonText: 'Cerrar'
+                confirmButtonText: 'Cerrar',
+                customClass: {
+                    confirmButton: styles['swal-confirm-button']
+                }
             }).then(() => {
                 logout({ returnTo: window.location.origin });
             });
