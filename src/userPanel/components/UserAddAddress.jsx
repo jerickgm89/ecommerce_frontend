@@ -1,14 +1,15 @@
-import { useAuth0 } from "@auth0/auth0-react"
+import { useGetUserByTokenQuery } from '../../store/api/ecommerceUserApi';
+import { usePutUpdateUserMutation } from '../../store/api/ecommerceUserApi'
 import { useNavigate, Link } from 'react-router-dom';
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { 
   Place as PlaceIcon,
 } from "@mui/icons-material";
-import { usePutUpdateUserMutation } from '../../store/api/ecommerceUserApi'
-import { useUserAuthentication } from "../../hooks/useUserAuthentication";
 import { useFormik } from "formik"
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
+
+const TOKEN = localStorage.getItem('token');
 
 const validationSchema = yup.object({
     identifierName: yup
@@ -26,34 +27,40 @@ const validationSchema = yup.object({
     cityAddress: yup
       .string()
       .required('La ciudad es requerida'),
-  
+    // postalCode: yup
+    //   .string()
+    //   .required('El codigo postal es requerido'),  
 });
 
 export const UserAddAddress = () => {
   const navigate = useNavigate();
 
-  const { user, isAuthenticated } = useAuth0();
-  const userData = useUserAuthentication(user, isAuthenticated);
+  const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
+  console.log(userData);
   const [updateUserMutation, { isSuccess, isError, error }] = usePutUpdateUserMutation();
 
   const fields = [
-    { name: 'identifierName', label: 'Nombre', type: 'text', placeholder: 'Tipo de direccion' },
-    { name: 'addressName', label: 'Direccion', type: 'email', placeholder: 'Ingrese su correo'},
-    { name: 'numberAddress', label: 'Numero de calle', type: 'number', placeholder: 'Ingrese sus apellidos' },
-    { name: 'provinceAddress', label: 'Provincia', type: 'text', placeholder: 'Ingrese su telefono' },
+    { name: 'identifierName', label: 'Tipo', type: 'text', placeholder: 'Tipo de direccion' },
+    { name: 'addressName', label: 'Direccion', type: 'text', placeholder: 'Ingrese su correo'},
+    { name: 'numberAddress', label: 'Numero de calle', type: 'text', placeholder: 'Ingrese su numero de calle, mz, lt' },
+    { name: 'provinceAddress', label: 'Provincia', type: 'text', placeholder: 'Ingrese su Provincia' },
     { name: 'cityAddress', label: 'Ciudad', type: 'text', placeholder: 'Ingrese su DNI sin puntos' },
+    // { name: 'postalCode', label: 'Codigo postal', type: 'number', placeholder: 'Ingrese su codigo postal' },
   ];
 
+  
   const formik = useFormik({
     initialValues: {
-      identifierName: userData ? userData.identifierName : '',
-      addressName: userData ? userData.addressName : '',
-      numberAddress: userData ? userData.numberAddress : '',
-      provinceAddress: userData ? userData.provinceAddress : '',
-      cityAddress: userData ? userData.cityAddress : '',
+      identifierName: '',
+      addressName: '',
+      numberAddress: '',
+      provinceAddress: '',
+      cityAddress: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {     
+    onSubmit: (values) => {  
+      
+      console.log(values);  
       updateUserMutation({id:userData.idUser,...values})
         .unwrap()
         .then(response => {
@@ -65,8 +72,8 @@ export const UserAddAddress = () => {
             timer: 1500
           })
           setTimeout(function(){
-            navigate('/user');
-            window.location.reload();
+            navigate('/user/address');
+            // window.location.reload();
           }, 2000);
         })
         .catch(error => {

@@ -1,14 +1,16 @@
-import { useAuth0 } from "@auth0/auth0-react"
 import { useNavigate, Link } from 'react-router-dom';
-import { Avatar, Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Grid, styled, TextField, Typography } from "@mui/material";
 import { 
   Person as PersonIcon,
+  CloudUpload as CloudUploadIcon
 } from "@mui/icons-material";
-import { usePutUpdateUserMutation } from './../../store/api/ecommerceUserApi'
-import { useUserAuthentication } from "../../hooks/useUserAuthentication";
+import { usePutUpdateUserMutation, useGetUserByTokenQuery } from './../../store/api/ecommerceUserApi'
 import { useFormik } from "formik"
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
+import { useState } from 'react';
+
+const TOKEN = localStorage.getItem('token');
 
 const validationSchema = yup.object({
   nameUser: yup
@@ -29,6 +31,11 @@ const validationSchema = yup.object({
     .matches(/^[0-9]+$/, 'El DNI debe ser un numero')
     .min(8, 'El DNI debe tener al menos 8 numeros')
     .max(8, 'El DNI debe tener como maximo 8 numeros'),
+  pictureUser: yup
+    .object()
+    .shape(
+      {file: yup.mixed().required('Se requiere una imagen')}
+    )
 
 });
 
@@ -36,9 +43,16 @@ export const UserEditProfile = () => {
 
   const navigate = useNavigate();
 
-  const { user, isAuthenticated } = useAuth0();
-  const userData = useUserAuthentication(user, isAuthenticated);
+  const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
   const [updateUserMutation, { isSuccess, isError, error }] = usePutUpdateUserMutation();
+
+  const [selectedImage, setSelectedImage] = useState(userData ? userData.pictureUser : 'Default Picture URL');
+  const handleImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      setSelectedImage(URL.createObjectURL(img));
+    }
+  };
 
   const fields = [
     { name: 'nameUser', label: 'Nombres', type: 'text', placeholder: 'Ingrese sus nombres' },
@@ -55,9 +69,11 @@ export const UserEditProfile = () => {
       emailUser: userData ? userData.emailUser : '',
       numberMobileUser: userData ? userData.numberMobileUser : '',
       DNI: userData ? userData.DNI : '',
+      pictureUser: { file: null },
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {     
+      alert(JSON.stringify(values, null, 2));
       updateUserMutation({id:userData.idUser,...values})
         .unwrap()
         .then(response => {
@@ -80,7 +96,17 @@ export const UserEditProfile = () => {
     
   });
 
-
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
   
   return (
     <>
@@ -126,13 +152,33 @@ export const UserEditProfile = () => {
                 >
                   <form onSubmit={formik.handleSubmit}>
                     <Grid container spacing={3}>
-                      <Grid item xs={12}>
-`                        <Avatar 
-                          alt={userData ? userData.nameUser : 'Default Alt'}  
-                          src={userData ? userData.pictureUser : 'Default Picture URL'} 
-                          sx={{width: 56, height: 56}} 
+                    <Grid item xs={12}>
+
+                      <Avatar 
+                        alt={userData ? userData.nameUser : 'Default Alt'}  
+                        src={selectedImage} 
+                        sx={{width: 56, height: 56}} 
+                      />
+                      <Button
+                        accept="image/*"
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                      >
+                        Sube tu foto
+                        <VisuallyHiddenInput 
+                          name="pictureUser"
+                          type="file" 
+                          onChange={(event) => {
+                            formik.setFieldValue('pictureUser', {file: event.currentTarget.files[0]})
+                            handleImageChange(event)
+                          }}
+                          onBlur={formik.handleBlur}
                         />
-                      </Grid>
+                      </Button>
+                    </Grid>
                       
                       {fields.map((field, index) => (
                         <Grid item xs={12} md={6} key={index}>
