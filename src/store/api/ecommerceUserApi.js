@@ -72,6 +72,10 @@ export const ecommerceUserApi = createApi({
             query: () => '/users/deactive',
             providesTags: ['UsersBlocked'],
         }),
+        // Get isActive
+        getIsActive: builder.query({
+            query: (emailUser) => `/users/isActive/${emailUser}`,
+        }),
         
         // JWT Peticiones
         // Get user by Token    
@@ -106,6 +110,7 @@ export const {
     useUnlockUserMutation,
     useRestoreUserMutation,
     useGetUsersBlockedQuery,
+    useGetIsActiveQuery,
     // JWT Peticiones
     useGetTokenByEmailQuery,
     useGetUserByTokenQuery,

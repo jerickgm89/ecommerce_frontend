@@ -8,6 +8,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 // import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CartShoppingIcon from '../../cartShooping/component/CartShoopingIcon';
 import { SearchBar } from '../searchBar';
+import { useGetIsActiveQuery } from "../../store/api/ecommerceUserApi";
+import Swal from 'sweetalert2';
+import styles from './NavBar.module.css';
 
 const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
 const settings = ['Perfil', 'Panel Administrador', 'Salir'];
@@ -17,11 +20,12 @@ export const NavBar = () => {
     const { logout } = useAuth0();
     const { user, isAuthenticated } = useAuth0();
     
-
-    // console.log(user);
+    const { data: isActive, errorUser, isLoading, refetch } = useGetIsActiveQuery(user?.email, { skip: !isAuthenticated })
+    console.log(user);
+    console.log(user?.email);
     const userData  = useUserAuthentication(user, isAuthenticated);
  
-
+    console.log(isActive)
     const [anchorNav, setAnchorNav] = React.useState(null);
     const [anchorUser, setAnchorUser] = React.useState(null);
 
@@ -42,6 +46,22 @@ export const NavBar = () => {
     const handleCloseUserMenu = () => {
         setAnchorUser(null);
     };
+
+    React.useEffect(() => {
+        if (isAuthenticated && !isLoading && isActive === false) {
+            Swal.fire({
+                icon: 'error',
+                title: '¡Cuenta bloqueada!',
+                text: 'Su cuenta está bloqueada. Por favor, contacte al soporte',
+                confirmButtonText: 'Cerrar',
+                customClass: {
+                    confirmButton: styles['swal-confirm-button']
+                }
+            }).then(() => {
+                logout({ returnTo: window.location.origin });
+            });
+        }
+    }, [isAuthenticated, isActive, isLoading, logout]);
 
     return (
         <AppBar position="static" sx={{ backgroundColor: 'white' }}>
@@ -164,7 +184,7 @@ export const NavBar = () => {
                                             {userData ? userData.nameUser : user.given_name}
                                             </Typography>
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>                                                
-                                            <Avatar alt={userData ? userData.nameUser : user.given_name} src={userData ? userData.pictureUser : user.picture} />
+                                                <Avatar alt={userData ? userData.nameUser : user.given_name} src={userData ? userData.pictureUser : user.picture} />
                                             </IconButton>                                            
                                         </Box>
                                     </>
