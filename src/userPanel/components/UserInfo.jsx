@@ -2,14 +2,20 @@ import { Avatar, Box, Button, Grid, Typography } from "@mui/material"
 import { Person as PersonIcon } from "@mui/icons-material"
 import { useAuth0 } from "@auth0/auth0-react"
 import { useUserAuthentication } from './../../hooks/useUserAuthentication';
+import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi";
 import { Link } from "react-router-dom";
 
-
+const TOKEN = localStorage.getItem('token');
+console.log(TOKEN);
 
 export const UserInfo = () => {
 
-  const { user, isAuthenticated } = useAuth0();
-  const userData = useUserAuthentication(user, isAuthenticated);
+  // const { user, isAuthenticated } = useAuth0();
+  // const userData = useUserAuthentication(user, isAuthenticated);
+
+  const { data: userData, error, isLoading } = useGetUserByTokenQuery(TOKEN);
+  console.log(isLoading);
+  console.log(userData);
 
   const orderStatuses = [
     { count: '16', status: 'Ordenes' },
@@ -31,7 +37,7 @@ export const UserInfo = () => {
   return (
    <>
    {
-      isAuthenticated && userData.tokenAuth.length > 10 && (
+      !isLoading && userData.activeUser && (
         <Grid 
           item 
           xs={12} 

@@ -5,6 +5,7 @@ import { Box, Button, Grid, TextField, Typography } from "@mui/material"
 import { useFormik } from "formik"
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
+import { useEffect, useState } from "react";
 
 const validationSchema = yup.object({
   comments: yup
@@ -24,7 +25,35 @@ export const QuestionsProduct = () => {
   const idProduct = id;
 
   const [createQuestion, { isSuccess: successQuestion, isError: errorQuestion }] = usePostCreateQuestionMutation();
+
+  const [countdown, setCountdown] = useState(() => {
+    const savedCountdown = localStorage.getItem('countdown');
+    return savedCountdown ? Number(savedCountdown) : 0;
+  });
   
+  const [buttonDisabled, setButtonDisabled] = useState(() => {
+    const savedCountdown = localStorage.getItem('countdown');
+    return savedCountdown ? true : false;
+  });
+
+  useEffect(() => {
+    let timer;
+    if (buttonDisabled && countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown(prevCountdown => {
+          const newCountdown = prevCountdown - 1;
+          localStorage.setItem('countdown', newCountdown);
+          return newCountdown;
+        });
+      }, 1000);
+    } else if (countdown === 0) {
+      setButtonDisabled(false);
+      localStorage.removeItem('countdown');
+    }
+    return () => clearTimeout(timer);
+  }, [buttonDisabled, countdown]);
+
+
   const formik = useFormik({
     initialValues: {
       idProduct: idProduct,
@@ -43,7 +72,9 @@ export const QuestionsProduct = () => {
           timer: 1500
         })
         resetForm();
-        window.location.reload();
+        setButtonDisabled(true);
+        setCountdown(180);
+        localStorage.setItem('countdown', 180);
       })
     },
   });
@@ -69,12 +100,12 @@ export const QuestionsProduct = () => {
               sx={{mt: 1, mb: 2}}
             />
             <Button
-                variant="contained" 
-                color="primary" 
-                type="submit"
-                disabled={!formik.dirty}
+              variant="contained" 
+              color="primary" 
+              type="submit"
+              disabled={!formik.dirty || buttonDisabled}
             >
-                Preguntar
+              Preguntar {buttonDisabled ? `(${Math.floor(countdown / 60)}:${countdown % 60 < 10 ? '0' : ''}${countdown % 60})` : ''}
             </Button>
           </form>
         </Box>
