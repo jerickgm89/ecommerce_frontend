@@ -18,20 +18,17 @@ export const UserInfo = () => {
     { count: '01', status: 'Por recibir' },
   ];
   
-
   const userFields = [
     { label: 'Nombres', value: userData ? userData.nameUser : ''},
     { label: 'Apellidos', value: userData ? userData.lastNameUser : ''},
     { label: 'Email', value: userData ? userData.emailUser : '' },
     { label: 'Telefono', value: userData ? userData.numberMobileUser : 'No agregado' },
   ];
-  
-  
 
   return (
    <>
    {
-      isAuthenticated && userData.tokenAuth.length > 10 && (
+      isAuthenticated && userData?.tokenAuth.length > 10 && (
         <Grid 
           item 
           xs={12} 
@@ -83,7 +80,7 @@ export const UserInfo = () => {
                         alignItems: 'center',
                         m: 3,
                         }}>
-                      <Avatar alt={userData.nameUser}  src={userData.pictureUser} sx={{width: { xs: 70, sm: 40 }, height: { xs: 60, sm: 40 }}} />                                          
+                      <Avatar alt={userData?.nameUser}  src={userData?.pictureUser} sx={{width: { xs: 70, sm: 40 }, height: { xs: 60, sm: 40 }}} />                                          
                       <Typography 
                         variant="body1" 
                         sx={{ 
@@ -94,7 +91,7 @@ export const UserInfo = () => {
                           fontSize: 18
                         }}
                       >
-                        {userData.nameUser} {userData.lastNameUser}
+                        {userData?.nameUser} {userData?.lastNameUser}
                       </Typography>                                                
                     </Box>
                 </Grid>

@@ -8,6 +8,7 @@ import { UserRoutes } from "../userPanel/routes";
 import { DetailsProductsPage } from "../products/pages";
 import { CartShoppingRoutes } from "../cartShooping/routes/";
 import { NotFoundRoutes } from "../notFound/routes";
+import { PrivateRoute } from "../components/privateRoute/PrivateRoute";
 
 export const AppRouter = () => {
   return (
@@ -18,21 +19,21 @@ export const AppRouter = () => {
           <Route path="/" element={ <HomeRoutes /> }/>
 
           {/* Products */}        
-          <Route path="/products/*" element={ <ProductsRoutes/>}/>
+          <Route path="/products/*" element={ <ProductsRoutes />}/>
 
           <Route path="/search/*" element={ <SearchRoutes/>}/>
 
           {/* CartShopping */}
-          <Route path="/cartShopping" element={ <CartShoppingRoutes /> }/>
+          <Route path="/cartShopping" element={ <PrivateRoute><CartShoppingRoutes /></PrivateRoute> }/>
 
           {/* Login y Registro */}
           <Route path="/auth/*" element={ <AuthRoutes /> }/>
 
           {/* Admin */}
-          <Route path="/admin/*" element={ <AdminRoutes /> }/>
+          <Route path="/admin/*" element={ <PrivateRoute><AdminRoutes /></PrivateRoute> }/>
 
           {/* User */}
-          <Route path="/user/*" element={ <UserRoutes /> }/>
+          <Route path="/user/*" element={ <PrivateRoute><UserRoutes /></PrivateRoute> }/>
 
           {/* DetailProduct */}
           <Route path="/products/details/:id" element={<DetailsProductsPage />} />
