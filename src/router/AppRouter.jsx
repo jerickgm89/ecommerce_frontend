@@ -30,7 +30,7 @@ export const AppRouter = () => {
           <Route path="/auth/*" element={ <AuthRoutes /> }/>
 
           {/* Admin */}
-          <Route path="/admin/*" element={ <PrivateRoute><AdminRoutes /></PrivateRoute> }/>
+          <Route path="/admin/*" element={ <PrivateRoute requireEmailVerified={true}><AdminRoutes /></PrivateRoute> }/>
 
           {/* User */}
           <Route path="/user/*" element={ <PrivateRoute><UserRoutes /></PrivateRoute> }/>
