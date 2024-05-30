@@ -4,7 +4,7 @@ import { useGetUsersQuery, useUnlockUserMutation } from '../../store/api/ecommer
 import { useNavigate } from 'react-router-dom'
 import { usePutUpdateUserMutation } from '../../store/api/ecommerceUserApi'
 import { useEffect, useState } from 'react'
-import DeleteIcon from '@mui/icons-material/Delete'
+import BlockIcon from '@mui/icons-material/Block'
 import EditIcon from '@mui/icons-material/Edit'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 //import PersonIcon from '@mui/icons-material/Person'
@@ -101,7 +101,7 @@ export const Users = () => {
                         <EditIcon />
                     </IconButton>
                     <IconButton onClick={() => handleDelete(params.id)}>
-                        <DeleteIcon />
+                        <BlockIcon />
                     </IconButton>
                 </>
             );

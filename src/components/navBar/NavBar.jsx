@@ -52,7 +52,7 @@ export const NavBar = () => {
             Swal.fire({
                 icon: 'error',
                 title: '¡Cuenta bloqueada!',
-                text: 'Su cuenta está bloqueada. Por favor, contacte al soporte',
+                text: 'Por favor, contacte al soporte: ecommercetech2024@gmail.com',
                 confirmButtonText: 'Cerrar',
                 customClass: {
                     confirmButton: styles['swal-confirm-button']
