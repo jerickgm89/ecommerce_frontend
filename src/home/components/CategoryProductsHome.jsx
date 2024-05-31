@@ -1,60 +1,74 @@
-import { Typography, Grid, Box } from "@mui/material";
-// import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-// import KitchenIcon from '@mui/icons-material/Kitchen';
-// import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
-// import SmartphoneIcon from '@mui/icons-material/Smartphone';
-// import LaptopIcon from '@mui/icons-material/Laptop';
-// import HvacIcon from '@mui/icons-material/Hvac';
-import '../css';
+import { Typography, Box, Link } from "@mui/material";
+import { Link as RouterLink } from 'react-router-dom';
 import { useGetCategoriesQuery } from "../../store/api";
+import Carousel from 'react-material-ui-carousel';
+import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-export const CategoryProductsHome = () => {
-    const { data, error, isLoading } = useGetCategoriesQuery();
+export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
+    const { data: categories, error, isLoading } = useGetCategoriesQuery();
 
     if (isLoading) return <Typography>Cargando...</Typography>;
     if (error) return <Typography>Error: {error.message}</Typography>;
 
-    if(!data) return null;
+    const itemsPerSlide = 4;  
 
-    const itemsPerSlide = 4;
-    const carouselItems = data.reduce((acc, item, idx) => {
+
+    const carouselItems = categories.reduce((acc, category, idx) => {
         const chunkIndex = Math.floor(idx / itemsPerSlide);
 
-        if(!acc[chunkIndex]) {
+        if (!acc[chunkIndex]) {
             acc[chunkIndex] = [];
         }
 
-        acc[chunkIndex].push(item);
+        acc[chunkIndex].push(category);
 
         return acc;
     }, []);
 
     return (
-        <Grid container spacing={2} justifyContent={'center'}>
-            <Grid item xs={12} sm={6} md={3} display={'flex'}>
-                {data.map(category => (
-                    <Box className="containerIcon" sx={{ 
-                        textAlign: 'center', 
-                        // border: '4px solid #000',k
-                        borderRadius: '0 30px 0 30px',
-                        color:'#646464',
-                        fontSize: "16px",
-                        p: 2,
-                        m: 1,
-                        transition: 'all 0.3s',
-                        '&:hover': {
-                            backgroundColor: '#fff',
-                            boxShadow: "4px 4px 10px" ,
-                        },
-                    }}>
-                        <img 
-                            src={category.imageCategory} 
-                            alt="" 
-                            style={{ maxWidth: "100%", maxHeight: "100px"}} />
-                        <Typography variant="subtitle1">{category.nameCategory}</Typography>
-                    </Box>
-                ))}
-            </Grid>
-        </Grid>
+        <Carousel
+            // animation="slide"
+            indicators={true}
+            navButtonsAlwaysVisible={true}
+            NextIcon={<KeyboardArrowRightOutlinedIcon sx={{ color: '#000' }} />}
+            PrevIcon={<KeyboardArrowLeftOutlinedIcon sx={{ color: '#000' }} />}
+            navButtonsProps={{
+                style: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',  
+                    borderRadius: 50,
+                    
+                }
+            }}
+        >
+            {carouselItems.map((chunk, index) => (
+                <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    {chunk.map(category => (
+                        <Box key={category.idCategory} className="containerIcon" sx={{
+                            textAlign: 'center',
+                            width: "100%",
+                            borderRadius: '0 30px 0 30px',
+                            color: '#646464',
+                            fontSize: "16px",
+                            p: 2,
+                            m: 1,
+                            transition: 'all 0.3s',
+                            '&:hover': {
+                                backgroundColor: '#fff',
+                                boxShadow: "4px 4px 10px",
+                            },
+                        }}>
+                            <Link component={RouterLink} to={`/products/category/${category.idCategory}`} underline="none" onClick={() => onCategoryClick(category.idCategory)} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <img
+                                    src={category.imageCategory}
+                                    alt=""
+                                    style={{ width: "100%", maxHeight: "100px", maxWidth: "140px" }} />
+                                <Typography variant="subtitle1">{category.nameCategory}</Typography>
+                            </Link>
+                        </Box>
+                    ))}
+                </Box>
+            ))}
+        </Carousel>
     );
 };

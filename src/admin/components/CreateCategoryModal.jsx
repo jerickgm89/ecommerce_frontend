@@ -2,6 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { useCreateCategoryMutation, useGetCategoriesQuery } from "../../store/api";
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import Swal from 'sweetalert2';
 
 const CreateCategoryModal = ({ open, handleClose }) => {
     const [createCategory] = useCreateCategoryMutation();
@@ -35,6 +36,12 @@ const CreateCategoryModal = ({ open, handleClose }) => {
                 }
                 await createCategory(formData);
                 handleClose();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Categoría creada!',
+                    text: 'La categoría se ha creado exitosamente.',
+                });
             } catch (error) {
                 console.error('Error creando la categoría:', error);
             }

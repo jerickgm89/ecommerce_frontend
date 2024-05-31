@@ -21,7 +21,10 @@ export const AppRouter = () => {
           {/* Products */}        
           <Route path="/products/*" element={ <ProductsRoutes />}/>
 
+          
+
           <Route path="/search/*" element={ <SearchRoutes/>}/>
+
 
           {/* CartShopping */}
           <Route path="/cartShopping" element={ <PrivateRoute><CartShoppingRoutes /></PrivateRoute> }/>
@@ -30,7 +33,7 @@ export const AppRouter = () => {
           <Route path="/auth/*" element={ <AuthRoutes /> }/>
 
           {/* Admin */}
-          <Route path="/admin/*" element={ <PrivateRoute><AdminRoutes /></PrivateRoute> }/>
+          <Route path="/admin/*" element={ <PrivateRoute requireEmailVerified={true}><AdminRoutes /></PrivateRoute> }/>
 
           {/* User */}
           <Route path="/user/*" element={ <PrivateRoute><UserRoutes /></PrivateRoute> }/>

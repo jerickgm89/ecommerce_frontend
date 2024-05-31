@@ -76,6 +76,10 @@ export const ecommerceUserApi = createApi({
         getIsActive: builder.query({
             query: (emailUser) => `/users/isActive/${emailUser}`,
         }),
+        //Get isAdmin
+        getIsAdmin: builder.query({
+            query: (emailUser) => `/users/admin/${emailUser}`,
+        }),
         
         // JWT Peticiones
         // Get user by Token    
@@ -111,6 +115,7 @@ export const {
     useRestoreUserMutation,
     useGetUsersBlockedQuery,
     useGetIsActiveQuery,
+    useGetIsAdminQuery,
     // JWT Peticiones
     useGetTokenByEmailQuery,
     useGetUserByTokenQuery,
