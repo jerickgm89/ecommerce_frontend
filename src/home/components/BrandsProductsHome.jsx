@@ -29,9 +29,15 @@ export const BrandsProductsHome = ({brandId}) => {
 
     return (
         <Carousel  
-             animation="slide" indicators={true} 
-            NextIcon={<KeyboardArrowRightOutlinedIcon  />}
-            PrevIcon={<KeyboardArrowLeftOutlinedIcon />}
+            animation="slide" indicators={true} 
+            NextIcon={<KeyboardArrowRightOutlinedIcon sx={{ color: '#000' }}  />}
+            PrevIcon={<KeyboardArrowLeftOutlinedIcon sx={{ color: '#000' }}/>}
+            navButtonsProps={{          
+                style: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    borderRadius: 50,
+                }
+            }}
         >
 
             {carouselItems.map((chunk, index) => (
