@@ -46,13 +46,17 @@ export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
                     {chunk.map(category => (
                         <Box key={category.idCategory} className="containerIcon" sx={{
                             textAlign: 'center',
-                            width: "100%",
-                            borderRadius: '0 30px 0 30px',
+                            width: "15%",
+                            borderRadius: '30px ',
                             color: '#646464',
                             fontSize: "16px",
                             p: 2,
                             m: 1,
-                            transition: 'all 0.3s',
+                            transition: 'all 0.5s',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                                // minHeight: '200px', 
                             '&:hover': {
                                 backgroundColor: '#fff',
                                 boxShadow: "4px 4px 10px",

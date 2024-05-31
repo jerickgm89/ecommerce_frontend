@@ -18,9 +18,9 @@ export const DetailsProductsPage = () => {
   return (
     
       <EcommerceUI>
-        <Box mt={4} mb={4} ml={4} mr={4}>
-          <Typography variant="h3" gutterBottom>Product Details</Typography>
-          <DetailProduct
+        <Box mt={8} mb={8} ml={8} mr={8}>
+          <Typography variant="h3" gutterBottom>Detalle productos</Typography>
+          <DetailProduct 
             idProduct = {product.idProduct}
             nameProduct = {product.nameProduct}
             priceProduct = {product.priceProduct}
