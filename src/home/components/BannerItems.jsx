@@ -6,8 +6,10 @@ import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 const bannerItems = [
   {
-    text: "¡Solo por hoy! 20% de reintegro con tarjeta Cabal de Banco Credicoop",
+    icon: <img src="https://images.fravega.com/f100/165db2d0462bd48b0529bd51d748c281.png" alt="Celulares" style={{ width: "200px", height: "auto" }} />,
+    text: "Pagá con crédito y débito",
   },
+
   {
     text: "🖥️ Hasta 35% Off y 9 cuotas sin interés en Smart TVs",
   },

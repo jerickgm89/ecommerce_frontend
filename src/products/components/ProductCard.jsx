@@ -167,7 +167,7 @@ const ProductCard = ({ product, dispatch, cart }) => {
             gutterBottom
             style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
           >
-            {product.stockProduct > 0 ? 'In Stock' : 'Out of Stock'}
+            {product.stockProduct > 0 ? 'Stock ' : 'Out of Stock'}
           </Typography>
 
           <Rating sx={{ mb: 1 }} />
