@@ -1,17 +1,34 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { useRestoreProductMutation, useGetProductsLockedQuery } from '../../store/api'
 import { DataGrid } from '@mui/x-data-grid'
+import { useNavigate } from 'react-router-dom'
 import RestoreIcon from '@mui/icons-material/Restore'
+import Swal from 'sweetalert2'
+
 
 export const LockedProducts = () => {
 
     const { data: productsLocked = [], error, isLoading } = useGetProductsLockedQuery()
-
     const [restoreProduct] = useRestoreProductMutation()
+    const navigate = useNavigate()
 
-    const handleRestore = (id) => {
-        console.log('Restore product', id)
-        restoreProduct(id)
+    const handleRestore = async(id) => {
+        await restoreProduct(id)
+            .unwrap()
+            .then(response => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Producto restaurado',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                setTimeout(function(){
+                    navigate('/admin/lockedProducts');
+                }, 2000);
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 
     const columns = [
