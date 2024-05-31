@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Typography, Box, Grid, Button, Container, Tab, Tabs, Divider, TextField } from '@mui/material';
-import { useDispatch } from 'react-redux'; // Importa useDispatch desde react-redux
+import { useDispatch } from 'react-redux'; 
 import { addToCart } from '../../store/cartShopping/cartSlice';
 import { ReviewList } from './ReviewList';
 import { QuestionsProduct } from './QuestionsProduct';
@@ -9,7 +9,9 @@ import { QuestionsList } from './QuestionsList';
 
 const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts }) => {
   const [tabValue, setTabValue] = useState(0);
-  const dispatch = useDispatch(); // Obtiene la función de despacho
+  const dispatch = useDispatch(); 
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -35,13 +37,48 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
   return (
     <Container>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <img src={imageProducts} alt={nameProduct} style={{ width: '100%' }} />
+      <Grid item xs={12} md={6}>
+          <Box
+            sx={{
+              width: '100%',
+              paddingTop: '100%', 
+              position: 'relative'
+            }}
+          >
+            <img
+              src={imageProducts}
+              alt={nameProduct}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                padding: "20px",
+              }}
+            />
+          </Box>
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography gutterBottom style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>{nameProduct}</Typography>
           <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${formattedPrice(priceProduct)}</Typography>
-          <Typography variant="body1" gutterBottom><strong>Description:</strong> {descriptionProduct}</Typography>
+          
+          <Typography variant="body1" gutterBottom>
+            <strong>Description:</strong> 
+            {descriptionProduct ? (
+              showFullDescription ? (
+                <span>{descriptionProduct} <Button onClick={() => setShowFullDescription(false)}>Ver menos</Button></span>
+              ) : (
+                <span>
+                  {descriptionProduct.slice(0, 500)}...
+                  <Button onClick={() => setShowFullDescription(true)}>Ver más</Button>
+                </span>
+              )
+            ) : (
+              'No description available.'
+            )}
+          </Typography>
+
           <Box mt={2}>
             <Button
               variant="contained"
@@ -102,8 +139,22 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
       </Grid>
       <Divider sx={{mt:2}}/>
       <Box p={3}>
-              <Typography variant="body1" gutterBottom><strong>Descripcion:</strong> {descriptionProduct}</Typography>
-            </Box>
+        <Typography variant="body1" gutterBottom>
+            <strong>Descripcion:</strong>
+            {descriptionProduct ? (
+              showFullDescription ? (
+                <span>{descriptionProduct} <Button onClick={() => setShowFullDescription(false)}>Ver menos</Button></span>
+              ) : (
+                <span>
+                  {descriptionProduct.slice(0, 500)}...
+                  <Button onClick={() => setShowFullDescription(true)}>Ver más</Button>
+                </span>
+              )
+            ) : (
+              'No description available.'
+            )}
+          </Typography>
+      </Box>
       <Divider sx={{mt:2}}/>
       <QuestionsProduct />
       <QueryClientProvider client={queryClient}>
