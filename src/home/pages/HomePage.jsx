@@ -73,7 +73,7 @@ export const HomePage = () => {
       <Divider />
       
 
-        <Box mt={8} mb={8}   >
+        <Box mt={8} mb={8}>
 
         <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
               <CategoryProductsHome />

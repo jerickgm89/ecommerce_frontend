@@ -13,9 +13,6 @@ export const ecommerceApi = createApi({
             providesTags: ['Products'],
         }),
 
-        
-
-        
         getProductsLimit: builder.query({
             query: (page=1) => `/products/index?limit=9&page=${page}`,
             providesTags: ['Products'],
@@ -26,10 +23,23 @@ export const ecommerceApi = createApi({
         getBrands: builder.query({
             query: () => '/products/brands',
         }),
+
+    
+
         getCategories: builder.query({
             query: () => '/products/category',
             providesTags: ['Categories'],
         }),
+
+       
+
+
+
+        filterProductsByCategory: builder.query({
+            query: (category) => `/filterproducts?category=${category}`,
+            providesTags: ['Products'],
+        }),
+
         createProducts: builder.mutation({
             query: (newProduct) => ({
                 url: '/products/index',
@@ -137,13 +147,13 @@ export const ecommerceApi = createApi({
 
 export const { 
     useGetProductsQuery,
-    useGetProductsOrderDescQuery,
     useGetProductsLimitQuery,
     useGetProductByIdQuery,
     useGetBrandsQuery,
     useGetCategoriesQuery,
     useCreateProductsMutation,
     useFilterProductsQuery,
+    useFilterProductsByCategoryQuery,
     useSearchProductsByNameQuery,
     useDeleteProductsMutation,
     useUpdateProductsMutation,

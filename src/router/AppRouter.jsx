@@ -21,7 +21,10 @@ export const AppRouter = () => {
           {/* Products */}        
           <Route path="/products/*" element={ <ProductsRoutes />}/>
 
+          
+
           <Route path="/search/*" element={ <SearchRoutes/>}/>
+
 
           {/* CartShopping */}
           <Route path="/cartShopping" element={ <PrivateRoute><CartShoppingRoutes /></PrivateRoute> }/>

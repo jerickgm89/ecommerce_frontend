@@ -2,6 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { useCreateBrandMutation, useGetBrandsQuery } from "../../store/api";
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import Swal from 'sweetalert2';
 
 const CreateBrandModal = ({ open, handleClose }) => {
     const [createBrand] = useCreateBrandMutation();
@@ -31,6 +32,12 @@ const CreateBrandModal = ({ open, handleClose }) => {
                 formData.append('logoBrand', values.logoBrand);
                 await createBrand(formData);
                 handleClose();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Marca creada!',
+                    text: 'La marca se ha creado exitosamente.',
+                });
             } catch (error) {
                 console.error('Error creando la marca:', error);
             }
