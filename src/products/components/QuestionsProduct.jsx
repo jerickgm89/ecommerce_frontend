@@ -25,14 +25,15 @@ export const QuestionsProduct = () => {
   const idProduct = id;
 
   const [createQuestion, { isSuccess: successQuestion, isError: errorQuestion }] = usePostCreateQuestionMutation();
+  const [questionCount, setQuestionCount] = useState(0);
 
   const [countdown, setCountdown] = useState(() => {
-    const savedCountdown = localStorage.getItem('countdown');
+    const savedCountdown = localStorage.getItem(`countdown-${idProduct}`);
     return savedCountdown ? Number(savedCountdown) : 0;
   });
   
   const [buttonDisabled, setButtonDisabled] = useState(() => {
-    const savedCountdown = localStorage.getItem('countdown');
+    const savedCountdown = localStorage.getItem(`countdown-${idProduct}`);
     return savedCountdown ? true : false;
   });
 
@@ -42,13 +43,13 @@ export const QuestionsProduct = () => {
       timer = setTimeout(() => {
         setCountdown(prevCountdown => {
           const newCountdown = prevCountdown - 1;
-          localStorage.setItem('countdown', newCountdown);
+          localStorage.setItem(`countdown-${idProduct}`, newCountdown);
           return newCountdown;
         });
       }, 1000);
     } else if (countdown === 0) {
       setButtonDisabled(false);
-      localStorage.removeItem('countdown');
+      localStorage.removeItem(`countdown-${idProduct}`);
     }
     return () => clearTimeout(timer);
   }, [buttonDisabled, countdown]);
@@ -72,9 +73,17 @@ export const QuestionsProduct = () => {
           timer: 1500
         })
         resetForm();
-        setButtonDisabled(true);
-        setCountdown(180);
-        localStorage.setItem('countdown', 180);
+        // Increment the question count
+        setQuestionCount(prevCount => {
+          const newCount = prevCount + 1;
+          // Activate the countdown after the second question
+          if (newCount >= 1) {
+            setButtonDisabled(true);
+            setCountdown(180);
+            localStorage.setItem(`countdown-${idProduct}`, 180);
+          }
+          return newCount;
+        });
       })
     },
   });
