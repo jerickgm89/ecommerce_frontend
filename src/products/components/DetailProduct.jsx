@@ -7,7 +7,7 @@ import { QuestionsProduct } from './QuestionsProduct';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { QuestionsList } from './QuestionsList';
 
-const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts }) => {
+const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts, stockProduct }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch(); 
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -28,6 +28,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
       priceProduct: priceProduct,
       descriptionProduct: descriptionProduct,
       imageProducts: imageProducts,
+      stockProduct: stockProduct,
     };
     dispatch(addToCart(product)); // Despacha la acción addToCart con los detalles del producto
   };
@@ -62,7 +63,12 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
         <Grid item xs={12} md={6}>
           <Typography gutterBottom style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>{nameProduct}</Typography>
           <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${formattedPrice(priceProduct)}</Typography>
-          
+          <Typography
+            gutterBottom
+            style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
+          >
+              {stockProduct > 0 ? 'Stock:' : 'Out of Stock'} {stockProduct} unidades
+          </Typography >
           <Typography variant="body1" gutterBottom>
             <strong>Description:</strong> 
             {descriptionProduct ? (

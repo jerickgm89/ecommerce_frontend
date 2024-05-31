@@ -50,46 +50,34 @@ export const SearchPages = () => {
                     ) : (
                         data.rows.map((product) => (
                             <Grid item key={product.idProduct} xs={12} sm={6} md={4}>
-                                <Card sx={{ width: '100%', display: 'flex', borderRadius: '10px' }}>
-                                    <Box style={{ position: 'relative', width: '60%', aspectRatio: '4/3' }}>
+ 
+                               <Card sx={{ display: 'flex', flexDirection: 'row', height: '100%',borderRadius: '8px', boxShadow:"rgba(1, 0, 71, 0.7) 0px 1px 3px",  }}>
+                                    <Box sx={{ width: '40%', overflow: 'hidden' }}>
                                         <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
                                             <img
                                                 src={product.imageProducts}
                                                 alt={product.nameProduct}
-                                                style={{ width: '100%', aspectRatio: '4/3' }}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover', minWidth: '150px', padding: '10px'}}
                                             />
                                         </Link>
                                     </Box>
-                                    <CardContent style={{ flex: '1 0 auto' }}>
-                                        <Typography
-                                            gutterBottom
-                                            style={{ fontSize: '16px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
-                                        >
+                                    <CardContent sx={{ width: '60%' }}>
+                                        <Typography gutterBottom variant="h5" component="div">
                                             {product.nameProduct}
                                         </Typography>
-                                        <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>$ {formattedPrice(product.priceProduct)}</Typography>
+                                        <Typography gutterBottom style={{ fontSize:"16px", marginBottom: '8px', fontWeight:600, color:"#D23F57" }} >
+                                            $ {formattedPrice(product.priceProduct)}
+                                        </Typography>
                                         <Typography
                                             gutterBottom
                                             style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
                                         >
-                                            {product.stockProduct > 0 ? 'In Stock' : 'Out of Stock'}
-                                        </Typography>
-                                        <Box mt={2}>
+                                            {product.stockProduct > 0 ? 'Stock:' : 'Out of Stock'} {product.stockProduct} unidades
+                                        </Typography >
+                                        <Box sx={{ display: 'flex', mb:2 , mt: 2 }}>
                                             <Button
                                                 variant="contained"
-                                                size="medium"
-                                                sx={{
-                                                    backgroundColor: "rgb(210, 63, 87)",
-                                                    color: "rgb(255, 255, 255)",
-                                                    cursor: "pointer",
-                                                    fontWeight: 600,
-                                                    borderRadius: "6px",
-                                                    textTransform: 'capitalize',
-                                                    transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-                                                    '&:hover': {
-                                                        backgroundColor: "rgb(210, 63, 87)",
-                                                    }
-                                                }}
+                                                sx={{ backgroundColor: "rgb(210, 63, 87)", color: "white" }}
                                             >
                                                 Add to Cart
                                             </Button>

@@ -26,6 +26,7 @@ export const DetailsProductsPage = () => {
             priceProduct = {product.priceProduct}
             descriptionProduct = {product.descriptionProduct}
             imageProducts = {product.imageProducts}
+            stockProduct = {product.stockProduct}
           /> 
         </Box>
       </EcommerceUI>
