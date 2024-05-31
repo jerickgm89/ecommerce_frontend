@@ -4,22 +4,36 @@ import { AdminLayout } from '../layout/AdminLayout'
 import { Box, Typography, IconButton } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useGetProductsQuery, useUnlockProductMutation } from '../../store/api'
-import DeleteIcon from '@mui/icons-material/Delete'
+import Swal from 'sweetalert2'
+//import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
+import BlockIcon from '@mui/icons-material/Block'
+
 
 export const ListProductsPage = () => {
 
     const { data: products = [], error, isLoading, refetch } = useGetProductsQuery()
-
     const [unlockProduct] = useUnlockProductMutation()
-    console.log(products)
-
     const navigate = useNavigate()
 
     const handleDelete = async (id) => {
-        console.log('Delete product', id)
         try {
-            await unlockProduct(id).unwrap()
+            await unlockProduct(id)
+                .unwrap()
+                .then(response => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Producto bloqueado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTimeout(function(){
+                        navigate('/admin');
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
             refetch()
         } catch (error) {
             console.error('Failed to delete the product:', error)
@@ -48,7 +62,7 @@ export const ListProductsPage = () => {
                         <EditIcon />
                     </IconButton>
                     <IconButton onClick={() => handleDelete(params.id)}>
-                        <DeleteIcon />
+                        <BlockIcon />
                     </IconButton>
                 </>
             );
