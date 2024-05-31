@@ -154,7 +154,7 @@ export const CreateProducts = () => {
     <>
     <form onSubmit={formik.handleSubmit} style={{ marginTop: 30, marginBottom: 30, mx: 'auto', maxWidth: 600, border: '1px solid black', padding: 30, borderRadius: '5px' }} encType="multipart/form-data">
         <Typography sx={{ textAlign: 'center'}}>
-          AGREGAR NUEVOS PRODUCTOS
+          Agregar nuevos productos
         </Typography>
 
         <Grid container>

@@ -43,7 +43,8 @@ const validationSchema = yup.object({
 	description: yup
         .string(),
     imageProducts: yup
-            .string().url('La URL de la imagen no es válida').required('La imagen es requerida'),
+        .string()
+        .required('Se requiere una imagen'),
     model: yup
         .string()
         .required('El modelo es requerido'),
@@ -116,7 +117,7 @@ export const EditProducts = ({ id }) => {
                 idCategory: product.idCategory || '',
                 idDiscount: product.idDiscount || '',
                 description: product.descriptionProduct || '',
-                imageProducts: product.imageProducts || '',
+                imageProducts: product.imageProducts.toString() || '',
                 model: product.characteristicsProduct?.modelProduct || '',
                 color: 'gris plata',
                 size: '7"',
