@@ -5,7 +5,7 @@ export const ecommerceUserApi = createApi({
     baseQuery: fetchBaseQuery({ 
         baseUrl: 'http://localhost:3001'
     }),
-    tagTypes: ['Users', 'Post'],
+    tagTypes: ['Users', 'Post', 'Address', 'UsersBlocked'],
     endpoints: (builder) => ({
 
         // CRUD USERS
@@ -34,13 +34,20 @@ export const ecommerceUserApi = createApi({
         }),
         // Update user
         putUpdateUser: builder.mutation({
-            query: ({ id, ...fields }) => ({
+            query: ({ id, pictureUser, ...fields }) => {
+              const formData = new FormData();
+              Object.keys(fields).forEach(key => formData.append(key, fields[key]));
+              if (pictureUser && pictureUser.file) {
+                formData.append('pictureUser', pictureUser.file);
+              }
+              return {
                 url: `/users/${id}`,
                 method: 'PUT',
-                body: fields
-            }),
+                body: formData,
+              };
+            },
             invalidatesTags: (result, error, { id }) => [{ type: 'Users', id }],
-        }),
+          }),
         // Delete user
         deleteUser: builder.mutation({
             query: (id) => ({
