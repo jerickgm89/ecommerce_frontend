@@ -27,6 +27,7 @@ export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
     }, []);
 
     return (
+        
         <Carousel
             // animation="slide"
             indicators={true}
@@ -36,10 +37,16 @@ export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
             navButtonsProps={{
                 style: {
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',  
-                    borderRadius: 50,
-                    
+                    borderRadius: 50,   
                 }
             }}
+           
+            indicatorContainerProps={{
+                style: {
+                    marginTop: '50px',
+                }
+            }}
+            interval={5000}
         >
             {carouselItems.map((chunk, index) => (
                 <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
