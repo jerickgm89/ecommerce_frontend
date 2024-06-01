@@ -2,9 +2,6 @@ import { Grid, Box, Typography, Paper } from "@mui/material";
 import { useGetBrandsQuery } from "../../store/api";
 import Carousel from 'react-material-ui-carousel';
 import { Link } from 'react-router-dom';
-import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
-import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
-
 
 export const BrandsProductsHome = ({brandId}) => {
     const { data, error, isLoading } = useGetBrandsQuery();
@@ -29,15 +26,18 @@ export const BrandsProductsHome = ({brandId}) => {
 
     return (
         <Carousel  
-            animation="slide" indicators={true} 
-            NextIcon={<KeyboardArrowRightOutlinedIcon sx={{ color: '#000' }}  />}
-            PrevIcon={<KeyboardArrowLeftOutlinedIcon sx={{ color: '#000' }}/>}
+            // animation="slide"
+            indicators={true} 
+            interval={5000}
+            navButtonsAlwaysVisible={true}
             navButtonsProps={{          
                 style: {
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     borderRadius: 50,
+                    color: 'black',
                 }
             }}
+            
         >
 
             {carouselItems.map((chunk, index) => (

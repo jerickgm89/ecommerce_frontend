@@ -165,8 +165,7 @@ export const NavBar = () => {
 
                 
 
-                     {/* Insert the SearchBar component */}
-                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, alignItems: 'center', justifyContent: { xs: 'center', md: 'flex-start' } }}>
                         <SearchBar />   
                     </Box>
 

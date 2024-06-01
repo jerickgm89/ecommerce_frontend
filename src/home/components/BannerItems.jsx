@@ -36,11 +36,11 @@ export const BannerItems = () => {
         
       >
        
-        
+
 
         {bannerItems.map((item, index) => (
-          <Box key={index} display="flex" alignItems="center" justifyContent="center" px={2}>
-            {item.icon}
+          <Box key={index} display="flex" alignItems="center" justifyContent="center" px={2} >
+            {item.icon && <Box mr={2}>{item.icon}</Box>}
             <Typography variant="h8" ml={1} sx={{color:"#4a4a4a"}}>
               {item.text}
             </Typography>
