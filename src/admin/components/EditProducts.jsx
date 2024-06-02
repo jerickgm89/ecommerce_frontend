@@ -47,13 +47,16 @@ const validationSchema = yup.object({
     imageProducts: yup
         .mixed()
         .test('fileType', 'Formato de archivo no soportado', value => {
+            if (Array.isArray(value) && typeof value[0] === 'string') {
+                return true;
+            }
             if (typeof value === 'string') {
                 return true
             }
             if (value && value.file instanceof File) {
-                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.file.type)
+                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.file.type);
             }
-            return false
+            return false;
         })
         .required('Se requiere una imagen'),
     model: yup
@@ -107,7 +110,7 @@ export const EditProducts = ({ id }) => {
         idCategory: '',
         idDiscount: '',
         description: '',
-        imageProducts: '' /*|| { file: null }*/,
+        imageProducts: '',
         model: '',
         color: '',
         size: '',
@@ -183,7 +186,6 @@ export const EditProducts = ({ id }) => {
                 .catch(error => {
                     console.log(error)
                 })
-            //refetch()
         },
     })
 
@@ -434,7 +436,6 @@ export const EditProducts = ({ id }) => {
                         label="Imagen"
                         type="text"
                         value={formik.values.imageProducts}
-                        //value={formik.values.imageProducts && typeof formik.values.imageProducts === 'string' ? formik.values.imageProducts : ''}
                         placeholder="Ingrese la imagen del producto"
                         fullWidth
                         onChange={formik.handleChange}
@@ -462,28 +463,6 @@ export const EditProducts = ({ id }) => {
                         <Typography color="error">{formik.errors.imageProducts}</Typography>
                     )}
                 </Grid>
-
-                {/* <Grid item xs={12} sx={{ mt: 2}}>
-                    <input
-                        accept="image/*"
-                        id="contained-button-file"
-                        name="imageProducts"                              // Este nombre debe coincidir con el esperado por Multer
-                        type="file"
-                        onChange={(event) => {
-                            formik.setFieldValue("imageProducts", { file: event.currentTarget.files[0] });
-                        }}
-                        onBlur={formik.handleBlur}
-                        style={{ display: "none" }}
-                    />
-                    <label htmlFor="contained-button-file">
-                        <Button variant="contained" component="span" fullWidth>
-                            Cargar imagen
-                        </Button>
-                    </label>
-                    {formik.touched.imageProducts && formik.errors.imageProducts && (
-                        <Typography color="error">{formik.errors.imageProducts}</Typography>
-                    )}
-                </Grid> */}
 
 			    <Grid item xs={12} sx={{ mt: 2}}>
                     <Button 
