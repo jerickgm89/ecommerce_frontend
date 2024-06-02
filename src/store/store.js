@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { productSlice } from './products/productSlice'; 
 import { userSlice } from './users/userSlice';
 import { searchBarSlice } from './searchBar/searchBarSlice';
+import { notificationsSlice } from "./adminNotifications/notificationsSlice";
 import cartReducer from "./cartShopping/cartSlice";
 import shippingInfoReducer from "./shippingInfo/shippingInfoSlice";
 import { 
@@ -20,6 +21,7 @@ export const store = configureStore({
         shippingInfo: shippingInfoReducer,
         users: userSlice.reducer,        
         searchBar: searchBarSlice.reducer,
+        notifications: notificationsSlice.reducer,
         [ecommerceApi.reducerPath]: ecommerceApi.reducer,
         [ecommerceUserApi.reducerPath]: ecommerceUserApi.reducer,
         [ecommerceReviewApi.reducerPath]: ecommerceReviewApi.reducer,
