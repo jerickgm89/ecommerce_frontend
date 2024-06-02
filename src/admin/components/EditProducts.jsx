@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useGetProductByIdQuery, useUpdateProductsMutation, useGetCategoriesQuery, useGetBrandsQuery} from '../../store/api/ecommerceApi'
 import { Button, Grid, TextField, Typography, Divider, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
-import  CreateCategoryModal  from "./CreateCategoryModal";
-import  CreateBrandModal  from "./CreateBrandModal";
+import  CreateCategoryModal  from "./CreateCategoryModal"
+import  CreateBrandModal  from "./CreateBrandModal"
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import Swal from 'sweetalert2'
 
 const validationSchema = yup.object({
     name: yup
@@ -43,7 +45,19 @@ const validationSchema = yup.object({
 	description: yup
         .string(),
     imageProducts: yup
-        .string()
+        .mixed()
+        .test('fileType', 'Formato de archivo no soportado', value => {
+            if (Array.isArray(value) && typeof value[0] === 'string') {
+                return true;
+            }
+            if (typeof value === 'string') {
+                return true
+            }
+            if (value && value.file instanceof File) {
+                return ['image/jpeg', 'image/png', 'image/gif'].includes(value.file.type);
+            }
+            return false;
+        })
         .required('Se requiere una imagen'),
     model: yup
         .string()
@@ -60,11 +74,13 @@ const validationSchema = yup.object({
         .required('El ID de la marca es requerida'),
 });
 
+
 export const EditProducts = ({ id }) => {
 
     const { data: product, error, isLoading, refetch } = useGetProductByIdQuery(id)
-    const { data: categories, isLoading: categoriesLoading, refetch: refetchCategories } = useGetCategoriesQuery();
-    const { data: brands, isLoading: brandsLoading, refetch: refetchBrands } = useGetBrandsQuery();
+    const { data: categories, isLoading: categoriesLoading, refetch: refetchCategories } = useGetCategoriesQuery()
+    const { data: brands, isLoading: brandsLoading, refetch: refetchBrands } = useGetBrandsQuery()
+    const navigate = useNavigate()
 
     const [openCategoryModal, setOpenCategoryModal] = useState(false);
     const [openBrandModal, setOpenBrandModal] = useState(false);
@@ -100,8 +116,6 @@ export const EditProducts = ({ id }) => {
         size: '',
         idBrand: '',
     })
-    console.log(product?.nameProduct)
-    console.log(product)
 
     const [updateProduct] = useUpdateProductsMutation()
 
@@ -117,7 +131,7 @@ export const EditProducts = ({ id }) => {
                 idCategory: product.idCategory || '',
                 idDiscount: product.idDiscount || '',
                 description: product.descriptionProduct || '',
-                imageProducts: product.imageProducts.toString() || '',
+                imageProducts: product.imageProducts || '',
                 model: product.characteristicsProduct?.modelProduct || '',
                 color: 'gris plata',
                 size: '7"',
@@ -131,52 +145,47 @@ export const EditProducts = ({ id }) => {
         enableReinitialize: true, // Permite que formik se reinicialice con los nuevos valores iniciales
         validationSchema: validationSchema,
         onSubmit: async(values) => {
-            alert(JSON.stringify(values, null, 2));
-  
-            // const formData = new FormData();
-            // formData.append('Products[nameProduct]', values.name);
-            // formData.append('Products[priceProduct]', values.price);
-            // formData.append('Products[yearProduct]', values.year);
-            // formData.append('Products[stockProduct]', values.stock);
-            // formData.append('Products[SKU]', values.sku);
-            // formData.append('Products[descriptionProduct]', values.description);
-            // formData.append('Products[idReview]', values.idReview);
-            // formData.append('Products[idCategory]', values.idCategory);
-            // formData.append('Products[IdDiscount]', values.idDiscount);
-            // formData.append('Products[imageProducts]', values.imageProducts);
-            // formData.append('Variants[modelProduct]', values.model);
-            // formData.append('Variants[characteristics]', JSON.stringify({
-            //     color: values.color,
-            //     size: values.size,
-            // }));
-            // formData.append('Variants[idBrand]', values.idBrand)
-            // console.log(formData)
-            const updatedProduct = {
-                id,
-                Products: {
-                    nameProduct: formik.values.name,
-                    priceProduct: formik.values.price,
-                    imageProducts: formik.values.imageProducts,
-                    yearProduct: formik.values.year,
-                    descriptionProduct: formik.values.description,
-                    SKU: formik.values.sku,
-                    stockProduct: formik.values.stock,
-                    idReview: formik.values.idReview,
-                    idCategory: formik.values.idCategory,
-                    idDiscount: formik.values.idDiscount
-                },
-                Variants: {
-                    modelProduct: formik.values.modelProduct,
-                    characteristics: {
-                        color: formik.values.color,
-                        size: formik.values.size
-                    },
-                    idBrand: formik.values.idBrand,
-                }
+            console.log(values)
+            const formData = new FormData();
+            formData.append('id', id);
+            formData.append('Products[nameProduct]', values.name);
+            formData.append('Products[priceProduct]', values.price);
+            formData.append('Products[yearProduct]', values.year);
+            formData.append('Products[stockProduct]', values.stock);
+            formData.append('Products[SKU]', values.sku);
+            formData.append('Products[descriptionProduct]', values.description);
+            formData.append('Products[idReview]', values.idReview);
+            formData.append('Products[idCategory]', values.idCategory);
+            formData.append('Products[IdDiscount]', values.idDiscount);
+            if (values.imageProducts.file instanceof File) {
+                formData.append('imageProducts', values.imageProducts.file);
+            } else {
+                formData.append('Products[imageProducts]', values.imageProducts);
             }
-            console.log(updatedProduct)
-            await updateProduct(updatedProduct)
-            refetch()
+            formData.append('Variants[modelProduct]', values.model);
+            formData.append('Variants[characteristics]', JSON.stringify({
+                color: values.color,
+                size: values.size,
+            }));
+            formData.append('Variants[idBrand]', values.idBrand)
+            console.log(formData)
+            await updateProduct(formData)
+                .unwrap()
+                .then(response => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Producto actualizado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTimeout(function(){
+                        navigate('/admin/');
+                        window.location.reload();
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
         },
     })
 
@@ -291,23 +300,23 @@ export const EditProducts = ({ id }) => {
                 <FormControl fullWidth>
                     <InputLabel id="category-label">Categoría</InputLabel>
                         <Select
-                          labelId="category-label"
-                          id="idCategory"
-                          name="idCategory"
-                          value={formik.values.idCategory}
-                          label="Categoría"
-                          onChange={formik.handleChange}
-                          error={formik.touched.idCategory && Boolean(formik.errors.idCategory)}
+                            labelId="category-label"
+                            id="idCategory"
+                            name="idCategory"
+                            value={formik.values.idCategory}
+                            label="Categoría"
+                            onChange={formik.handleChange}
+                            error={formik.touched.idCategory && Boolean(formik.errors.idCategory)}
                         >
-                          {categoriesLoading ? (
-                           <MenuItem value="">Cargando categorías...</MenuItem>
-                          ) : (
-                            categories.map((category) => (
-                              <MenuItem key={category.idCategory} value={category.idCategory}>
-                                {category.nameCategory}
-                              </MenuItem>
-                            ))
-                          )}
+                            {categoriesLoading ? (
+                                <MenuItem value="">Cargando categorías...</MenuItem>
+                            ) : (
+                                categories.map((category) => (
+                                <MenuItem key={category.idCategory} value={category.idCategory}>
+                                    {category.nameCategory}
+                                </MenuItem>
+                                ))
+                            )}
                         </Select>
                   </FormControl>
                   <Button onClick={() => setOpenCategoryModal(true)}>Crear nueva categoría</Button>
@@ -434,6 +443,25 @@ export const EditProducts = ({ id }) => {
                         error={formik.touched.imageProducts && Boolean(formik.errors.imageProducts)}
                         helperText={formik.touched.imageProducts && formik.errors.imageProducts}
                     />
+                    <input
+                        accept="image/*"
+                        id="contained-button-file"
+                        name="imageProducts"                              // Este nombre debe coincidir con el esperado por Multer
+                        type="file"
+                        onChange={(event) => {
+                            formik.setFieldValue("imageProducts", { file: event.currentTarget.files[0] });
+                        }}
+                        onBlur={formik.handleBlur}
+                        style={{ display: "none" }}
+                    />
+                    <label htmlFor="contained-button-file">
+                        <Button variant="contained" component="span" fullWidth>
+                            Cargar imagen
+                        </Button>
+                    </label>
+                    {formik.touched.imageProducts && formik.errors.imageProducts && (
+                        <Typography color="error">{formik.errors.imageProducts}</Typography>
+                    )}
                 </Grid>
 
 			    <Grid item xs={12} sx={{ mt: 2}}>
@@ -451,7 +479,6 @@ export const EditProducts = ({ id }) => {
 
         <CreateCategoryModal open={openCategoryModal} handleClose={() => setOpenCategoryModal(false)} />
         <CreateBrandModal open={openBrandModal} handleClose={() => setOpenBrandModal(false)} />
-
 
         </>
     )    
