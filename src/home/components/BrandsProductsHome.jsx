@@ -1,8 +1,9 @@
-import { Grid, Box, Typography } from "@mui/material";
+import { Grid, Box, Typography, Paper } from "@mui/material";
 import { useGetBrandsQuery } from "../../store/api";
 import Carousel from 'react-material-ui-carousel';
+import { Link } from 'react-router-dom';
 
-export const BrandsProductsHome = () => {
+export const BrandsProductsHome = ({brandId}) => {
     const { data, error, isLoading } = useGetBrandsQuery();
 
     if (isLoading) return <Typography>Cargando...</Typography>;
@@ -24,24 +25,47 @@ export const BrandsProductsHome = () => {
     }, []);
 
     return (
-        <Carousel>
+        <Carousel  
+            // animation="slide"
+            indicators={true} 
+            interval={5000}
+            navButtonsAlwaysVisible={true}
+            navButtonsProps={{          
+                style: {
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    borderRadius: 50,
+                    color: 'black',
+                }
+            }}
+            
+        >
+
             {carouselItems.map((chunk, index) => (
-                <Grid container key={index} justifyContent="center">
+                <Grid container key={index} justifyContent="center" >
                     {chunk.map(marca => (
-                        <Grid item xs={12} sm={6} md={2} key={marca.id} sx={{ 
+                        <Grid item xs={12} sm={6} md={2} key={marca.idBrand} sx={{ 
                             textAlign: 'center', 
-                            border: '4px solid #000',
+                            // border: '4px solid #000',
                             borderRadius: '20px',
-                            p: 2,
-                            m: 1,
-                            transition: 'background-color 0.3s',
+                            color: '#646464',
+                            transition: 'background-color 0.5s',
                             '&:hover': {
-                              backgroundColor: 'primary.main',
+                              backgroundColor: '#fff',
+                            //   boxShadow: "4px 4px 10px"
                             },
                         }}>
-                            <Box textAlign="center">
-                                {/* <img src={marca.logo} alt={marca.nameBrand} style={{ maxWidth: "100%", maxHeight: "100px" }} /> */}
-                                <Typography variant="subtitle1">{marca.nameBrand}</Typography>
+                            <Box textAlign="center" p="5px"> 
+                                {/* <Paper sx={{height:"60px", boxShadow:"0 3px 8px rgba(0, 0, 0, .24)", borderRadius: "0 30px", justifyContent: "center", alignItems:"center"}} > */}
+                                <Link to={`/products/brand/${marca.idBrand}`}>
+                                    
+                                    <img 
+                                        src={marca.logoBrand} 
+                                        alt={marca.nameBrand} 
+                                        style={{ width: 100, marginLeft: 10}} 
+                                    />
+                                </Link>
+                                {/* <Typography variant="subtitle1">{marca.nameBrand}</Typography> */}
+                                {/* </Paper> */}
                             </Box>
                         </Grid>
                     ))}

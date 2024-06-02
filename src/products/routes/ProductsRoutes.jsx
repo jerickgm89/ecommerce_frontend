@@ -6,7 +6,11 @@ export const ProductsRoutes = () => {
     <Routes>
         <Route path="/" element={<ProductsPage />} />
 
-        <Route path='/*' element={ <Navigate to="/products" /> } />   
+        <Route path="/category/:idCategory" element={<ProductsPage />} />
+
+        <Route path="/brand/:idBrand" element={<ProductsPage />} />
+
+        <Route path='*' element={ <Navigate to="/products" /> } />   
     </Routes>
   )
 }

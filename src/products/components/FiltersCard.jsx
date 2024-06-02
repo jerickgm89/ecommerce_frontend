@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse, Button, MenuItem } from '@mui/material';
+import { Typography, Paper, Box, TextField, Checkbox, FormControlLabel, FormGroup, Divider, List, ListItemButton, ListItemText, Collapse, Button, MenuItem, ListItemAvatar} from '@mui/material';
 import Rating from "@mui/material/Rating";
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import { useGetBrandsQuery, useGetCategoriesQuery } from '../../store/api/ecommerceApi';
 import { ExpandMoreRounded } from '@mui/icons-material';
 
-const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, applySorting, applyCategoryFilter, applyBrandFilter }) => {
+const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, applySorting, applyCategoryFilter, applyBrandFilter, idCategory, idBrand }) => {
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
   const [orderBy, setOrderBy] = useState('');
@@ -99,26 +99,28 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
 
   return (
     <Paper elevation={3} style={{ maxHeight: '100%', padding: '18px 27px', borderRadius: '8px', display: 'flex', flexDirection: 'column' }}>
-      <Typography style={{ fontSize: '14px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }} gutterBottom>Categories</Typography>
-      
-      <ListItemButton onClick={handleToggleCategory}>
-        <ListItemText primary="Category" />
-        {openCategory ? <ExpandLess /> : <ExpandMoreRounded />}
-      </ListItemButton>
-      <Collapse in={openCategory} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton onClick={handleClearCategory} sx={{ pl: 4 }}>
-            <ListItemText primary="Select category" />
-          </ListItemButton>
-          {filterCategories.map(category => (
-            <ListItemButton key={category.idCategory} onClick={() => handleCategoryChange(category.idCategory)} sx={{ pl: 4 }}>
-              <ListItemText primary={category.nameCategory} />
+      {idCategory ? null : ( 
+        <>
+        <Typography style={{ fontSize: '14px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }} gutterBottom>Categories</Typography>
+        <ListItemButton onClick={handleToggleCategory}>
+          <ListItemText primary="Category" />
+          {openCategory ? <ExpandLess /> : <ExpandMoreRounded />}
+        </ListItemButton>
+        <Collapse in={openCategory} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton onClick={handleClearCategory} sx={{ pl: 4 }}>
+              <ListItemText primary="Select category" />
             </ListItemButton>
-          ))}
-        </List>
-      </Collapse>
-
-      <Divider style={{ margin: '16px 0', borderColor: 'rgba(0, 0, 0, 0.2)' }} />
+            {filterCategories.map(category => (
+              <ListItemButton key={category.idCategory} onClick={() => handleCategoryChange(category.idCategory)} sx={{ pl: 4 }}>
+                <ListItemText primary={category.nameCategory} />
+              </ListItemButton>
+            ))}
+          </List>
+        </Collapse>
+        <Divider style={{ margin: '16px 0', borderColor: 'rgba(0, 0, 0, 0.2)' }} />
+        </>
+      )}
 
       <Typography style={{ fontSize: '14px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }}>Sort By</Typography>
 
@@ -180,6 +182,8 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
 
       <Divider style={{ margin: '16px 0', borderColor: 'rgba(0, 0, 0, 0.2)' }} />
 
+      {idBrand ? null : ( 
+        <>
       <Typography style={{ fontSize: '14px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }}>Brands</Typography>
 
       <ListItemButton onClick={handleToggleBrand}>
@@ -192,12 +196,18 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
             <ListItemText primary="Select Brand" />
           </ListItemButton>
           {filterBrands.map(brand => (
+
             <ListItemButton key={brand.idBrand} onClick={() => handleBrandChange(brand.idBrand)} sx={{ pl: 4 }}>
+              <ListItemAvatar>
+                <img src={brand.logoBrand} alt=''  style={{ width: 20, marginRight: 10 }}/>
+              </ListItemAvatar>
               <ListItemText primary={brand.nameBrand} />
             </ListItemButton>
           ))}
         </List>
       </Collapse>
+      </>
+      )}
 
       {/* <Divider style={{ margin: '16px 0',  borderColor:'#F3F5F9'  }} />
 

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { Typography, Grid, Box } from '@mui/material';
+import { Typography, Grid, Box, Divider} from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import FiltersCard from '../components/FiltersCard';
 import { EcommerceUI } from '../../ui';
-import { useFilterProductsQuery } from '../../store/api';
+import { useFilterProductsQuery, useGetCategoriesQuery, useGetBrandsQuery } from '../../store/api';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { addToCart } from '../../store/cartShopping/cartSlice';
 import Loading from '../../components/loading/Loading';
+import { BannerInfo, BannerItems, CategoryProductsHome} from '../../home/components';
+import { BrandsProductsHome } from '../../home/components';
 
 // ErrorBoundary component to catch and handle errors
 class ErrorBoundary extends React.Component {
@@ -31,6 +34,8 @@ class ErrorBoundary extends React.Component {
 }
 
 export const ProductsPage = () => {
+  const { idCategory, idBrand } = useParams();
+
   const [openCategories, setOpenCategories] = useState(false);
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
@@ -50,9 +55,15 @@ export const ProductsPage = () => {
     year: '',
     orderBy: orderBy,
     orderDirection: orderDirection,
-    category: category,
-    brand: brand
+    category: idCategory ? idCategory : category,
+    brand: idBrand ? idBrand : brand 
   });
+
+  const { data: categoryData } = useGetCategoriesQuery(idCategory); 
+  const { data: brandData } = useGetBrandsQuery(idBrand);
+
+  const categoryName = categoryData ? categoryData.nameCategory : '';
+  const brandName = brandData ? brandData.nameBrand : '';
 
   const applyPriceFilter = (priceMin, priceMax) => {
     setPriceMin(priceMin);
@@ -79,8 +90,28 @@ export const ProductsPage = () => {
   return (
     <EcommerceUI>
       <ErrorBoundary>
-        <Box m={8} sx={{ backgroundColor: "#F6F9FC" }}>
-          <Typography variant='h3' gutterBottom>Products</Typography>
+        {/* <Divider sx={{backgroundColor:"white"}}/>
+        <BannerItems/>
+        <Divider />
+        <BannerInfo/>
+        <Divider /> */}
+
+        <Box m={8}  >
+          {/* <Typography variant='h3' gutterBottom>Products</Typography> */}
+          
+
+          {idCategory && (
+            <Box mb={4}>
+              <CategoryProductsHome categoryId={idCategory} />
+            </Box>
+          )}
+          {idBrand && (
+            <Box mb={4}>
+              <BrandsProductsHome brandId={idBrand} />
+            </Box>
+          )}
+
+
           <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <FiltersCard 
@@ -90,10 +121,15 @@ export const ProductsPage = () => {
                 applySorting={applySorting}
                 applyCategoryFilter={applyCategoryFilter}
                 applyBrandFilter={applyBrandFilter}
+                idCategory={idCategory}
+                idBrand={idBrand}
               />
             </Grid>
             
             <Grid item xs={12} sm={6} md={8} lg={9}>
+              
+             
+
               <Grid container spacing={3} justifyContent="center">
                 {isError ? (
                   <Typography variant="h6" textAlign="center" m={30} sx={{ color: 'error.main' }}>No se encontraron productos con el filtro aplicado {error.message}</Typography>

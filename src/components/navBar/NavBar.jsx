@@ -8,6 +8,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 // import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CartShoppingIcon from '../../cartShooping/component/CartShoopingIcon';
 import { SearchBar } from '../searchBar';
+import { useGetIsActiveQuery } from "../../store/api/ecommerceUserApi";
+import Swal from 'sweetalert2';
+import styles from './NavBar.module.css';
 
 const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
 const settings = ['Perfil', 'Panel Administrador', 'Salir'];
@@ -17,11 +20,12 @@ export const NavBar = () => {
     const { logout } = useAuth0();
     const { user, isAuthenticated } = useAuth0();
     
-
-    // console.log(user);
+    const { data: isActive, errorUser, isLoading, refetch } = useGetIsActiveQuery(user?.email, { skip: !isAuthenticated })
+    console.log(user);
+    console.log(user?.email);
     const userData  = useUserAuthentication(user, isAuthenticated);
  
-
+    console.log(isActive)
     const [anchorNav, setAnchorNav] = React.useState(null);
     const [anchorUser, setAnchorUser] = React.useState(null);
 
@@ -43,11 +47,29 @@ export const NavBar = () => {
         setAnchorUser(null);
     };
 
+    React.useEffect(() => {
+        if (isAuthenticated && !isLoading && isActive === false) {
+            Swal.fire({
+                icon: 'error',
+                title: '¡Cuenta bloqueada!',
+                text: 'Por favor, contacte al soporte: ecommercetech2024@gmail.com',
+                confirmButtonText: 'Cerrar',
+                customClass: {
+                    confirmButton: styles['swal-confirm-button']
+                }
+            }).then(() => {
+                logout({ returnTo: window.location.origin });
+            });
+        }
+    }, [isAuthenticated, isActive, isLoading, logout]);
+
     return (
         <AppBar position="static" sx={{ backgroundColor: 'white' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-
+        
+                
+                <Link to="/">
                     <Box 
                         component="img"
                         alt="logo"
@@ -60,6 +82,7 @@ export const NavBar = () => {
                         }}
                         src="/logo.svg"
                     />
+                </Link>
                   
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
@@ -142,8 +165,7 @@ export const NavBar = () => {
 
                 
 
-                     {/* Insert the SearchBar component */}
-                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, alignItems: 'center', justifyContent: { xs: 'center', md: 'flex-start' } }}>
                         <SearchBar />   
                     </Box>
 
@@ -161,7 +183,7 @@ export const NavBar = () => {
                                             {userData ? userData.nameUser : user.given_name}
                                             </Typography>
                                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>                                                
-                                            <Avatar alt={userData ? userData.nameUser : user.given_name} src={userData ? userData.pictureUser : user.picture} />
+                                                <Avatar alt={userData ? userData.nameUser : user.given_name} src={userData ? userData.pictureUser : user.picture} />
                                             </IconButton>                                            
                                         </Box>
                                     </>

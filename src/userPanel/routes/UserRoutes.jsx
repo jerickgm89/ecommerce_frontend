@@ -1,15 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import { UserAddressPage, UserEditProfilePage, UserPanelPage, UserWishPage } from "../pages"
+import { UserEditProfilePage, UserPanelPage, UserWishPage, UseAddAddressPage, UserAddressPage } from "../pages"
 
 export const UserRoutes = () => {
   return (
     <>
       <Routes>
           <Route path="/" element={<UserPanelPage />} />
-          <Route path="/address" element={<UserAddressPage />} />
           <Route path="/wishlist" element={<UserWishPage />} />
           <Route path="/editUser" element={<UserEditProfilePage />} />
-          <Route path='/user/*' element={ <Navigate to="/products/" /> } />
+          <Route path="/address" element={<UserAddressPage />} />
+          <Route path="/addAddress" element={<UseAddAddressPage />} />
+          <Route path='/*' element={ <Navigate to="/products/" /> } />
       </Routes>
     </>
   )
