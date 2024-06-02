@@ -6,12 +6,13 @@ export const ecommerceApi = createApi({
     baseQuery: fetchBaseQuery({ 
         baseUrl: 'https://www.ecommercetech.software', //http://localhost:3001, www.ecommercetech.software
     }),
-    tagTypes: ['Products'],
+    tagTypes: ['Products', 'Categories', 'Brands'],
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: () => '/products/index',
             providesTags: ['Products'],
         }),
+
         getProductsLimit: builder.query({
             query: (page=1) => `/products/index?limit=9&page=${page}`,
             providesTags: ['Products'],
@@ -22,9 +23,23 @@ export const ecommerceApi = createApi({
         getBrands: builder.query({
             query: () => '/products/brands',
         }),
+
+    
+
         getCategories: builder.query({
             query: () => '/products/category',
+            providesTags: ['Categories'],
         }),
+
+       
+
+
+
+        filterProductsByCategory: builder.query({
+            query: (category) => `/filterproducts?category=${category}`,
+            providesTags: ['Products'],
+        }),
+
         createProducts: builder.mutation({
             query: (newProduct) => ({
                 url: '/products/index',
@@ -97,6 +112,36 @@ export const ecommerceApi = createApi({
                 };
             },
         }),
+
+        createCategory: builder.mutation({
+            query: (newCategory) => ({
+                url: '/products/category',
+                method: 'POST',
+                body: newCategory
+            }),
+            invalidatesTags: ['Categories'],
+        }),
+
+        createBrand: builder.mutation({
+            query: (newBrand) => ({
+                url: '/products/brands',
+                method: 'POST',
+                body: newBrand
+            }),
+            invalidatesTags: ['Brands'],
+        }),
+
+        updateCategory: builder.mutation({
+            query: ({ id, updatedCategory }) => ({
+                url: `/products/category/${id}`,
+                method: 'PUT',
+                body: updatedCategory
+            }),
+            invalidatesTags: ['Categories'],
+        }),
+
+       
+
     }),
 });
 
@@ -108,12 +153,15 @@ export const {
     useGetCategoriesQuery,
     useCreateProductsMutation,
     useFilterProductsQuery,
+    useFilterProductsByCategoryQuery,
     useSearchProductsByNameQuery,
     useDeleteProductsMutation,
     useUpdateProductsMutation,
     useUnlockProductMutation,
     useRestoreProductMutation,
-    useCreateOrderMutation,
+    useCreateCategoryMutation,
+    useCreateBrandMutation,
     useGetProductsLockedQuery,
     usePostOrderMutation,
+    useUpdateCategoryMutation
  } = ecommerceApi;

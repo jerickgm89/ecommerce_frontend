@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useGetProductByIdQuery } from '../../store/api/ecommerceApi'
-import { Button, Grid, TextField, Typography } from '@mui/material'
+import { useGetProductByIdQuery, useUpdateProductsMutation, useGetCategoriesQuery, useGetBrandsQuery} from '../../store/api/ecommerceApi'
+import { Button, Grid, TextField, Typography, Divider, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import  CreateCategoryModal  from "./CreateCategoryModal";
+import  CreateBrandModal  from "./CreateBrandModal";
 import { useFormik } from 'formik'
-import { useUpdateProductsMutation } from '../../store/api/ecommerceApi'
 import * as yup from 'yup'
 
 const validationSchema = yup.object({
@@ -14,8 +15,14 @@ const validationSchema = yup.object({
         .matches(/^[0-9]+(?:\.[0-9]+)?$/, 'El precio debe ser un numero decimal')
         .required('El precio es requerido'),
 	year: yup
-		.string()
-		.required('El año es requerido'),
+        .number()
+        .typeError('El año debe ser un número')
+        .positive('El año debe ser un número positivo')
+        .integer('El año debe ser un número entero')
+        .test('len', 'El año debe tener exactamente 4 dígitos (yyyy)', val => val && val.toString().length === 4)
+        .min(2000, 'El año no puede ser menor que el año 2000')
+        .max(new Date().getFullYear(), `El año no puede ser mayor que ${new Date().getFullYear()}`)
+        .required('El año es requerido'),
     stock: yup
         .string()
         .matches(/^[0-9]+$/, 'El precio debe ser un numero decimal')
@@ -54,7 +61,29 @@ const validationSchema = yup.object({
 });
 
 export const EditProducts = ({ id }) => {
+
     const { data: product, error, isLoading, refetch } = useGetProductByIdQuery(id)
+    const { data: categories, isLoading: categoriesLoading, refetch: refetchCategories } = useGetCategoriesQuery();
+    const { data: brands, isLoading: brandsLoading, refetch: refetchBrands } = useGetBrandsQuery();
+
+    const [openCategoryModal, setOpenCategoryModal] = useState(false);
+    const [openBrandModal, setOpenBrandModal] = useState(false);
+
+    useEffect(() => {
+      // Refrescar marcas después de crear una nueva
+      if (openBrandModal === false) {
+          refetchBrands();
+      }
+    }, [openBrandModal, refetchBrands]);
+
+    useEffect(() => {
+      // Refrescar categorías después de crear una nueva
+      if (openCategoryModal === false) {
+          refetchCategories();
+      }
+    }, [openCategoryModal, refetchCategories]);
+
+
     const [initialValues, setInitialValues] = useState({
         name: '',
         price: '',
@@ -88,7 +117,7 @@ export const EditProducts = ({ id }) => {
                 idCategory: product.idCategory || '',
                 idDiscount: product.idDiscount || '',
                 description: product.descriptionProduct || '',
-                imageProducts: product.imageProducts || '',
+                imageProducts: product.imageProducts.toString() || '',
                 model: product.characteristicsProduct?.modelProduct || '',
                 color: 'gris plata',
                 size: '7"',
@@ -160,6 +189,7 @@ export const EditProducts = ({ id }) => {
     }
 
     return (
+        <>
         <form onSubmit={formik.handleSubmit} style={{ marginTop: 30, marginBottom: 30, mx: 'auto', maxWidth: 600, border: '1px solid black', padding: 30, borderRadius: '5px' }} encType="multipart/form-data">
 			<Typography sx={{ textAlign: 'center'}}>
 				{`ACTUALIZAR PRODUCTO CON ID: ${id}`}
@@ -170,6 +200,7 @@ export const EditProducts = ({ id }) => {
                 <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField
                         name="name"
+                        label="Nombre"
                         type="text"
                         value={formik.values.name} 
                         placeholder="Ingrese el nombre del producto" 
@@ -184,6 +215,7 @@ export const EditProducts = ({ id }) => {
                 <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField 
                         name="price"
+                        label="Precio"
                         type="text"
                         value={formik.values.price} 
                         placeholder="Ingrese el precio del producto" 
@@ -198,6 +230,7 @@ export const EditProducts = ({ id }) => {
 			    <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField 
 					    name="year"
+                        label="Año"
 					    type="text" 
                         value={formik.values.year}
 					    placeholder="Ingrese el año del producto" 
@@ -227,6 +260,7 @@ export const EditProducts = ({ id }) => {
                 <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField
 					    name="stock"
+                        label="Stock"
 					    type="number"
                         value={formik.values.stock}
 					    placeholder="Ingrese el stock del producto"
@@ -241,6 +275,7 @@ export const EditProducts = ({ id }) => {
 			    <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField
 					    name="idReview"
+                        label="ID Review"
 					    type="number" 
                         value={formik.values.idReview}
 					    placeholder="Ingrese el ID del review" 
@@ -253,22 +288,35 @@ export const EditProducts = ({ id }) => {
                 </Grid>
 
 			    <Grid item xs={12} sx={{ mt: 2}}>
-                    <TextField 
-					    name="idCategory"
-					    type="number" 
-                        value={formik.values.idCategory}
-					    placeholder="Ingrese el ID de la categoria" 
-					    fullWidth
-					    onChange={formik.handleChange}
-					    onBlur={formik.handleBlur}
-					    error={formik.touched.idCategory && Boolean(formik.errors.idCategory)}
-					    helperText={formik.touched.idCategory && formik.errors.idCategory}
-				    />
+                <FormControl fullWidth>
+                    <InputLabel id="category-label">Categoría</InputLabel>
+                        <Select
+                          labelId="category-label"
+                          id="idCategory"
+                          name="idCategory"
+                          value={formik.values.idCategory}
+                          label="Categoría"
+                          onChange={formik.handleChange}
+                          error={formik.touched.idCategory && Boolean(formik.errors.idCategory)}
+                        >
+                          {categoriesLoading ? (
+                           <MenuItem value="">Cargando categorías...</MenuItem>
+                          ) : (
+                            categories.map((category) => (
+                              <MenuItem key={category.idCategory} value={category.idCategory}>
+                                {category.nameCategory}
+                              </MenuItem>
+                            ))
+                          )}
+                        </Select>
+                  </FormControl>
+                  <Button onClick={() => setOpenCategoryModal(true)}>Crear nueva categoría</Button>
                 </Grid>
 
 			    <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField 
 					    name="idDiscount"
+                        label="ID Descuento"
 					    type="number" 
                         value={formik.values.idDiscount}
 					    placeholder="Ingrese el ID del descuento" 
@@ -283,6 +331,7 @@ export const EditProducts = ({ id }) => {
 			    <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField 
 					    name="description" 
+                        label="Descripción"
 					    type="text" 
                         value={formik.values.description}
 					    placeholder="Ingrese la descripcion del producto" 
@@ -291,16 +340,19 @@ export const EditProducts = ({ id }) => {
 					    onBlur={formik.handleBlur}
 					    error={formik.touched.description && Boolean(formik.errors.description)}
 					    helperText={formik.touched.description && formik.errors.description}
+                        
 				    />
+                    <Divider style={{ margin: '16px 0', borderColor: 'rgba(0, 0, 0, 0.2)' }} />
                 </Grid>
                 <br />
   			    <Typography sx={{ textAlign: 'center'}}>
-			        Catacterísticas:
+			        Características:
 			    </Typography>
 
                 <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField 
-              	        name="model" 
+              	        name="model"
+                        label="Modelo" 
                         type="text" 
                         value={formik.values.model}
                         placeholder="Ingrese el modelo del producto" 
@@ -315,6 +367,7 @@ export const EditProducts = ({ id }) => {
                 <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField 
                         name="color" 
+                        label="Color"
                         type="text" 
                         value={formik.values.color}
                         placeholder="Ingrese el color del producto" 
@@ -329,6 +382,7 @@ export const EditProducts = ({ id }) => {
                 <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField 
                         name="size" 
+                        label="Tamaño"
                         type="text" 
                         value={formik.values.size}
                         placeholder="Ingrese el tamaño del producto" 
@@ -341,22 +395,36 @@ export const EditProducts = ({ id }) => {
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 2}}>
-                    <TextField 
-              	        name="idBrand"
-                        type="number"
-                        value={formik.values.idBrand}
-                        placeholder="Ingrese el ID de la marca"
-                        fullWidth
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.idBrand && Boolean(formik.errors.idBrand)}
-                        helperText={formik.touched.idBrand && formik.errors.idBrand}
-                    />
+                    <FormControl fullWidth>
+                                <InputLabel id="brand-label">Marca</InputLabel>
+                                <Select
+                                    labelId="brand-label"
+                                    id="idBrand"
+                                    name="idBrand"
+                                    value={formik.values.idBrand}
+                                    label="Marca"
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.idBrand && Boolean(formik.errors.idBrand)}
+                                >
+                                    {brandsLoading ? (
+                                        <MenuItem value="">Cargando marcas...</MenuItem>
+                                    ) : (
+                                        brands.map((brand) => (
+                                            <MenuItem key={brand.idBrand} value={brand.idBrand}>
+                                                <img src={brand.logoBrand} alt={brand.nameBrand} style={{ width: 20, marginRight: 10 }} />
+                                                {brand.nameBrand}
+                                            </MenuItem>
+                                        ))
+                                    )}
+                                </Select>
+                        </FormControl>
+                        <Button onClick={() => setOpenBrandModal(true)}>Crear nueva marca</Button>
                 </Grid>
 
                 <Grid item xs={12} sx={{ mt: 2}}>
                     <TextField 
               	        name="imageProducts"
+                        label="Imagen"
                         type="text"
                         value={formik.values.imageProducts}
                         placeholder="Ingrese la imagen del producto"
@@ -380,5 +448,11 @@ export const EditProducts = ({ id }) => {
 
             </Grid>
         </form>
+
+        <CreateCategoryModal open={openCategoryModal} handleClose={() => setOpenCategoryModal(false)} />
+        <CreateBrandModal open={openBrandModal} handleClose={() => setOpenBrandModal(false)} />
+
+
+        </>
     )    
 }
