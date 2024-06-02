@@ -1,9 +1,11 @@
 import { useGetProductsQuery }  from "../../hooks/useGetProductsByIdsQuery"
 import { useGetQuestionsQuery, usePutUpdateQuestionMutation } from '../../store/api/ecommerceQuestionsApi'
 import { DataGrid } from '@mui/x-data-grid'
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useDispatch } from "react-redux"
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
+import { setUnansweredCount } from '../../store/adminNotifications/notificationsSlice' 
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
 
@@ -15,8 +17,17 @@ export const ListQuestions = () => {
     // console.log(idProductQuestion);
     const { data: products = [], error: errorProduct, isLoading: isLoadingProduct } = useGetProductsQuery(idProductQuestion);
     // console.log(products);
+
     const [updateQuestion ] = usePutUpdateQuestionMutation();
+
+    const dispatch = useDispatch();
     
+    useEffect(() => {
+        // Actualiza el contador de preguntas sin respuesta
+        const count = questions.filter(question => !question.responseComments).length;
+        dispatch(setUnansweredCount(count));
+    }, [questions]);
+
     const validationSchema = yup.object({
         responseComments: yup
             .string()
