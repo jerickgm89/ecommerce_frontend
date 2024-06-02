@@ -10,11 +10,11 @@ import Swal from 'sweetalert2'
 export const ListQuestions = () => {
 
     const { data: questions = [], error, isLoading, refetch } = useGetQuestionsQuery()
-    console.log(questions)
+    // console.log(questions)
     const idProductQuestion = [...new Set(questions.map(question => question.idProduct))];
-    console.log(idProductQuestion);
+    // console.log(idProductQuestion);
     const { data: products = [], error: errorProduct, isLoading: isLoadingProduct } = useGetProductsQuery(idProductQuestion);
-    console.log(products);
+    // console.log(products);
     const [updateQuestion ] = usePutUpdateQuestionMutation();
     
     const validationSchema = yup.object({

@@ -61,7 +61,7 @@ export const UserEditProfile = () => {
       updateUserMutation({id:userData.idUser,...values})
         .unwrap()
         .then(response => {
-          console.log(response)
+          // console.log(response)
           Swal.fire({
             icon: 'success',
             title: 'Usuario actualizado',
