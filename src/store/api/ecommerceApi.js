@@ -24,10 +24,7 @@ export const ecommerceApi = createApi({
             query: () => '/products/brands',
         }),
 
-        getBrandById: builder.query({
-            query: (id) => `/products/brands/${id}`, // La ruta dependerá de cómo está estructurada tu API
-        }),
-
+       
         getCategories: builder.query({
             query: () => '/products/category',
             providesTags: ['Categories'],
@@ -150,9 +147,7 @@ export const {
     useGetProductsLimitQuery,
     useGetProductByIdQuery,
     useGetBrandsQuery,
-    useGetBrandByIdQuery,
     useGetCategoriesQuery,
-    useGetCategoryByIdQuery,
     useCreateProductsMutation,
     useFilterProductsQuery,
     useFilterProductsByCategoryQuery,

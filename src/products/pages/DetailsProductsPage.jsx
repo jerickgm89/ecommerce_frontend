@@ -15,13 +15,11 @@ export const DetailsProductsPage = () => {
   const [category, setCategory] = useState(null);
   const [brand, setBrand] = useState(null);
 
-  console.log(brands,"brands");
 
   useEffect(() => {
     if (categories) {
       const foundCategory = categories.find(cat => cat.idCategory === product.idCategory);
       setCategory(foundCategory);
-      console.log(foundCategory,"foundCategory");
     }
   }, [categories, product]);
 
@@ -30,7 +28,6 @@ export const DetailsProductsPage = () => {
       const foundBrand = brands.find(brand => brand.idBrand === product.characteristicsProduct?.idBrand);
       setBrand(foundBrand);
 
-      console.log(foundBrand,"foundBrand");
     }
   }, [brands, product]);
 

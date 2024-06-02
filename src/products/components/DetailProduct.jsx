@@ -6,6 +6,7 @@ import { ReviewList } from './ReviewList';
 import { QuestionsProduct } from './QuestionsProduct';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { QuestionsList } from './QuestionsList';
+import Carousel from 'react-material-ui-carousel';
 
 
 const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts, stockProduct, characteristicsProduct, categoryName, brandName, brandLogo }) => {
@@ -36,6 +37,10 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
   };
 
   const queryClient = new QueryClient();
+
+  const images = Array.isArray(imageProducts) ? imageProducts : [imageProducts]
+
+  console.log("Image URLs:", images);
   
   return (
     <Container>
@@ -43,30 +48,59 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
       <Grid item xs={12} md={6}>
           <Box
             sx={{
-              width: '100%',
-              paddingTop: '100%', 
-              position: 'relative'
+              // width: '100%',
+              // paddingTop: '100%', 
+              position: 'relative',
+              overflow: 'hidden',
+              borderRadius: '5px',
+              marginRight: '20px'
             }}
           >
-            <img
-              src={imageProducts}
-              alt={nameProduct}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                padding: "30px",
+            {images && images.length > 0 ? (
+              <Carousel
+              
+                navButtonsAlwaysVisible={images.length > 1} 
+                navButtonsProps={{
+                  style: {
+                      backgroundColor: 'transparent',
+                      color: 'black',  
+                      
+                  },
+                autoplay: false,
               }}
-            />
+                
+
+              >
+
+                {images.map((image, index) => (
+                  <Box key={index} sx={{ position: 'relative', width: '100%', height: 0, paddingTop: '100%', overflow: 'hidden', justifyContent:"center" }}>
+                    <img
+                      src={image}
+                      alt={`${nameProduct} ${index + 1}`}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%', 
+                        height: '100%',
+                        objectFit: 'contain',
+                        transition: 'opacity 0.5s ease-in-out',
+                      }}
+                      onError={(e) => e.target.style.display = 'none'}
+                    />
+                  </Box>
+                ))}
+              </Carousel>
+            ) : (
+              <Typography variant="body2" color="textSecondary">No image available</Typography>
+            )}
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
           <img src={brandLogo} alt={brandName} style={{ width: 100, marginRight: 10 }} />
           <Typography gutterBottom style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>{nameProduct}</Typography>
           <Typography style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', color: 'rgb(174, 180, 190)' }}>
-            Categoria: {categoryName}
+            Categoría: {categoryName}
           </Typography>
           <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${formattedPrice(priceProduct)}</Typography>
          
@@ -112,7 +146,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
               textColor="secondary"
             >
 
-              <Tab label="Descripcion" sx={{ textTransform: 'none' }} />
+              <Tab label="Descripción" sx={{ textTransform: 'none' }} />
               <Tab label="Características" sx={{ textTransform: 'none' }} />
               
             </Tabs>
