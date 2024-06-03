@@ -25,6 +25,7 @@ export const DetailsProductsPage = () => {
     }
   }, [categories, product]);
 
+
   useEffect(() => {
     if (brands) {
       const foundBrand = brands.find(brand => brand.idBrand === product.characteristicsProduct?.idBrand);
@@ -53,6 +54,8 @@ export const DetailsProductsPage = () => {
             imageProducts = {product.imageProducts}
             stockProduct = {product.stockProduct}
             categoryName = {category?.nameCategory}
+            categoryId = {category?.idCategory}
+            brandId = {brand?.idBrand}
             brandName = {brand?.nameBrand}
             brandLogo = {brand?.logoBrand}
 

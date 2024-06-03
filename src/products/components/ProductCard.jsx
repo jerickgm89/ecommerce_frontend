@@ -10,9 +10,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CloseIcon from '@mui/icons-material/Close';
 import Rating from "@mui/material/Rating";
-import { useGetCategoriesQuery } from '../../store/api';
+import { useGetCategoriesQuery, useGetAverageScoresQuery } from '../../store/api';
 import { addFavorite, removeFavorite } from '../utils/localStorage';
-import { useDispatch } from 'react-redux';
+
 import { addToCart, decreaseCart } from '../../store/cartShopping/cartSlice';
 
 const ProductCard = ({ product, dispatch, cart }) => {
@@ -35,6 +35,21 @@ const ProductCard = ({ product, dispatch, cart }) => {
       setCategory(foundCategory);
     }
   }, [categories, product]);
+
+  const { data: averageScores } = useGetAverageScoresQuery(); 
+  const [averageScore, setAverageScore] = useState(null);
+
+  useEffect(() => {
+    if (averageScores) {
+      const productScore = averageScores.find(item => item.idProduct === product.idProduct);
+      if (productScore) {
+        setAverageScore(parseFloat(productScore.averageScore));
+      } else {
+        setAverageScore(null);
+      }
+    }
+  }, [averageScores, product]);
+
 
   useEffect(() => {
     const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -170,7 +185,11 @@ const ProductCard = ({ product, dispatch, cart }) => {
             {product.stockProduct > 0 ? 'Stock ' : 'Out of Stock'}
           </Typography>
 
-          <Rating sx={{ mb: 1 }} />
+          {averageScore !== null ? (
+            <Rating value={averageScore} precision={0.5} readOnly sx={{ mb: 1 }} /> 
+          ) : (
+            <Typography sx={{ mb: 1, fontSize: '14px', color: '#777' }}>Sin calificación</Typography>
+          )}
 
           <Box display="flex" alignItems="center" justifyContent="space-between">
             <Box>

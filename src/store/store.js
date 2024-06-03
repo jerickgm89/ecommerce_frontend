@@ -11,7 +11,8 @@ import {
     ecommerceReviewApi, 
     ecommerceQuestionsApi, 
     ecommerceAddressApi,
-    ecommerceShopApi
+    ecommerceShopApi,
+    ecommerceMetricsApi
 } from "./api";
 // import sus Slice
 
@@ -29,6 +30,8 @@ export const store = configureStore({
         [ecommerceQuestionsApi.reducerPath]: ecommerceQuestionsApi.reducer,
         [ecommerceAddressApi.reducerPath]: ecommerceAddressApi.reducer,
         [ecommerceShopApi.reducerPath]: ecommerceShopApi.reducer,
+        [ecommerceMetricsApi.reducerPath]: ecommerceMetricsApi.reducer,
+
 
     },
     middleware: (getDefaultMiddleware) => 
@@ -38,7 +41,8 @@ export const store = configureStore({
             .concat(ecommerceReviewApi.middleware)
             .concat(ecommerceQuestionsApi.middleware)
             .concat(ecommerceAddressApi.middleware)
-            .concat(ecommerceShopApi.middleware),
+            .concat(ecommerceShopApi.middleware)
+            .concat(ecommerceMetricsApi.middleware),
 });
 
 

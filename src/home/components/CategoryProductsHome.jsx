@@ -1,4 +1,4 @@
-import { Typography, Box, Link } from "@mui/material";
+import { Typography, Box, Link, Grid } from "@mui/material";
 import { Link as RouterLink } from 'react-router-dom';
 import { useGetCategoriesQuery } from "../../store/api";
 import Carousel from 'react-material-ui-carousel';
@@ -49,36 +49,45 @@ export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
             interval={5000}
         >
             {carouselItems.map((chunk, index) => (
-                <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    {chunk.map(category => (
-                        <Box key={category.idCategory} className="containerIcon" sx={{
-                            textAlign: 'center',
-                            width: "15%",
-                            borderRadius: '30px ',
-                            color: '#646464',
-                            fontSize: "16px",
-                            p: 2,
-                            m: 1,
-                            transition: 'all 0.5s',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                                // minHeight: '200px', 
-                            '&:hover': {
-                                backgroundColor: '#fff',
-                                boxShadow: "4px 4px 10px",
-                            },
-                        }}>
-                            <Link component={RouterLink} to={`/products/category/${category.idCategory}`} underline="none" onClick={() => onCategoryClick(category.idCategory)} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <Grid container spacing={2} key={index} justifyContent="center" >
+                {chunk.map(category => (
+                    <Grid item xs={6} sm={3}  key={category.idCategory} sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Link
+                            component={RouterLink}
+                            to={`/products/category/${category.idCategory}`}
+                            underline="none"
+                            onClick={() => onCategoryClick(category.idCategory)}
+                            style={{ textDecoration: 'none', color: 'inherit', width: '100%'}}
+                        >
+                            <Box
+                                className="containerIcon"
+                                sx={{
+                                    textAlign: 'center',
+                                    borderRadius: '30px',
+                                    color: '#646464',
+                                    fontSize: "16px",
+                                    p: 2,
+                                    transition: 'all 0.5s',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    '&:hover': {
+                                        backgroundColor: '#fff',
+                                        boxShadow: "4px 4px 10px",
+                                    },
+                                }}
+                            >
                                 <img
                                     src={category.imageCategory}
                                     alt=""
-                                    style={{ width: "100%", maxHeight: "100px", maxWidth: "140px" }} />
+                                    style={{ width: "100%", maxHeight: "100px", objectFit: 'contain' }}
+                                />
                                 <Typography variant="subtitle1">{category.nameCategory}</Typography>
-                            </Link>
-                        </Box>
-                    ))}
-                </Box>
+                            </Box>
+                        </Link>
+                    </Grid>
+                ))}
+            </Grid>
             ))}
         </Carousel>
     );
