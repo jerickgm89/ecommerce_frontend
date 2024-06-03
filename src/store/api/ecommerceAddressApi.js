@@ -25,13 +25,12 @@ export const ecommerceAddressApi = createApi({
         }),
         // Post Create address
         postCreateAddress: builder.mutation({
-            query: (idUser, ...fields) => ({
+            query: ({ idUser, ...newAddress }) => ({
                 url: `/address/${idUser}`,
                 method: 'POST',
-                body: fields
+                body: newAddress
             }),
             invalidatesTags: (result, error, { id }) => [{ type: 'Address', id }],
-
         }),
         // Update address
         putUpdateAddress: builder.mutation({
@@ -45,11 +44,27 @@ export const ecommerceAddressApi = createApi({
         // Delete address
         deleteAddress: builder.mutation({
             query: (id) => ({
-                url: `/address/${id}`,
+                url: `/address/idAddress/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: (result, error, id) => [{ type: 'Address', id }],
         }),
+        getProvince: builder.query({
+            query: () => '/address',
+        }),
+        getDepartments: builder.query({
+            query: (province) => `/address?province=${province}`,
+        }),
+        getPostalCodes: builder.query({
+			query: ({ province, department }) => {
+				const queryUrl = `/address?province=${province}&department=${department}`;
+				console.log('provincias:', { province, department });
+				return queryUrl;
+			},
+		}),
+        getShippingPrice: builder.query({
+			query: (postalCode) => `/address/postal/${postalCode}`,
+		}),
     }),
 });
 
@@ -59,5 +74,9 @@ export const {
     useGetAddressByUserQuery, 
     usePostCreateAddressMutation, 
     usePutUpdateAddressMutation, 
-    useDeleteAddressMutation 
+    useDeleteAddressMutation,
+    useGetProvinceQuery,
+    useGetDepartmentsQuery,
+    useGetPostalCodesQuery,
+    useGetShippingPriceQuery
 } = ecommerceAddressApi;

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useSearchProductsByNameQuery } from '../../store/api';
-import { Grid, Card, CardContent, Typography, Box, Button } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Box, Link as MuiLink, Button } from '@mui/material';
 import { EcommerceUI } from '../../ui';
 import Loading from '../../components/loading/Loading';
 
@@ -30,6 +31,9 @@ export const SearchPages = () => {
 
     return (
         <EcommerceUI>
+            <MuiLink component={Link} to="/" sx={{ margin: '50px', display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                <ArrowBackIcon />
+            </MuiLink>
             <Box 
                 sx={{ 
                     mt: 8, 

@@ -23,7 +23,7 @@ const ProductCard = ({ product, dispatch, cart }) => {
   };
 
   const handleRemoveFromCart = () => {
-    dispatch(decreaseCart({ id: product.idProduct }));
+    dispatch(decreaseCart({ idProduct: product.idProduct, priceProduct: product.priceProduct }));
   };
 
   const { data: categories } = useGetCategoriesQuery();
@@ -183,25 +183,32 @@ const ProductCard = ({ product, dispatch, cart }) => {
               </Typography>
             </Box>
           </Box>
-          <Box display="flex" justifyContent="center" alignItems="center" sx={{backgroundColor: 'primary.main', borderRadius: '5px'}}>
+          <Box display="flex" justifyContent="center" alignItems="center" sx={{ backgroundColor: 'primary.main', borderRadius: '5px' }}>
             {quantityInCart > 0 && (
               <Box display="flex" alignItems="center" sx={{ marginRight: 1 }}>
                 <Button
                   onClick={() => handleRemoveFromCart(({ id: product.idProduct }))}
-                  startIcon={<RemoveShoppingCartIcon style={{ color: '#000000', margin: 'auto' }} />}
+                  startIcon={<RemoveShoppingCartIcon sx={{ color: '#000000' }} />}
                   size="large"
-                  sx={{ minWidth: 'auto' }}
+                  sx={{ minWidth: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: '20px' }}
                 />
-                <Typography style={{ fontSize: "14px", color: "rgb(43, 52, 69)" }}>
+                <Typography sx={{ fontSize: "14px", color: "rgb(43, 52, 69)" }}>
                   {quantityInCart}
                 </Typography>
               </Box>
             )}
             <Button
               onClick={() => handleAddToCart((product))}
-              startIcon={<AddShoppingCartIcon sx={{marginLeft: '0px'}} style={{ color: '#000000', margin: 'auto' }} />}
+              startIcon={<AddShoppingCartIcon sx={{ color: '#000000' }} />}
               size="large"
-              sx={{ minWidth: 'auto', display: 'flex' }}
+              sx={{
+                minWidth: 'auto',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingLeft: '20px',
+                width: quantityInCart === 0 ? '100%' : 'auto'
+              }}
             />
           </Box>
         </Box>

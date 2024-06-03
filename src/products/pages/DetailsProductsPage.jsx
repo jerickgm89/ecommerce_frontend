@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Typography, Box } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Typography, Link as MuiLink, Box } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DetailProduct from '../components/DetailProduct';
 import { useParams } from 'react-router-dom';
 import { EcommerceUI } from '../../ui';
@@ -38,6 +40,9 @@ export const DetailsProductsPage = () => {
   return (
     
       <EcommerceUI>
+        <MuiLink component={Link} to="/" sx={{ margin: '50px', display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+            <ArrowBackIcon />
+        </MuiLink>
         <Box mt={8} mb={8} ml={8} mr={8}>
           <Typography variant="h3" gutterBottom>Detalle productos</Typography>
           <DetailProduct 
