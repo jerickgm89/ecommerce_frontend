@@ -22,7 +22,7 @@ export const UserRoutes = () => {
           <Route path="/address" element={<UserAddressPage />} />
           <Route path="/addAddress" element={<UseAddAddressPage />} />
           <Route path="/order" element={<UserOrderPage />} />
-          <Route path="/orderDetails" element={<UserOrderDetailsPage />} />
+          <Route path="/orderDetails/:operation" element={<UserOrderDetailsPage />} />
           <Route path='/*' element={ <Navigate to="/products/" /> } />
       </Routes>
     </>

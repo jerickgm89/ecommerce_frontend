@@ -15,7 +15,17 @@ export const ecommerceShopApi = createApi({
         }),
         // Get Order by ID
         getOrderById: builder.query({
-            query: (id) => `/shop/order/${id}`,
+            query: (id) => `/shop/order/user/${id}`,
+            providesTags: ['Shop'],
+        }),
+        // Get Oder by Operation
+        getOrderOperation: builder.query({
+            query: (operation) => `/shop/order/operation/${operation}`,
+            providesTags: ['Shop'],
+        }),
+        // Get Order by Status
+        getOrderStatus: builder.query({
+            query: (status) => `/shop/order/orderStatus/${status}`,
             providesTags: ['Shop'],
         }),
         // Get details
@@ -39,6 +49,7 @@ export const ecommerceShopApi = createApi({
             query: () => '/shop/payment',
             providesTags: ['Shop'],
         }),
+
     }),
 });
 
@@ -47,5 +58,7 @@ export const {
     useGetShopDetailsQuery, 
     useGetShopPaymentQuery,
     useGetDetailsByTokenQuery,
-    useGetOrderByIdQuery
+    useGetOrderByIdQuery,
+    useGetOrderOperationQuery,
+    useGetOrderStatusQuery
 } = ecommerceShopApi;

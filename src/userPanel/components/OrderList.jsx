@@ -1,18 +1,22 @@
 import { useGetDetailsByTokenQuery, useGetOrderByIdQuery } from "../../store/api/ecommerceShopApi";
+import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi";
 import { Box, Grid, IconButton, Typography } from "@mui/material"
 import { 
   ShoppingBagOutlined as ShoppingBagIcon,
   ArrowForward as ArrowForwardIcon
 } from "@mui/icons-material"
 import { format, parseISO } from 'date-fns';
+import { is } from "date-fns/locale";
+import { Link } from "react-router-dom";
 
 const TOKEN = localStorage.getItem('token');
 console.log(TOKEN);
 export const OrderList = () => {
   
-  const { data: orders, isLoading } = useGetDetailsByTokenQuery(TOKEN);
-  console.log(orders);
-  
+  const { data: userData, isLoading: isLoadingUser } = useGetUserByTokenQuery(TOKEN);
+  const idUser = userData ? userData.idUser : '';
+  const {data: orderList, isLoading: isLoadingOrder } = useGetOrderByIdQuery(idUser);
+  console.log(orderList);
 
   
   return (
@@ -27,27 +31,28 @@ export const OrderList = () => {
         </Typography>
         {/* This is the list of orders */}
         {
-          isLoading ? (
+          isLoadingOrder ? (
             <div>Cargando...</div>
           ) : (
-            orders && orders.orderItems ? (
-              orders.orderItems.length > 0 ? (
-                orders.orderItems.map((order, index) => (
-                  <Grid container spacing={1} key={index} sx={{mt:1}}>
-                    <GridItem xs={3} text={order.idOrder} />
-                    <GridItem xs={2} text={getStatusText(order.status)} style={getStatusStyle(order.status)} />
-                    <GridItem xs={3} text={format(parseISO(order.createentityOrderDetail), 'MMM dd, yyyy')} />
-                    <GridItem xs={1} text={`$${order.entityProduct.priceProduct}`} />
-                    <Grid xs={3} sx={{backgroundColor: '#fff', borderRadius:2}}>
-                      <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', height: '100%'}}>
-                        <IconButton aria-label="delete" size="small" color="primary"><ArrowForwardIcon /></IconButton>
-                      </Box>
+            orderList && orderList.length > 0 ? (
+              orderList.map((order, index) => (
+                order.entityOrderItems.map((item, itemIndex) => (
+                  <Link to={`/user/orderDetails/${order.operation}`} style={{ textDecoration: 'none', color: 'inherit', width: '100%', display: 'flex' }}>
+                    <Grid container spacing={1} key={`${index}-${itemIndex}`} sx={{mt:1}}>
+                      <GridItem xs={2} text={order.operation} />
+                      <GridItem xs={3} text={item.entityProduct.nameProduct} />
+                      <GridItem xs={2} text={getStatusText(item.status)} style={getStatusStyle(item.status)} />
+                      <GridItem xs={2} text={format(parseISO(order.createentityOrderDetail), 'MMM dd, yyyy')} />
+                      <GridItem xs={1} text={`$${order.totalOrder}`} />
+                      <Grid xs={1} sx={{backgroundColor: '#fff', borderRadius:2}}>
+                        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', height: '100%'}}>
+                          <IconButton aria-label="delete" size="small" color="primary"><ArrowForwardIcon /></IconButton>
+                        </Box>
+                      </Grid>
                     </Grid>
-                  </Grid>
+                  </Link>
                 ))
-              ) : (
-                <Typography variant="h5" align="left">No tienes ordenes disponibles</Typography>
-              )
+              ))
             ) : (
               <Typography variant="h5" align="left">No tienes ordenes disponibles</Typography>
             )
