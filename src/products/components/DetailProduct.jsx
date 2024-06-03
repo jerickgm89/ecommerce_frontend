@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Typography, Box, Grid, Button, Container, Tab, Tabs, Divider, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux'; 
 import { addToCart } from '../../store/cartShopping/cartSlice';
@@ -9,7 +10,7 @@ import { QuestionsList } from './QuestionsList';
 import Carousel from 'react-material-ui-carousel';
 
 
-const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts, stockProduct, characteristicsProduct, categoryName, brandName, brandLogo }) => {
+const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts, stockProduct, characteristicsProduct, categoryName, categoryId, brandId, brandName, brandLogo }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch(); 
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -97,11 +98,15 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
-          <img src={brandLogo} alt={brandName} style={{ width: 100, marginRight: 10 }} />
+          <Link to={`/products/brand/${brandId}`}>
+            <img src={brandLogo} alt={brandName} style={{ width: 100, marginRight: 10 }} />
+          </Link>
           <Typography gutterBottom style={{ fontSize: '30px', fontWeight: 700, marginBottom: '8px', color: '#373F50' }}>{nameProduct}</Typography>
-          <Typography style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', color: 'rgb(174, 180, 190)' }}>
-            Categoría: {categoryName}
-          </Typography>
+          <Link to={`/products/category/${categoryId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', color: 'rgb(174, 180, 190)' }}>
+              Categoría: {categoryName}
+            </Typography>
+            </Link>
           <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${formattedPrice(priceProduct)}</Typography>
          
           <Typography
