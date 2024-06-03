@@ -24,14 +24,11 @@ export const ecommerceApi = createApi({
             query: () => '/products/brands',
         }),
 
-    
-
+       
         getCategories: builder.query({
             query: () => '/products/category',
             providesTags: ['Categories'],
         }),
-
-       
 
 
 
@@ -58,7 +55,7 @@ export const ecommerceApi = createApi({
         }),
         updateProducts: builder.mutation({
             query: (updatedProduct) => ({
-                url: `/products/index/${updatedProduct.id}`,
+                url: `/products/index/${/*updatedProduct.id*/updatedProduct.get('id')}`,
                 method: 'PATCH',
                 body: updatedProduct
             }),

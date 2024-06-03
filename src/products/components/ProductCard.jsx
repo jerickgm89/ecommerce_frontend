@@ -85,7 +85,7 @@ const ProductCard = ({ product, dispatch, cart }) => {
       elevation={1}
       sx={{
         borderRadius: '8px',
-        boxShadow:"rgba(1, 0, 71, 0.3) 0px 1px 3px",
+        boxShadow:"rgba(1, 0, 71, 0.7) 0px 1px 3px",
         padding:"10px",
         position: 'relative',
         overflow: 'hidden',
@@ -101,11 +101,26 @@ const ProductCard = ({ product, dispatch, cart }) => {
         onMouseLeave={handleMouseLeave}
       >
         <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block' }}>
-          <img
-            src={product.imageProducts}
-            alt={product.nameProduct}
-            style={{ width: '100%', aspectRatio: '4/3'}}
-          />
+          <Box
+            sx={{
+              width: '100%',
+              paddingTop: '100%', 
+              position: 'relative'
+            }}
+          >
+            <img
+              src={product.imageProducts}
+              alt={product.nameProduct}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                padding: '15px',
+              }}
+            />
+          </Box>
         </Link>
         <Box
           style={{
@@ -152,7 +167,7 @@ const ProductCard = ({ product, dispatch, cart }) => {
             gutterBottom
             style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
           >
-            {product.stockProduct > 0 ? 'In Stock' : 'Out of Stock'}
+            {product.stockProduct > 0 ? 'Stock ' : 'Out of Stock'}
           </Typography>
 
           <Rating sx={{ mb: 1 }} />

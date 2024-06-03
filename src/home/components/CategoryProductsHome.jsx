@@ -27,6 +27,7 @@ export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
     }, []);
 
     return (
+        
         <Carousel
             // animation="slide"
             indicators={true}
@@ -36,23 +37,33 @@ export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
             navButtonsProps={{
                 style: {
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',  
-                    borderRadius: 50,
-                    
+                    borderRadius: 50,   
                 }
             }}
+           
+            indicatorContainerProps={{
+                style: {
+                    marginTop: '50px',
+                }
+            }}
+            interval={5000}
         >
             {carouselItems.map((chunk, index) => (
                 <Box key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
                     {chunk.map(category => (
                         <Box key={category.idCategory} className="containerIcon" sx={{
                             textAlign: 'center',
-                            width: "100%",
-                            borderRadius: '0 30px 0 30px',
+                            width: "15%",
+                            borderRadius: '30px ',
                             color: '#646464',
                             fontSize: "16px",
                             p: 2,
                             m: 1,
-                            transition: 'all 0.3s',
+                            transition: 'all 0.5s',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                                // minHeight: '200px', 
                             '&:hover': {
                                 backgroundColor: '#fff',
                                 boxShadow: "4px 4px 10px",

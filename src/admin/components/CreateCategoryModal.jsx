@@ -8,6 +8,8 @@ const CreateCategoryModal = ({ open, handleClose }) => {
     const [createCategory] = useCreateCategoryMutation();
     const { data: categories } = useGetCategoriesQuery();
 
+    console.log(categories, 'categories');
+
     const validationSchema = yup.object({
         nameCategory: yup.string()
             .required('El nombre de la categoría es requerido')

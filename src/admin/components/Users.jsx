@@ -32,7 +32,22 @@ export const Users = () => {
 
     const handleDelete = async(id) => {
         try {
-            await unlockUser(id).unwrap();
+            await unlockUser(id)
+                .unwrap()
+                .then(response => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Usuario bloqueado',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    setTimeout(function(){
+                        navigate('/admin/users');
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
             refetch()
         } catch (error) {
             console.error("Failed to blocked user: ", error)
