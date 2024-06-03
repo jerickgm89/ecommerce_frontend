@@ -1,48 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography, Grid, Paper, Button, IconButton, Link as MuiLink, Divider } from '@mui/material';
 import { EcommerceUI } from '../../ui';
-import { Link } from 'react-router-dom';
-import { useAuth0 } from "@auth0/auth0-react"
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react"; // Importa useAuth0
+import Swal from 'sweetalert2'; // Importa SweetAlert2
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, clearCart, decreaseCart, removeFromCart } from '../../store/cartShopping/cartSlice';
-import ShippingInfoModal from '../component/ShippingInfoModal';
-import { usePostOrderMutation } from '../../store/api';
+import { setShippingInfo } from '../../store/shippingInfo/shippingInfoSlice';
+import { useGetUserByIdQuery, useGetUserByTokenQuery } from '../../store/api';
 
 export const CartShoppingPage = () => {
     const { cartItems, cartTotalAmount } = useSelector(state => state.cart);
-    const { user, isAuthenticated, isLoading } = useAuth0();
     const dispatch = useDispatch();
-    const [createOrder] = usePostOrderMutation();
-
-    const [openModal, setOpenModal] = useState(false);
-    const [shippingInfo, setShippingInfo] = useState({
-        name: '',
-        address: '',
-        city: '',
-        postalCode: '',
-        country: '',
-        phoneNumber: ''
-    });
-
-    useEffect(() => {
-      console.log('Datos del usuario:', user);
-        if (user && user.shippingInfo) {
-            setShippingInfo(user.shippingInfo);
-        }
-    }, [user]);
-
-    const handleOpenModal = () => setOpenModal(true);
-    const handleCloseModal = () => setOpenModal(false);
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setShippingInfo({
-            ...shippingInfo,
-            [name]: value
-        });
-    };
+    const navigate = useNavigate();
+    const { loginWithRedirect, isAuthenticated } = useAuth0(); // Obtiene isAuthenticated y loginWithRedirect de useAuth0
 
     const handleRemoveFromCart = (productId) => {
         dispatch(removeFromCart({ id: productId }));
@@ -64,65 +37,30 @@ export const CartShoppingPage = () => {
         return new Intl.NumberFormat('es-ES', {}).format(parseFloat(price));
     };
 
-    const handlePayment = async () => {
-        try {
-            if (!createOrder) {
-                console.error('La función createOrder no está definida.');
-                return;
-            }
-
-            const cartItemsWithPrice = cartItems.map(item => ({
-                ...item,
-                priceProduct: parseFloat(item.priceProduct) || 0, // Convierto el precio a número
-            }));
-
-            const orderData = {
-                items: cartItemsWithPrice.map(item => ({
-                    title: item.nameProduct,
-                    unit_price: item.priceProduct,
-                    quantity: item.quantity,
-                })),
-                payer: {
-                    email: "test_user_1742344360@testuser.com",
-                    identification: {
-                        type: "DNI",
-                        number: "12345678",
-                    },
-                    name: "Test",
-                    surname: "User",
-                    address: {
-                        zip_code: "1234",
-                        street_name: "Test Street",
-                        street_number: 123,
-                    },
-                    phone: {
-                        area_code: "11",
-                        number: 12345678,
-                    },
-                },
-                total: cartTotalAmount,
-            };
-
-            if (!orderData.payer.email || !orderData.payer.name) {
-                delete orderData.payer;
-            }
-
-            const response = await createOrder(orderData).unwrap();
-            console.log('Order created:', response);
-
-            if (response.init_point) {
-                window.location.href = response.init_point;
-
-            } else {
-                console.error('init_point is missing in the response');
-            }
-        } catch (error) {
-            console.error('Failed to create order:', error);
+    const handleContinue = () => {
+        if (isAuthenticated) {
+            navigate('/shippingInfo');
+        } else {
+            Swal.fire({
+                icon: 'info',
+                title: 'Regístrate para continuar',
+                text: 'Debes iniciar sesión para continuar con la compra.',
+                showCancelButton: true,
+                confirmButtonText: 'Iniciar sesión',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    loginWithRedirect();
+                }
+            });
         }
     };
 
     return (
         <EcommerceUI>
+            <MuiLink component={Link} to="/" sx={{ margin: '50px', display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                <ArrowBackIcon />
+            </MuiLink>
             <Box sx={{ mt: 8, mb: 8, mx: 'auto', maxWidth: 1200, minHeight: '60vh', display: 'flex', flexDirection: 'column' }}>
                 <Typography variant="h4" gutterBottom>
                     Carrito de compras
@@ -204,7 +142,7 @@ export const CartShoppingPage = () => {
                                         color="primary"
                                         fullWidth
                                         sx={{ mt: 2 }}
-                                        onClick={handleOpenModal}
+                                        onClick={handleContinue}
                                     >
                                         Continuar compra
                                     </Button>
@@ -221,13 +159,6 @@ export const CartShoppingPage = () => {
                     </Box>
                 )}
             </Box>
-            <ShippingInfoModal
-                open={openModal}
-                onClose={handleCloseModal}
-                shippingInfo={shippingInfo}
-                handleInputChange={handleInputChange}
-                handlePayment={handlePayment}
-            />
         </EcommerceUI>
     );
 };

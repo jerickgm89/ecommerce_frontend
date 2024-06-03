@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    name: '',
+    phoneArea: '',
+    phoneNumber: '',
     address: '',
     city: '',
     postalCode: '',
     country: '',
-    phoneNumber: ''
+    provinceAddress: '',
+    identifierName: ''
 };
 
 const shippingInfoSlice = createSlice({

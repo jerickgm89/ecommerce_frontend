@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Typography, Grid, Box, Divider} from '@mui/material';
+import { Typography, Grid, Box, Link as MuiLink, Divider} from '@mui/material';
 import ProductCard from '../components/ProductCard';
 import FiltersCard from '../components/FiltersCard';
 import { EcommerceUI } from '../../ui';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useFilterProductsQuery, useGetCategoriesQuery, useGetBrandsQuery } from '../../store/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { addToCart } from '../../store/cartShopping/cartSlice';
 import Loading from '../../components/loading/Loading';
 import { BannerInfo, BannerItems, CategoryProductsHome} from '../../home/components';
@@ -89,6 +90,9 @@ export const ProductsPage = () => {
 
   return (
     <EcommerceUI>
+      <MuiLink component={Link} to="/" sx={{ margin: '50px', display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <ArrowBackIcon />
+      </MuiLink>
       <ErrorBoundary>
         {/* <Divider sx={{backgroundColor:"white"}}/>
         <BannerItems/>

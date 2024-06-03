@@ -56,7 +56,7 @@ const cartSlice = createSlice({
     },
     decreaseCart(state, action) {
       const itemIndex = state.cartItems.findIndex(
-        item => item.idProduct === action.payload.id
+        item => item.idProduct === action.payload.idProduct
       );
 
       const priceProduct = Number(action.payload.priceProduct);

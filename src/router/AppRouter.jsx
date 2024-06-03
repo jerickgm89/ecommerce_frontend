@@ -7,6 +7,7 @@ import { AdminRoutes } from "../admin/routes";
 import { UserRoutes } from "../userPanel/routes";
 import { DetailsProductsPage } from "../products/pages";
 import { CartShoppingRoutes } from "../cartShooping/routes/";
+import { ShippingInfoRoutes } from "../shippingInfo/routes";
 import { NotFoundRoutes } from "../notFound/routes";
 import { PrivateRoute } from "../components/privateRoute/PrivateRoute";
 
@@ -27,7 +28,8 @@ export const AppRouter = () => {
 
 
           {/* CartShopping */}
-          <Route path="/cartShopping" element={ <PrivateRoute><CartShoppingRoutes /></PrivateRoute> }/>
+          <Route path="/cartShopping" element={ <CartShoppingRoutes /> }/>
+          <Route path="/shippingInfo" element={ <PrivateRoute><ShippingInfoRoutes /></PrivateRoute> }/>
 
           {/* Login y Registro */}
           <Route path="/auth/*" element={ <AuthRoutes /> }/>
