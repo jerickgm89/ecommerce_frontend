@@ -5,12 +5,14 @@ import { Checklist, Create, ExpandLess, ExpandMore, MoveToInbox as InboxIcon } f
 import GroupIcon from '@mui/icons-material/Group';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import ReviewsIcon from '@mui/icons-material/Reviews';
 
 export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
   const [open, setOpen] = useState(false)
   const [openUsers, setOpenUsers] = useState(false)
   const [openQuestions, setOpenQuestions] = useState(false)
+  const [openReviews, setOpenReviews] = useState(false)
 
   const handleClick = () => {
     setOpen(!open)
@@ -22,6 +24,10 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
   const handleClickQuestions = () => {
     setOpenQuestions(!openQuestions)
+  }
+
+  const handleClickReviews = () => {
+    setOpenReviews(!openReviews)
   }
 
   const menuItems = [
@@ -54,6 +60,16 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
       handleClick: handleClickQuestions,
       subItems: [
         { name: "Lista de Preguntas", link: "/admin/questions", icon: <Checklist color='icon'/> }
+      ]
+    },
+    {
+      name: "Reseñas",
+      icon: <ReviewsIcon color='icon'/>,
+      open: openReviews,
+      handleClick: handleClickReviews,
+      subItems: [
+        { name: "Lista de Reseñas", link: "/admin/reviews", icon: <Checklist color='icon'/> },
+        { name: "Lista de Reseñas Publicadas", link: "/admin/reviews/published", icon: <Checklist color='icon'/> }
       ]
     },
   ]
