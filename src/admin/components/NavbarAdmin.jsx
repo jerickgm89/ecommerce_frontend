@@ -92,7 +92,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
                 size="large" 
                 aria-label="show 4 new mails" 
                 color="inherit">
-                <Badge badgeContent={4} color="error">
+                <Badge badgeContent={notifications.unansweredCount} color="error">
                     <MailIcon />
                 </Badge>
               </IconButton>
@@ -105,7 +105,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
               aria-label="show 17 new notifications"
               color="inherit"
               >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={notifications.reviewsCount} color="error">
                   <NotificationsIcon />
               </Badge>
               </IconButton>
@@ -157,10 +157,10 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
           </IconButton>
           <IconButton
             size="large"
-            aria-label="show 14 new notifications"
+            aria-label={`show ${notifications.reviewsCount} new notifications`}
             color="inherit"
           >
-            <Badge badgeContent={14} color="error">
+            <Badge badgeContent={notifications.reviewsCount} color="error">
               <NotificationsIcon />
             </Badge>
           </IconButton>
