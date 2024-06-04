@@ -21,7 +21,7 @@ export const QuestionsProduct = () => {
   const { id } = useParams();
   const { data: userData, error, isLoading: isLoadingToken } = useGetUserByTokenQuery(TOKEN);
   const idUser = userData ? userData.idUser : '';
-  console.log(idUser);
+  // console.log(idUser);
   const idProduct = id;
 
   const [createQuestion, { isSuccess: successQuestion, isError: errorQuestion }] = usePostCreateQuestionMutation();
@@ -65,7 +65,7 @@ export const QuestionsProduct = () => {
     onSubmit: (values, { resetForm }) => {     
       createQuestion(values).unwrap()
       .then(response => {
-        console.log(response);
+        // console.log(response);
         Swal.fire({
           icon: 'success',
           title: 'Pregunta enviada correctamente',

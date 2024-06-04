@@ -1,4 +1,3 @@
-
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseURl = import.meta.env.VITE_BASE_URL;
@@ -15,7 +14,7 @@ export const ecommerceQuestionsApi = createApi({
         // Get all questions
         getQuestions: builder.query({
             query: () => '/comments',
-            providesTags: ['Commets'],
+            providesTags: ['Comments'],
         }),
         // Get question by id
         getQuestionById: builder.query({
