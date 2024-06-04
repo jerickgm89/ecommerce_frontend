@@ -12,12 +12,16 @@ export const ecommerceMetricsApi = createApi({
         getAverageScores: builder.query({
             query: () => 'dash/average-score',
             providesTags: ['Metrics'],
-          }),
+        }),
 
         getLastRegisteredUsers: builder.query({
             query: () => 'dash/last-registred',
             providesTags: ['Metrics'],
-          }),
+        }),
+        getTopSellingProducts: builder.query({
+            query: () => 'dash/top-selling',
+            providesTags: ['Metrics'],
+        }),
           
 
 

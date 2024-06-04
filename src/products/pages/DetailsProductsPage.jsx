@@ -36,7 +36,12 @@ export const DetailsProductsPage = () => {
 
   if (!product) {
     return <Typography variant="h3">Product not found</Typography>;
+
+    
   }
+
+  console.log("Image URLs:", product.imageProducts);
+
 
   return (
     

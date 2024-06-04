@@ -9,9 +9,9 @@ export const TotalUsers = () => {
 
     return (
         <Box mb={2}>
-            <Paper elevation={3} style={{ padding: '16px', borderRadius:'30px', display: 'flex', alignItems: 'center' }}>
-                <Avatar style={{ backgroundColor: '#3f51b5', marginRight: '16px' }}>
-                    <GroupIcon />
+            <Paper elevation={3} style={{ backgroundColor:"#2196f3", padding: '16px', borderRadius:'30px', display: 'flex', alignItems: 'center' }}>
+                <Avatar style={{ backgroundColor: 'white', marginRight: '16px' }}>
+                    <GroupIcon style={{ color: '#2196f3' }}/>
                 </Avatar>
                 <Box>
                     <Typography variant="h6">Usuarios registrados</Typography>
