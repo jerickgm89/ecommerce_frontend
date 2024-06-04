@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom";
 import { Box, Grid, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material"
 import { 
   ShoppingBagOutlined as ShoppingBagIcon,
@@ -7,16 +8,17 @@ import {
   Payment as PaymentIcon,
   Person as PersonIcon,
 } from "@mui/icons-material"
+import './styleComponents.css'
 
 const ListItemLink = ({ to, icon: Icon, primary }) => (
-  <Link to={to} style={{ textDecoration: 'none', color: 'inherit' }}>
+  <NavLink to={to} activeClassName="active-link" style={{ textDecoration: 'none', color: 'inherit' }}>
     <ListItemButton>
       <ListItemIcon>
         <Icon />
       </ListItemIcon>
       <ListItemText primary={primary} />
     </ListItemButton>
-  </Link>
+  </NavLink>
 );
 
 export const SideBarUser = () => {

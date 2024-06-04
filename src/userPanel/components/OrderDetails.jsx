@@ -19,8 +19,8 @@ export const OrderDetails = () => {
 
   return (
 
-    <Grid item xs={6} md={8} sx={{display: 'flex', justifyContent: 'left'}}>
-    <Grid container>
+    <Grid item xs={12} md={12} lg={8} sx={{display: 'flex', justifyContent: 'left'}}>
+    <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={10} margin={2}>
         <Typography variant="h4" sx={{mt: 4, pb: 2, mb: 0, borderRadius: 4, display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>
           <div>

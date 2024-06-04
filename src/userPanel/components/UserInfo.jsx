@@ -1,18 +1,32 @@
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material"
 import { Person as PersonIcon } from "@mui/icons-material"
 import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi";
+import { useGetOrderByIdQuery } from "../../store/api/ecommerceShopApi";
 import { Link } from "react-router-dom";
 
 const TOKEN = localStorage.getItem('token');
 
 export const UserInfo = () => {
   const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
+  const { data: orderData, isLoading: isLoadingOrder } = useGetOrderByIdQuery(userData?.idUser);
 
-  const orderStatuses = [
-    { count: '16', status: 'Ordenes' },
-    { count: '02', status: 'Por pagar' },
-    { count: '00', status: 'Por enviar' },
-    { count: '01', status: 'Por recibir' },
+  const inProcessCount = isLoadingOrder ? 0 : orderData.reduce((acc, order) => {
+    return acc + order.entityOrderItems.reduce((acc, item) => {
+      return acc + (item.status === 'in_process' ? 1 : 0);
+    }, 0);
+  }, 0);
+
+  const approved = isLoadingOrder ? 0 : orderData.reduce((acc, order) => {
+    return acc + order.entityOrderItems.reduce((acc, item) => {
+      return acc + (item.status === 'approved' ? 1 : 0);
+    }, 0);
+  }, 0);
+
+  const orderStatuses = isLoadingOrder ? [] : [
+    { count: orderData.length.toString().padStart(2, '0'), status: 'Ordenes' },
+    { count: inProcessCount.toString().padStart(2, '0'), status: 'Por pagar' },
+    { count: approved.toString().padStart(2, '0'), status: 'Por enviar' },
+    { count: '00', status: 'Por recibir' },
   ];
 
   const userFields = [
@@ -55,7 +69,7 @@ export const UserInfo = () => {
     return (
       <Grid container spacing={1} gap={3} sx={{mt:1}}>
         <ProfileAvatar />
-        <OrderStatuses />
+          <OrderStatuses />
         <UserFields />
       </Grid>
     )

@@ -1,3 +1,4 @@
+import { useGetUserByTokenQuery } from '../../store/api';
 import { useEffect, useState } from 'react';
 import { Favorite as FavoriteIcon } from '@mui/icons-material';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -5,7 +6,9 @@ import { Grid, Typography } from '@mui/material';
 import ProductCard from './../../products/components/ProductCard';
 import { removeFavorite, updateFavorites } from './../../products/utils/localStorage/favorites';
 import { Link } from 'react-router-dom';
+import { is } from 'date-fns/locale';
 
+const TOKEN = localStorage.getItem('token');
 
 export const UserWishList = () => {
     const [favorites, setFavorites] = useState([]);
@@ -24,19 +27,20 @@ export const UserWishList = () => {
         window.location.reload();
     };
     
-    const { user, isAuthenticated, isLoading } = useAuth0();
+    const { data, isLoading: isLoadingToken } = useGetUserByTokenQuery(TOKEN);
+
 
   return (
     <>
         {
-            isAuthenticated && (
+            !isLoadingToken && (
                 <Grid 
                     item 
                     xs={12} 
                     md={8}
                     sx={{display: 'flex', justifyContent: 'left'}}
                 >
-                    <Grid container>    
+                    <Grid container justifyContent="center" alignItems="center">    
                         <Grid xs={10} margin={2}>
                             <Typography 
                             variant="h4" 
@@ -59,7 +63,7 @@ export const UserWishList = () => {
                         <Grid container spacing={2} margin={3} >
                             {favorites.length > 0 ? (
                                     favorites.map((product) => (
-                                        <Grid item xs={6} sm={6} md={4} key={product.idProduct}>
+                                        <Grid item xs={12} md={4} key={product.idProduct}>
                                             <ProductCard product={product} handleRemoveFavorite={() => handleOpenDialog(product)}/>
                                         </Grid>
                                     ))

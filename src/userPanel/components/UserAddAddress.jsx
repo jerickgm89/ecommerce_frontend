@@ -36,7 +36,6 @@ export const UserAddAddress = () => {
   const navigate = useNavigate();
 
   const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
-  console.log(userData.idUser);
   const [updateAddressMutation] = usePostCreateAddressMutation();
 
   const fields = [
@@ -101,7 +100,7 @@ export const UserAddAddress = () => {
           sx={{display: 'flex', width: { xs: '100%'}}}
         >
 
-          <Grid container>
+          <Grid container justifyContent="center" alignItems="center">
             <Grid xs={10} marginBottom={4}>
               <Typography 
                 variant="h4" 
