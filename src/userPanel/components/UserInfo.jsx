@@ -10,22 +10,22 @@ export const UserInfo = () => {
   const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
   const { data: orderData, isLoading: isLoadingOrder } = useGetOrderByIdQuery(userData?.idUser);
 
-  const inProcessCount = isLoadingOrder ? 0 : orderData.reduce((acc, order) => {
-    return acc + order.entityOrderItems.reduce((acc, item) => {
+  const inProcessCount = isLoadingOrder || !Array.isArray(orderData) ? 0 : orderData.reduce((acc, order) => {
+    return acc + (Array.isArray(order.entityOrderItems) ? order.entityOrderItems.reduce((acc, item) => {
       return acc + (item.status === 'in_process' ? 1 : 0);
-    }, 0);
+    }, 0) : 0);
   }, 0);
-
-  const approved = isLoadingOrder ? 0 : orderData.reduce((acc, order) => {
-    return acc + order.entityOrderItems.reduce((acc, item) => {
+  
+  const approved = isLoadingOrder || !Array.isArray(orderData) ? 0 : orderData.reduce((acc, order) => {
+    return acc + (Array.isArray(order.entityOrderItems) ? order.entityOrderItems.reduce((acc, item) => {
       return acc + (item.status === 'approved' ? 1 : 0);
-    }, 0);
+    }, 0) : 0);
   }, 0);
 
   const orderStatuses = isLoadingOrder ? [] : [
-    { count: orderData.length.toString().padStart(2, '0'), status: 'Ordenes' },
-    { count: inProcessCount.toString().padStart(2, '0'), status: 'Por pagar' },
-    { count: approved.toString().padStart(2, '0'), status: 'Por enviar' },
+    { count: (orderData ? orderData.length : 0).toString().padStart(2, '0'), status: 'Ordenes' },
+    { count: (inProcessCount || 0).toString().padStart(2, '0'), status: 'Por pagar' },
+    { count: (approved || 0).toString().padStart(2, '0'), status: 'Por enviar' },
     { count: '00', status: 'Por recibir' },
   ];
 
