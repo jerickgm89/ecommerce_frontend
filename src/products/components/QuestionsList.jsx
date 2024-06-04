@@ -14,11 +14,11 @@ export const QuestionsList = () => {
     
     
     const { data: questionData = [], error: errorQuestion } = useGetQuestionsQuery();
-    console.log(questionData);
+    // console.log(questionData);
     const idProductQuestion = [...new Set(questionData.map(question => question.idProduct))];
-    console.log(idProductQuestion);
+    // console.log(idProductQuestion);
     const { data: productData, error: errorProduct } = useGetProductsQuery(idProductQuestion);
-    console.log(productData);
+    // console.log(productData);
     const [isHovered, setIsHovered] = useState(new Array(questionData.length).fill(false));
     return (
         <Box sx={{ml:2}}>

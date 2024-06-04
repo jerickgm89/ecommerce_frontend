@@ -10,9 +10,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import CloseIcon from '@mui/icons-material/Close';
 import Rating from "@mui/material/Rating";
-import { useGetCategoriesQuery } from '../../store/api';
+import { useGetCategoriesQuery, useGetAverageScoresQuery } from '../../store/api';
 import { addFavorite, removeFavorite } from '../utils/localStorage';
-import { useDispatch } from 'react-redux';
+
 import { addToCart, decreaseCart } from '../../store/cartShopping/cartSlice';
 
 const ProductCard = ({ product, dispatch, cart }) => {
@@ -23,7 +23,7 @@ const ProductCard = ({ product, dispatch, cart }) => {
   };
 
   const handleRemoveFromCart = () => {
-    dispatch(decreaseCart({ id: product.idProduct }));
+    dispatch(decreaseCart({ idProduct: product.idProduct, priceProduct: product.priceProduct }));
   };
 
   const { data: categories } = useGetCategoriesQuery();
@@ -35,6 +35,21 @@ const ProductCard = ({ product, dispatch, cart }) => {
       setCategory(foundCategory);
     }
   }, [categories, product]);
+
+  const { data: averageScores } = useGetAverageScoresQuery(); 
+  const [averageScore, setAverageScore] = useState(null);
+
+  useEffect(() => {
+    if (averageScores) {
+      const productScore = averageScores.find(item => item.idProduct === product.idProduct);
+      if (productScore) {
+        setAverageScore(parseFloat(productScore.averageScore));
+      } else {
+        setAverageScore(null);
+      }
+    }
+  }, [averageScores, product]);
+
 
   useEffect(() => {
     const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -170,7 +185,11 @@ const ProductCard = ({ product, dispatch, cart }) => {
             {product.stockProduct > 0 ? 'Stock ' : 'Out of Stock'}
           </Typography>
 
-          <Rating sx={{ mb: 1 }} />
+          {averageScore !== null ? (
+            <Rating value={averageScore} precision={0.5} readOnly sx={{ mb: 1 }} /> 
+          ) : (
+            <Typography sx={{ mb: 1, fontSize: '14px', color: '#777' }}>Sin calificación</Typography>
+          )}
 
           <Box display="flex" alignItems="center" justifyContent="space-between">
             <Box>
@@ -183,25 +202,32 @@ const ProductCard = ({ product, dispatch, cart }) => {
               </Typography>
             </Box>
           </Box>
-          <Box display="flex" justifyContent="center" alignItems="center" sx={{backgroundColor: 'primary.main', borderRadius: '5px'}}>
+          <Box display="flex" justifyContent="center" alignItems="center" sx={{ backgroundColor: 'primary.main', borderRadius: '5px' }}>
             {quantityInCart > 0 && (
               <Box display="flex" alignItems="center" sx={{ marginRight: 1 }}>
                 <Button
                   onClick={() => handleRemoveFromCart(({ id: product.idProduct }))}
-                  startIcon={<RemoveShoppingCartIcon style={{ color: '#000000', margin: 'auto' }} />}
+                  startIcon={<RemoveShoppingCartIcon sx={{ color: '#000000' }} />}
                   size="large"
-                  sx={{ minWidth: 'auto' }}
+                  sx={{ minWidth: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: '20px' }}
                 />
-                <Typography style={{ fontSize: "14px", color: "rgb(43, 52, 69)" }}>
+                <Typography sx={{ fontSize: "14px", color: "rgb(43, 52, 69)" }}>
                   {quantityInCart}
                 </Typography>
               </Box>
             )}
             <Button
               onClick={() => handleAddToCart((product))}
-              startIcon={<AddShoppingCartIcon sx={{marginLeft: '0px'}} style={{ color: '#000000', margin: 'auto' }} />}
+              startIcon={<AddShoppingCartIcon sx={{ color: '#000000' }} />}
               size="large"
-              sx={{ minWidth: 'auto', display: 'flex' }}
+              sx={{
+                minWidth: 'auto',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingLeft: '20px',
+                width: quantityInCart === 0 ? '100%' : 'auto'
+              }}
             />
           </Box>
         </Box>

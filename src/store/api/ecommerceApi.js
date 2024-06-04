@@ -24,14 +24,11 @@ export const ecommerceApi = createApi({
             query: () => '/products/brands',
         }),
 
-    
-
+       
         getCategories: builder.query({
             query: () => '/products/category',
             providesTags: ['Categories'],
         }),
-
-       
 
 
 
@@ -98,18 +95,18 @@ export const ecommerceApi = createApi({
 
         postOrder: builder.mutation({
             query: ({ items, payer, token }) => {
-                const body = { items };
-                if (payer) {
-                    body.payer = payer;
-                }
-                return {
-                    url: '/payment/create_order',
-                    method: 'POST',
-                    body,
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                };
+              const body = { items };
+              if (payer) {
+                body.payer = payer;
+              }
+              return {
+                url: '/payment/create_order',
+                method: 'POST',
+                body,
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              };
             },
         }),
 

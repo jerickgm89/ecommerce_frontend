@@ -12,7 +12,7 @@ export const useUserAuthentication = (user, isAuthenticated) => {
   useEffect(() => {
     if (isAuthenticated) {
       if (!doesUserExist && !isLoading) {
-        console.log('Creating user...');
+        // console.log('Creating user...');
         let postDataUser = {
           email: user.email,
           email_verified: user.email_verified,

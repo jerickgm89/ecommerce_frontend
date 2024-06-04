@@ -103,7 +103,7 @@ export const ecommerceUserApi = createApi({
               headers: {
                 Authorization: `Bearer ${token}`,
               },
-              providesTags: (result, error, token) => [{ type: 'Post', id: result?.id }],
+              providesTags: (result, error, token) => [{ type: 'Users', id: result?.id }],
             }),
         }),   
         
