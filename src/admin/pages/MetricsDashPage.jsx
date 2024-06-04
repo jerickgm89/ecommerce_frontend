@@ -1,70 +1,63 @@
-
 import { AdminLayout } from '../layout/AdminLayout';
-import { ChartReview, LastRegisteredUsers, TotalProducts, TotalUsers } from '../components';
-import { Typography, Box, Button } from '@mui/material';
+import { ChartReview, LastRegisteredUsers, TotalProducts, TotalReviews, TotalUsers } from '../components';
+import { Typography, Box, Grid } from '@mui/material';
 
-
-export const MetricsDashPage= () => {
+export const MetricsDashPage = () => {
     
     return (
         <AdminLayout>
-         <Box m="20px">
-            
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Box mb="30px">
-                <Typography
-                    variant="h2"
-                    fontWeight="bold"
-                    sx={{ m: "0 0 5px 0" }}
-                >
+            <Box m={2}>
+                {/* Encabezado */}
+                <Typography variant="h2" fontWeight="bold" mb={2}>
                     Dashboard
                 </Typography>
-                <Typography variant="h5">
-                    Metricas de la tienda
+                <Typography variant="h5" mb={4}>
+                    Métricas de la tienda
                 </Typography>
-                
-               
-                </Box>
+
+                <Grid container spacing={2}>
+                    {/* Sección de Totales */}
+                    <Grid item xs={12} lg={4}>
+                        <Box mb={4}>
+                            <Typography variant="h4" mb={2}>
+                                Totales
+                            </Typography>
+                            <Grid container spacing={2}>
+                                <Grid item xs={6}>
+                                    <TotalUsers />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TotalProducts />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TotalReviews/>
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    </Grid>
+
+                    {/* Sección de Gráficos */}
+                    <Grid item xs={12} lg={8}>
+                        <Box mb={4}>
+                            <Typography variant="h4" mb={2}>
+                                Gráficos
+                            </Typography>
+                            <ChartReview />
+                            
+                        </Box>
+                    </Grid>
+
+                    {/* Sección de Nuevos Usuarios */}
+                    <Grid item xs={12} lg={5}>
+                        <Box mb={4}>
+                            <Typography variant="h4" mb={2}>
+                                Nuevos Usuarios
+                            </Typography>
+                            <LastRegisteredUsers />
+                        </Box>
+                    </Grid>
+                </Grid>
             </Box>
-
-            {/* GRID & CHARTS */}
-            <Box
-                display="grid"
-                gridTemplateColumns="repeat(12, 1fr)"
-                gridAutoRows="140px"
-                gap="20px"
-            >
-              
-                <ChartReview />
-
-                {/* Sección de estadísticas */}
-                <Box gridColumn="span 3" >
-                <TotalUsers />
-                <TotalProducts />
-                {/* Aquí puedes agregar un componente para mostrar estadísticas */}
-                </Box>
-
-                {/* Sección de gráficos */}
-                <Box gridColumn="span 8" >
-                {/* Aquí puedes agregar gráficos */}
-                <LastRegisteredUsers />
-                
-                </Box>
-
-                {/* Otras secciones */}
-                <Box gridColumn="span 4" >
-                    
-                {/* Aquí puedes agregar otra sección */}
-                </Box>
-                <Box gridColumn="span 4" >
-                {/* Aquí puedes agregar otra sección */}
-                </Box>
-                <Box gridColumn="span 4" >
-                {/* Aquí puedes agregar otra sección */}
-                </Box>
-            </Box>
-            </Box>
-
         </AdminLayout>
     )
 }

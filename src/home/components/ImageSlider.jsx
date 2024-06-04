@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
@@ -21,11 +22,11 @@ const useStyles = makeStyles(theme => ({
   },
   image: {
     width: '100%',
-    height: '280px',
+    height: '300px',
     // objectFit: 'cover',
   },
   dotContainerItem: {
-    margin: '8px 3px',
+    // margin: '8px 3px',
     cursor: 'pointer',
     fontSize: 12,
     textAlign: 'center',
@@ -58,12 +59,14 @@ export const ImageSlider = () => {
       >
         {data.map((item, idx) => (
           <Box key={item.id} className={classes.containerImages}>
+            <Link to={item.link}>
             <Box
               component="img"
               src={item.imgUrl}
               className={classes.image}
               alt={`Slide ${item.id}`}
             />
+            </Link>
           </Box>
         ))}
       </Carousel>

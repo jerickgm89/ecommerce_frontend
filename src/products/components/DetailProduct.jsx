@@ -39,9 +39,11 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
 
   const queryClient = new QueryClient();
 
-  const images = Array.isArray(imageProducts) ? imageProducts : [imageProducts]
+  const images = Array.isArray(imageProducts) ? imageProducts : [];
 
-  console.log("Image URLs:", images);
+
+
+  console.log("Image URLs:", imageProducts);
   
   return (
     <Container>
@@ -53,11 +55,12 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
               // paddingTop: '100%', 
               position: 'relative',
               overflow: 'hidden',
-              borderRadius: '5px',
+              borderRadius: '15px',
               marginRight: '20px'
             }}
           >
             {images && images.length > 0 ? (
+              
               <Carousel
               
                 navButtonsAlwaysVisible={images.length > 1} 
@@ -67,7 +70,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
                       color: 'black',  
                       
                   },
-                autoplay: false,
+                // autoplay: false,
               }}
                 
 
@@ -75,6 +78,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
 
                 {images.map((image, index) => (
                   <Box key={index} sx={{ position: 'relative', width: '100%', height: 0, paddingTop: '100%', overflow: 'hidden', justifyContent:"center" }}>
+                    
                     <img
                       src={image}
                       alt={`${nameProduct} ${index + 1}`}
@@ -94,6 +98,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
               </Carousel>
             ) : (
               <Typography variant="body2" color="textSecondary">No image available</Typography>
+              
             )}
           </Box>
         </Grid>
