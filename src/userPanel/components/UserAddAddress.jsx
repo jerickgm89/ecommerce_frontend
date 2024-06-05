@@ -141,28 +141,20 @@ export const UserAddAddress = () => {
           sx={{display: 'flex', width: { xs: '100%'}}}
         >
 
-          <Grid container justifyContent="center" alignItems="center">
-            <Grid xs={10} marginBottom={4}>
-              <Typography 
-                variant="h4" 
-                sx={{          
-                  mt: 4,
-                  pb: 2,
-                  mb: 0,
-                  borderRadius: 4,
-                  display: 'flex', 
-                  justifyContent: 'space-between',
-                  fontWeight: 'bold',
-                }}
-                >
-                <div>
-                  <PlaceIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
-                  Agregar Direccion
-                </div>
-                <Link to="/user/address" style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <Button variant="outlined">Volver</Button>
-                </Link>
-              </Typography>
+          <Grid container >
+            <Typography 
+              variant="h4" 
+              sx={{mt: 4, ml:4, pb: 2, mb: 0, borderRadius: 4, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', fontWeight: 'bold'}}
+              >
+              <div>
+                <PlaceIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
+                Agregar Direccion
+              </div>
+              <Link to="/user/address" style={{ textDecoration: 'none', color: 'inherit', width: { xs: '100%', sm: 'auto' } }}>
+                <Button variant="outlined" fullWidth={{ xs: true, sm: false }}>Volver</Button>
+              </Link>
+            </Typography>
+            <Grid xs={12} marginBottom={4}>
               <Grid container spacing={1} sx={{mt:1}}>
                 <Grid 
                   xs={12} 

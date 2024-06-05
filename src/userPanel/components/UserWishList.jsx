@@ -37,33 +37,31 @@ export const UserWishList = () => {
                 <Grid 
                     item 
                     xs={12} 
-                    md={8}
+                    md={12}
+                    lg={8}
                     sx={{display: 'flex', justifyContent: 'left'}}
                 >
-                    <Grid container justifyContent="center" alignItems="center">    
-                        <Grid xs={10} margin={2}>
-                            <Typography 
-                            variant="h4" 
-                            sx={{          
-                                mt: 4,
-                                pb: 2,
-                                mb: 0,
-                                borderRadius: 4,
-                                display: 'flex', 
-                                justifyContent: 'space-between',
-                                fontWeight: 'bold',
-                            }}
-                            >
-                            <div>
-                                <FavoriteIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
-                                Mi lista de deseos
-                            </div>
-                            </Typography>
-                        </Grid>
-                        <Grid container spacing={2} margin={3} >
+                    <Grid container>    
+                        <Typography 
+                        variant="h4" 
+                        sx={{          
+                            mt: 4,
+                            pb: 2,
+                            mb: 0,
+                            ml: 2,
+                            borderRadius: 4,
+                            fontWeight: 'bold',
+                        }}
+                        >
+                        <div>
+                            <FavoriteIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
+                            Mi lista de deseos
+                        </div>
+                        </Typography>
+                        <Grid container spacing={2} margin={3} xs={12} >
                             {favorites.length > 0 ? (
                                     favorites.map((product) => (
-                                        <Grid item xs={12} md={4} key={product.idProduct}>
+                                        <Grid item xs={12} md={3} key={product.idProduct}>
                                             <ProductCard product={product} handleRemoveFavorite={() => handleOpenDialog(product)}/>
                                         </Grid>
                                     ))

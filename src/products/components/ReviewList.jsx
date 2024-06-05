@@ -2,7 +2,6 @@ import { useGetUsersByIdsQuery }  from "../../hooks/useGetUsersByIdsQuery"
 import { useGetUsersQuery, useGetUserByIdQuery } from "../../store/api/ecommerceUserApi"
 import { useGetReviewsQuery } from "../../store/api/ecommerceReviewApi"
 import { Avatar, Box, Rating, Typography } from "@mui/material"
-import { AddNewReview } from "./AddNewReview"
 import { formatDistanceToNow } from 'date-fns';
 import { useParams } from "react-router-dom";
 import { Fragment } from "react";
@@ -56,7 +55,6 @@ export const ReviewList = () => {
                     )
                 })
         }
-        <AddNewReview />
     </>
   )
 }

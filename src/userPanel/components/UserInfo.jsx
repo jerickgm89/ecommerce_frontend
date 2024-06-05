@@ -106,11 +106,11 @@ export const UserInfo = () => {
   function UserFields() {
     return (
       <Grid xs={12} sx={{backgroundColor: '#fff', borderRadius: 2}}>
-        <Box sx={{display: 'flex', lexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between'}}>
+        <Box sx={{display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'center', sm: 'flex-start' }}}>
           {userFields.map((field, index) => (
-            <Grid key={index} xs={2} sx={{backgroundColor: '#fff', borderRadius:2}}>
+            <Grid key={index} xs={12} sm={2} sx={{backgroundColor: '#fff', borderRadius:2}}>
               <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'left', height: '100%', pb: 2, m: 4}}>
-                <Typography sx={{textAlign: 'left', color: 'primary.main', fontSize: 12}}>
+                <Typography sx={{textAlign: { xs: 'center', sm: 'left' }, color: 'primary.main', fontSize: 12}}>
                   {field.label}
                 </Typography>
                 <Typography variant="body1" sx={{fontSize: 15, textAlign: 'left'}}>

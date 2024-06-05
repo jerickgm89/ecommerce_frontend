@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom"
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Box, Grid, List, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material"
 import { 
   ShoppingBagOutlined as ShoppingBagIcon,
@@ -8,18 +7,32 @@ import {
   Payment as PaymentIcon,
   Person as PersonIcon,
 } from "@mui/icons-material"
-import './styleComponents.css'
 
-const ListItemLink = ({ to, icon: Icon, primary }) => (
-  <NavLink to={to} activeClassName="active-link" style={{ textDecoration: 'none', color: 'inherit' }}>
-    <ListItemButton>
-      <ListItemIcon>
-        <Icon />
-      </ListItemIcon>
-      <ListItemText primary={primary} />
-    </ListItemButton>
-  </NavLink>
-);
+const ListItemLink = ({ to, icon: Icon, primary }) => {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
+  return (
+    <NavLink to={to} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <ListItemButton 
+        sx={{ 
+          backgroundColor: isActive ? '#2e8fea' : 'inherit',
+          borderRadius: 4,
+          marginBottom: 1,
+          '&:hover': {
+            backgroundColor: '#2064a3',
+            color: '#fff',
+          },
+        }}
+      >
+        <ListItemIcon>
+          <Icon />
+        </ListItemIcon>
+        <ListItemText primary={primary} sx={{ color: isActive ? '#fff' : 'inherit' }}/>
+      </ListItemButton>
+    </NavLink>
+  );
+};
 
 export const SideBarUser = () => {
   return (
