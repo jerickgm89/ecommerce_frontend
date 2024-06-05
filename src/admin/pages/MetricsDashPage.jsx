@@ -1,5 +1,5 @@
 import { AdminLayout } from '../layout/AdminLayout';
-import { ChartReview, LastRegisteredUsers, TotalProducts, TotalReviews, TotalUsers } from '../components';
+import { ChartReview, LastRegisteredUsers, TotalProducts, TotalReviews, TotalUsers, ChartTopSellingProducts, TotalIncomes } from '../components';
 import { Typography, Box, Grid } from '@mui/material';
 
 export const MetricsDashPage = () => {
@@ -7,7 +7,6 @@ export const MetricsDashPage = () => {
     return (
         <AdminLayout>
             <Box m={2}>
-                {/* Encabezado */}
                 <Typography variant="h2" fontWeight="bold" mb={2}>
                     Dashboard
                 </Typography>
@@ -16,43 +15,43 @@ export const MetricsDashPage = () => {
                 </Typography>
 
                 <Grid container spacing={2}>
-                    {/* Sección de Totales */}
-                    <Grid item xs={12} lg={4}>
+                    <Grid item xs={12}>
                         <Box mb={4}>
-                            <Typography variant="h4" mb={2}>
-                                
-                            </Typography>
+                           
                             <Grid container spacing={2}>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6} md={3}>
                                     <TotalUsers />
                                 </Grid>
-                                <Grid item xs={6}>
-                                    <TotalProducts />
+                                <Grid item xs={12} sm={6} md={3}>
+                                    <TotalIncomes/>   
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6} md={3}>
                                     <TotalReviews/>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={3}>
+                                    <TotalProducts />
                                 </Grid>
                             </Grid>
                         </Box>
                     </Grid>
 
-                    {/* Sección de Gráficos */}
-                    <Grid item xs={12} lg={8}>
+                    <Grid item xs={12}>
                         <Box mb={4}>
-                            <Typography variant="h4" mb={2}>
-                                
-                            </Typography>
-                            <ChartReview />
-                            
+                         
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <ChartReview />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <ChartTopSellingProducts /> 
+                                </Grid>
+                            </Grid>
                         </Box>
                     </Grid>
 
-                    {/* Sección de Nuevos Usuarios */}
-                    <Grid item xs={12} lg={5}>
+                    <Grid item xs={12}>
                         <Box mb={4}>
-                            <Typography variant="h4" mb={2}>
-                               
-                            </Typography>
+                           
                             <LastRegisteredUsers />
                         </Box>
                     </Grid>
