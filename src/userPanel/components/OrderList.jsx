@@ -20,15 +20,15 @@ export const OrderList = () => {
 
   
   return (
-    <Grid item xs={6} md={8} sx={{display: 'flex', justifyContent: 'left'}}>
+    <Grid item xs={12} md={12} lg={8} sx={{display: 'flex', justifyContent: 'left'}}>
     <Grid container>
-      <Grid xs={10} margin={2}>
-        <Typography variant="h4" sx={{mt: 4, pb: 2, mb: 0, borderRadius: 4, display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>
+        <Typography variant="h4" sx={{mt: 4, pb: 2, mb: 0, ml:2, borderRadius: 4, display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>
           <div>
             <ShoppingBagIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
             Mis Ordenes
           </div>
         </Typography>
+      <Grid xs={12} md={12} margin={3}>
         {/* This is the list of orders */}
         {
           isLoadingOrder ? (
@@ -38,7 +38,7 @@ export const OrderList = () => {
               orderList.map((order, index) => (
                 order.entityOrderItems.map((item, itemIndex) => (
                   <Link to={`/user/orderDetails/${order.operation}`} style={{ textDecoration: 'none', color: 'inherit', width: '100%', display: 'flex' }}>
-                    <Grid container spacing={1} key={`${index}-${itemIndex}`} sx={{mt:1}}>
+                    <Grid container xs={12} spacing={1} key={`${index}-${itemIndex}`} sx={{mt:1}}>
                       <GridItem xs={2} text={order.operation} />
                       <GridItem xs={3} text={item.entityProduct.nameProduct} />
                       <GridItem xs={2} text={getStatusText(item.status)} style={getStatusStyle(item.status)} />

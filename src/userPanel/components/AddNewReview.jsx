@@ -6,7 +6,6 @@ import { Star as StarIcon} from "@mui/icons-material";
 import { useFormik } from "formik"
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
-import { useParams } from "react-router-dom"
 
 
 const labels = {
@@ -25,11 +24,15 @@ const validationSchema = yup.object({
     descriptionReview: yup
         .string()
         .required('La reseña es requerida'),
+    scoreReview: yup
+    .number()
+    .required('El rating es requerido')
+    .min(1, 'Por favor, selecciona al menos una estrella'),
 });
 
 const TOKEN = localStorage.getItem('token');
   
-export const AddNewReview = () => {
+export const AddNewReview = ({ handleClose, productId }) => {
 
     const [value, setvalue] = useState(2)
     const [hover, setHover] = useState(-1)
@@ -38,8 +41,7 @@ export const AddNewReview = () => {
     const { data: userData, error, isLoading } = useGetUserByTokenQuery(TOKEN);
     const idUser = userData ? userData.idUser : '';
 
-    const { id } = useParams();
-    const idProduct = id;
+    const idProduct = productId;
 
     const [createReview, { isSuccess, isError, error: errorReview }] = usePostCreateReviewMutation();
 
@@ -55,15 +57,15 @@ export const AddNewReview = () => {
             createReview(values).unwrap()
                 .then(response => {
                     console.log(response);
+                    handleClose();
                     Swal.fire({
                         icon: 'success',
-                        title: 'Reseña enviada correctamente',
-                        showConfirmButton: false,
-                        timer: 1500
+                        title: 'Tu reseña estará visible en un plazo de 24hrs',
+                        text: 'Muchas gracias por comprar nuestro producto',
+                        confirmButtonText: 'Está bien'
                     })
                     resetForm();
                 })
-            // alert(JSON.stringify(values, null, 2));
 
         },
     });
@@ -86,11 +88,10 @@ export const AddNewReview = () => {
                     onChangeActive={(event, newHover) => {
                         setHover(newHover);
                     }}
-                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" 
-                />}
+                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                 />
-                {value !== null && (
-                <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+                {formik.touched.scoreReview && Boolean(formik.errors.scoreReview) && (
+                    <Typography variant="body2" color="error">{formik.errors.scoreReview}</Typography>
                 )}
             </Box>
             <form onSubmit={formik.handleSubmit}>
