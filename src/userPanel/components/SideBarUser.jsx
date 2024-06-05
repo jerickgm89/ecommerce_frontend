@@ -31,7 +31,7 @@ const ListItemLink = ({ to, icon: Icon, primary }) => {
         }}
       >
         <ListItemIcon>
-          <Icon />
+          <Icon color='icon'/>
         </ListItemIcon>
         <ListItemText primary={primary} sx={{ color: isActive ? '#fff' : 'inherit' }}/>
       </ListItemButton>
@@ -66,7 +66,7 @@ export const SideBarUser = () => {
               xs={12} 
               md={12}
               lg={4}
-              sx={{display: 'flex', justifyContent: 'right', alignItems: 'flex-start'}}
+              sx={{display: 'flex', justifyContent: 'right', alignItems: 'flex-start', mt:4}}
             >
               <Stack direction="column" spacing={2}>
                 <List component="div">
