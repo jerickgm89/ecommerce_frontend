@@ -150,14 +150,17 @@ export const ShippingInfoPage = () => {
                 surname: lastNameUser || '',
             };
     
-            const orderItems = cartItemsWithPrice.map(item => ({
-                id: item.idProduct,
-                category_id: item.idCategory.toString(),
-                title: item.nameProduct,
-                unit_price: item.priceProduct,
-                quantity: item.quantity,
-                currency_id: "ARS"
-            }));
+            const orderItems = cartItemsWithPrice.map(item => {
+                const unitPrice = item.discountPriceProduct ? parseFloat(item.discountPriceProduct) : parseFloat(item.priceProduct);
+                return {
+                    id: item.idProduct,
+                    category_id: item.idCategory.toString(),
+                    title: item.nameProduct,
+                    unit_price: unitPrice,
+                    quantity: item.quantity,
+                    currency_id: "ARS"
+                };
+            });
     
             // Añadir el costo de envío como un ítem adicional
             if (shippingCost > 0) {
@@ -226,7 +229,6 @@ export const ShippingInfoPage = () => {
                                                 control={<Radio />}
                                                 label={
                                                     <Box>
-                                                        <Divider sx={{ maxWidth: '80px', mb: 2 }} />
                                                         <Box display="flex" flexDirection="column" alignItems="flex-start">
                                                             <Box padding={'10px'}>
                                                                 <Typography variant="body1"><strong>Residencia:</strong> {address.identifierName}</Typography>

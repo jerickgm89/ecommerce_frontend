@@ -143,7 +143,7 @@ export const ProductsPage = () => {
                   <Typography variant="h3">Waiting for data...</Typography>
                 ) : (
                   products.rows.map(product => (
-                    <Grid item key={product.idProduct} xs={12} sm={12} md={4.5} lg={3.5}>
+                    <Grid item key={product.idProduct} xs={12} sm={12} md={4.5} lg={3.1}>
                       <ProductCard
                         product={product}
                         dispatch={dispatch}

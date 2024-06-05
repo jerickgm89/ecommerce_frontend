@@ -53,6 +53,27 @@ export const ecommerceReviewApi = createApi({
             }),
             invalidatesTags: (result, error, id) => [{ type: 'Reviews', id }],
         }),
+        // Get reviews deactived
+        getDeactivedReviews: builder.query({
+            query: () => '/reviews/deactived',
+            //providesTags: ['Reviews'],
+        }),
+        // Block reviews
+        blockReview: builder.mutation({
+            query: (id) => ({
+                url: `/reviews/deactive/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Reviews'],
+        }),
+        // Restore reviews
+        restoreReview: builder.mutation({
+            query: (id) => ({
+                url: `/reviews/restore/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Reviews'],
+        }),
     })
 });
 
@@ -63,5 +84,8 @@ export const {
     useGetReviewByUserQuery, 
     usePostCreateReviewMutation, 
     usePutUpdateReviewMutation, 
-    useDeleteReviewMutation 
+    useDeleteReviewMutation,
+    useGetDeactivedReviewsQuery, 
+    useBlockReviewMutation,
+    useRestoreReviewMutation,
 } = ecommerceReviewApi;

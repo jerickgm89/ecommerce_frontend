@@ -55,6 +55,7 @@ export const DetailsProductsPage = () => {
             idProduct = {product.idProduct}
             nameProduct = {product.nameProduct}
             priceProduct = {product.priceProduct}
+            discountPriceProduct = {product.discountPriceProduct}
             descriptionProduct = {product.descriptionProduct}
             imageProducts = {product.imageProducts}
             stockProduct = {product.stockProduct}

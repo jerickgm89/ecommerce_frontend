@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { Box } from '@mui/material';
@@ -7,26 +6,27 @@ import { data } from '../data/data';
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   mainContainer: {
     width: '100%',
-    height: "100%",
     margin: '0 auto',
     overflow: 'hidden',
   },
   containerImages: {
     position: 'relative',
     width: '100%',
-    height: '100%',
     overflow: 'hidden',
   },
   image: {
     width: '100%',
     height: '300px',
-    // objectFit: 'cover',
+    // minHeight: '300px',
+    // objectFit: 'contain',
+    [theme.breakpoints.down('sm')]: {
+      minHeight: '200px',
+    },
   },
   dotContainerItem: {
-    // margin: '8px 3px',
     cursor: 'pointer',
     fontSize: 12,
     textAlign: 'center',
@@ -55,17 +55,17 @@ export const ImageSlider = () => {
             borderRadius: 50,
           },
         }}
-        
       >
-        {data.map((item, idx) => (
+        {data.map((item) => (
           <Box key={item.id} className={classes.containerImages}>
             <Link to={item.link}>
-            <Box
-              component="img"
-              src={item.imgUrl}
-              className={classes.image}
-              alt={`Slide ${item.id}`}
-            />
+              <Box
+                component="img"
+                src={item.imgUrl}
+                className={classes.image}
+                alt={`Slide ${item.id}`}
+                loading="lazy"
+              />
             </Link>
           </Box>
         ))}

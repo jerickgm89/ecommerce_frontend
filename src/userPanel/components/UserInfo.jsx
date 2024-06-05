@@ -3,18 +3,32 @@ import { useUserAuthentication } from './../../hooks/useUserAuthentication';
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material"
 import { Person as PersonIcon } from "@mui/icons-material"
 import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi";
+import { useGetOrderByIdQuery } from "../../store/api/ecommerceShopApi";
 import { Link } from "react-router-dom";
 
 const TOKEN = localStorage.getItem('token');
 
 export const UserInfo = () => {
   const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
+  const { data: orderData, isLoading: isLoadingOrder } = useGetOrderByIdQuery(userData?.idUser);
 
-  const orderStatuses = [
-    { count: '16', status: 'Ordenes' },
-    { count: '02', status: 'Por pagar' },
-    { count: '00', status: 'Por enviar' },
-    { count: '01', status: 'Por recibir' },
+  const inProcessCount = isLoadingOrder || !Array.isArray(orderData) ? 0 : orderData.reduce((acc, order) => {
+    return acc + (Array.isArray(order.entityOrderItems) ? order.entityOrderItems.reduce((acc, item) => {
+      return acc + (item.status === 'in_process' ? 1 : 0);
+    }, 0) : 0);
+  }, 0);
+  
+  const approved = isLoadingOrder || !Array.isArray(orderData) ? 0 : orderData.reduce((acc, order) => {
+    return acc + (Array.isArray(order.entityOrderItems) ? order.entityOrderItems.reduce((acc, item) => {
+      return acc + (item.status === 'approved' ? 1 : 0);
+    }, 0) : 0);
+  }, 0);
+
+  const orderStatuses = isLoadingOrder ? [] : [
+    { count: (orderData ? orderData.length : 0).toString().padStart(2, '0'), status: 'Ordenes' },
+    { count: (inProcessCount || 0).toString().padStart(2, '0'), status: 'Por pagar' },
+    { count: (approved || 0).toString().padStart(2, '0'), status: 'Por enviar' },
+    { count: '00', status: 'Por recibir' },
   ];
 
   const userFields = [
@@ -57,7 +71,7 @@ export const UserInfo = () => {
     return (
       <Grid container spacing={1} gap={3} sx={{mt:1}}>
         <ProfileAvatar />
-        <OrderStatuses />
+          <OrderStatuses />
         <UserFields />
       </Grid>
     )
@@ -94,11 +108,11 @@ export const UserInfo = () => {
   function UserFields() {
     return (
       <Grid xs={12} sx={{backgroundColor: '#fff', borderRadius: 2}}>
-        <Box sx={{display: 'flex', lexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between'}}>
+        <Box sx={{display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', alignItems: { xs: 'center', sm: 'flex-start' }}}>
           {userFields.map((field, index) => (
-            <Grid key={index} xs={2} sx={{backgroundColor: '#fff', borderRadius:2}}>
+            <Grid key={index} xs={12} sm={2} sx={{backgroundColor: '#fff', borderRadius:2}}>
               <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'left', height: '100%', pb: 2, m: 4}}>
-                <Typography sx={{textAlign: 'left', color: 'primary.main', fontSize: 12}}>
+                <Typography sx={{textAlign: { xs: 'center', sm: 'left' }, color: 'primary.main', fontSize: 12}}>
                   {field.label}
                 </Typography>
                 <Typography variant="body1" sx={{fontSize: 15, textAlign: 'left'}}>

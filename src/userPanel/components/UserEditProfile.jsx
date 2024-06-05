@@ -1,14 +1,17 @@
-import { useAuth0 } from "@auth0/auth0-react"
+import { useGetUserByTokenQuery } from './../../store/api/ecommerceUserApi'
+
 import { useNavigate, Link } from 'react-router-dom';
 import { Avatar, Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { 
   Person as PersonIcon,
 } from "@mui/icons-material";
 import { usePutUpdateUserMutation } from './../../store/api/ecommerceUserApi'
-import { useUserAuthentication } from "../../hooks/useUserAuthentication";
 import { useFormik } from "formik"
 import * as yup from 'yup'
 import Swal from 'sweetalert2'
+
+const TOKEN = localStorage.getItem('token');
+
 
 const validationSchema = yup.object({
   nameUser: yup
@@ -35,9 +38,7 @@ const validationSchema = yup.object({
 export const UserEditProfile = () => {
 
   const navigate = useNavigate();
-
-  const { user, isAuthenticated } = useAuth0();
-  const userData = useUserAuthentication(user, isAuthenticated);
+  const { data: userData, isLoading: isLoadingDataUser } = useGetUserByTokenQuery(TOKEN);
   const [updateUserMutation, { isSuccess, isError, error }] = usePutUpdateUserMutation();
 
   const fields = [
@@ -50,11 +51,11 @@ export const UserEditProfile = () => {
 
   const formik = useFormik({
     initialValues: {
-      nameUser: userData ? userData.nameUser : '',
-      lastNameUser: userData ? userData.lastNameUser : '',
-      emailUser: userData ? userData.emailUser : '',
-      numberMobileUser: userData ? userData.numberMobileUser : '',
-      DNI: userData ? userData.DNI : '',
+      nameUser: isLoadingDataUser ? '' : userData.nameUser,
+      lastNameUser: isLoadingDataUser ? '' : userData.lastNameUser,
+      emailUser: isLoadingDataUser ? '' : userData.emailUser,
+      numberMobileUser: isLoadingDataUser ? '' : userData.numberMobileUser,
+      DNI: isLoadingDataUser ? '' : userData.DNI,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {     
@@ -92,7 +93,7 @@ export const UserEditProfile = () => {
           sx={{display: 'flex', width: { xs: '100%'}}}
         >
 
-          <Grid container>
+          <Grid container justifyContent="center" alignItems="center">
             <Grid xs={10} marginBottom={4}>
               <Typography 
                 variant="h4" 

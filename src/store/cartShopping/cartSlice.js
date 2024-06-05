@@ -32,6 +32,13 @@ const saveStateToLocalStorage = (state) => {
   }
 };
 
+const calculateCartTotalAmount = (cartItems) => {
+  return cartItems.reduce((total, item) => {
+    const price = item.discountPriceProduct ? Number(item.discountPriceProduct) : Number(item.priceProduct);
+    return total + (price * item.quantity);
+  }, 0);
+};
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -41,8 +48,6 @@ const cartSlice = createSlice({
         item => item.idProduct === action.payload.idProduct
       );
 
-      const priceProduct = Number(action.payload.priceProduct);
-
       if (itemIndex >= 0) {
         state.cartItems[itemIndex].quantity += 1;
       } else {
@@ -51,15 +56,13 @@ const cartSlice = createSlice({
       }
 
       state.cartTotalQuantity += 1;
-      state.cartTotalAmount += !isNaN(priceProduct) ? priceProduct : 0;
+      state.cartTotalAmount = calculateCartTotalAmount(state.cartItems);
       saveStateToLocalStorage(state);
     },
     decreaseCart(state, action) {
       const itemIndex = state.cartItems.findIndex(
         item => item.idProduct === action.payload.idProduct
       );
-
-      const priceProduct = Number(action.payload.priceProduct);
 
       if (itemIndex >= 0) {
         if (state.cartItems[itemIndex].quantity > 1) {
@@ -69,7 +72,7 @@ const cartSlice = createSlice({
         }
 
         state.cartTotalQuantity -= 1;
-        state.cartTotalAmount -= !isNaN(priceProduct) ? priceProduct : 0;
+        state.cartTotalAmount = calculateCartTotalAmount(state.cartItems);
         saveStateToLocalStorage(state);
       }
     },
@@ -80,11 +83,9 @@ const cartSlice = createSlice({
 
       if (itemIndex >= 0) {
         const removedItem = state.cartItems[itemIndex];
-        const priceProduct = Number(removedItem.priceProduct);
-
         state.cartTotalQuantity -= removedItem.quantity;
-        state.cartTotalAmount -= removedItem.quantity * (!isNaN(priceProduct) ? priceProduct : 0);
         state.cartItems.splice(itemIndex, 1);
+        state.cartTotalAmount = calculateCartTotalAmount(state.cartItems);
         saveStateToLocalStorage(state);
       }
     },
