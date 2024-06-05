@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Box, Grid, Button, Container, Tab, Tabs, Divider, TextField } from '@mui/material';
+import { Typography, Box, Grid, Button, Container, Tab, Tabs, Divider } from '@mui/material';
 import { useDispatch } from 'react-redux'; 
 import { addToCart } from '../../store/cartShopping/cartSlice';
 import { ReviewList } from './ReviewList';
@@ -9,13 +9,10 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { QuestionsList } from './QuestionsList';
 import Carousel from 'react-material-ui-carousel';
 
-
-const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduct, imageProducts, stockProduct, characteristicsProduct, categoryName, categoryId, brandId, brandName, brandLogo }) => {
+const DetailProduct = ({ idProduct, nameProduct, priceProduct, discountPriceProduct, descriptionProduct, imageProducts, stockProduct, characteristicsProduct, categoryName, categoryId, brandId, brandName, brandLogo }) => {
   const [tabValue, setTabValue] = useState(0);
   const dispatch = useDispatch(); 
   const [showFullDescription, setShowFullDescription] = useState(false);
-
- 
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -41,18 +38,12 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
 
   const images = Array.isArray(imageProducts) ? imageProducts : [];
 
-
-
-  console.log("Image URLs:", imageProducts);
-  
   return (
     <Container>
       <Grid container spacing={3}>
-      <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Box
             sx={{
-              // width: '100%',
-              // paddingTop: '100%', 
               position: 'relative',
               overflow: 'hidden',
               borderRadius: '15px',
@@ -62,20 +53,15 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
             {images && images.length > 0 ? (
               
               <Carousel
-              
-                navButtonsAlwaysVisible={images.length > 1} 
+                navButtonsAlwaysVisible={images.length > 1}
                 navButtonsProps={{
                   style: {
-                      backgroundColor: 'transparent',
-                      color: 'black',  
-                      
+                    backgroundColor: 'transparent',
+                    color: 'black',
                   },
                 // autoplay: false,
               }}
-                
-
               >
-
                 {images.map((image, index) => (
                   <Box key={index} sx={{ position: 'relative', width: '100%', height: 0, paddingTop: '100%', overflow: 'hidden', justifyContent:"center" }}>
                     
@@ -111,16 +97,29 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
             <Typography style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', color: 'rgb(174, 180, 190)' }}>
               Categoría: {categoryName}
             </Typography>
-            </Link>
-          <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>${formattedPrice(priceProduct)}</Typography>
-         
+          </Link>
+
+          {discountPriceProduct ? (
+            <>
+              <Typography variant="body1" component="span" style={{ textDecoration: 'line-through' }}>
+                $ {formattedPrice(priceProduct)}
+              </Typography>
+              <Typography style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>
+                $ {formattedPrice(discountPriceProduct)} -{Math.round(((priceProduct - discountPriceProduct) / priceProduct) * 100)}%
+              </Typography>
+            </>
+          ) : (
+            <Typography style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>
+              $ {formattedPrice(priceProduct)}
+            </Typography>
+          )}
+
           <Typography
             gutterBottom
             style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
           >
-              {stockProduct > 0 ? 'Stock:' : 'Out of Stock'} {stockProduct} unidades
+            {stockProduct > 0 ? 'Stock:' : 'Out of Stock'} {stockProduct} unidades
           </Typography >
-          
 
           <Box mt={2}>
             <Button
@@ -138,14 +137,13 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
                   backgroundColor: "rgb(210, 63, 87)",
                 }
               }}
-              onClick={handleAddToCart} // Llama a la función handleAddToCart cuando se hace clic en el botón
+              onClick={handleAddToCart}
             >
               Add to Cart
             </Button>
           </Box>
         </Grid>
 
-       
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs
@@ -155,54 +153,52 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, descriptionProduc
               indicatorColor="secondary"
               textColor="secondary"
             >
-
               <Tab label="Descripción" sx={{ textTransform: 'none' }} />
               <Tab label="Características" sx={{ textTransform: 'none' }} />
-              
             </Tabs>
           </Box>
           {tabValue === 0 && (
             <Box p={3}>
-            <Typography variant="body1" gutterBottom sx={{textAlign:"justify"}}><strong>Descripción: </strong> 
-              {descriptionProduct ? (
-                showFullDescription ? (
-                  <span>{descriptionProduct} <Button onClick={() => setShowFullDescription(false)}>Ver menos</Button></span>
+              <Typography variant="body1" gutterBottom sx={{textAlign:"justify"}}>
+                <strong>Descripción: </strong> 
+                {descriptionProduct ? (
+                  showFullDescription ? (
+                    <span>{descriptionProduct} <Button onClick={() => setShowFullDescription(false)}>Ver menos</Button></span>
+                  ) : (
+                    <span>
+                      {descriptionProduct.slice(0, 500)}...
+                      <Button onClick={() => setShowFullDescription(true)}>Ver más</Button>
+                    </span>
+                  )
                 ) : (
-                  <span>
-                    {descriptionProduct.slice(0, 500)}...
-                    <Button onClick={() => setShowFullDescription(true)}>Ver más</Button>
-                  </span>
-                )
-              ) : (
-                ' No hay descripción disponible.'
-              )}
-            </Typography>
-          </Box>
+                  ' No hay descripción disponible.'
+                )}
+              </Typography>
+            </Box>
           )}
           {tabValue === 1 && (
             <Box p={3}>
-                <Typography variant="body1" gutterBottom><strong>Características:</strong></Typography>
-                {characteristicsProduct && characteristicsProduct.characteristics ? (
-                  <ul>
-                    {Object.entries(characteristicsProduct.characteristics).map(([key, value]) => (
-                      <li key={key}><strong>{key}:</strong> {value}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <Typography variant="body2" gutterBottom>No hay características disponibles.</Typography>
-                )}
+              <Typography variant="body1" gutterBottom><strong>Características:</strong></Typography>
+              {characteristicsProduct && characteristicsProduct.characteristics ? (
+                <ul>
+                  {Object.entries(characteristicsProduct.characteristics).map(([key, value]) => (
+                    <li key={key}><strong>{key}:</strong> {value}</li>
+                  ))}
+                </ul>
+              ) : (
+                <Typography variant="body2" gutterBottom>No hay características disponibles.</Typography>
+              )}
             </Box>
-          
           )}
         </Box>
       </Grid>
 
       <Divider sx={{mt:2}}/>
-      
+
       <QuestionsProduct />
       <QueryClientProvider client={queryClient}>
         <QuestionsList />
-          <Divider sx={{mt:2, mb:3}}/>
+        <Divider sx={{mt:2, mb:3}}/>
         <ReviewList />
       </QueryClientProvider>
     </Container>
