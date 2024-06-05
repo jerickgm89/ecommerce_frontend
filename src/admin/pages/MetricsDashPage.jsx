@@ -20,7 +20,7 @@ export const MetricsDashPage = () => {
                     <Grid item xs={12} lg={4}>
                         <Box mb={4}>
                             <Typography variant="h4" mb={2}>
-                                Totales
+                                
                             </Typography>
                             <Grid container spacing={2}>
                                 <Grid item xs={6}>
@@ -40,7 +40,7 @@ export const MetricsDashPage = () => {
                     <Grid item xs={12} lg={8}>
                         <Box mb={4}>
                             <Typography variant="h4" mb={2}>
-                                Gráficos
+                                
                             </Typography>
                             <ChartReview />
                             
@@ -51,7 +51,7 @@ export const MetricsDashPage = () => {
                     <Grid item xs={12} lg={5}>
                         <Box mb={4}>
                             <Typography variant="h4" mb={2}>
-                                Nuevos Usuarios
+                               
                             </Typography>
                             <LastRegisteredUsers />
                         </Box>
