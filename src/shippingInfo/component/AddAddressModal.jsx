@@ -89,13 +89,14 @@ const AddAddressModal = ({ open, handleClose, handleSave }) => {
                 cityAddress: localShippingInfo.city,
                 country: 'Argentina'
             };
-            
-            const response = await postAddress({ idUser, ...newAddress }).unwrap();
+
+            await postAddress({ idUser, ...newAddress }).unwrap();
             dispatch(setShippingInfo(localShippingInfo));
             handleSave(localShippingInfo);
-            handleClose(true);
         } catch (error) {
             console.error('Error creating address:', error);
+        } finally {
+            handleClose();
         }
     };
 

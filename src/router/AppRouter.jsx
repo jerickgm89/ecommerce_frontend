@@ -1,7 +1,7 @@
-import {  Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { AuthRoutes } from "../auth/routes/";
 import { HomeRoutes } from "../home/routes/";
-import { ProductsRoutes } from "../products/routes/"
+import { ProductsRoutes } from "../products/routes/";
 import { SearchRoutes } from "../search/routes";
 import { AdminRoutes } from "../admin/routes";
 import { UserRoutes } from "../userPanel/routes";
@@ -17,8 +17,8 @@ export const AppRouter = () => {
     <div>
       <Routes>
 
-          {/* Home */}
-          <Route path="/" element={ <HomeRoutes /> }/>
+        {/* Home */}
+        <Route path="/" element={<HomeRoutes />} />
 
           {/* Products */}        
           <Route path="/products/*" element={ <ProductsRoutes />}/>
@@ -30,26 +30,26 @@ export const AppRouter = () => {
           <Route path="/contact/*" element={ <ContactFormRoutes /> }/>
 
 
-          {/* CartShopping */}
-          <Route path="/cartShopping" element={ <CartShoppingRoutes /> }/>
-          <Route path="/shippingInfo" element={ <PrivateRoute><ShippingInfoRoutes /></PrivateRoute> }/>
+        {/* CartShopping */}
+        <Route path="/cartShopping" element={<CartShoppingRoutes />} />
+        <Route path="/shippingInfo" element={<PrivateRoute><ShippingInfoRoutes /></PrivateRoute>} />
 
-          {/* Login y Registro */}
-          <Route path="/auth/*" element={ <AuthRoutes /> }/>
+        {/* Login y Registro */}
+        <Route path="/auth/*" element={<AuthRoutes />} />
 
-          {/* Admin */}
-          <Route path="/admin/*" element={ <PrivateRoute requireEmailVerified={true}><AdminRoutes /></PrivateRoute> }/>
+        {/* Admin */}
+        <Route path="/admin/*" element={<PrivateRoute requireEmailVerified={true}><AdminRoutes /></PrivateRoute>} />
 
-          {/* User */}
-          <Route path="/user/*" element={ <PrivateRoute><UserRoutes /></PrivateRoute> }/>
+        {/* User */}
+        <Route path="/user/*" element={<PrivateRoute><UserRoutes /></PrivateRoute>} />
 
-          {/* DetailProduct */}
-          <Route path="/products/details/:id" element={<DetailsProductsPage />} />
+        {/* DetailProduct */}
+        <Route path="/products/details/:id" element={<DetailsProductsPage />} />
 
-          {/* Not Found 404*/}
-          <Route path="*" element={<NotFoundRoutes />} />
+        {/* Not Found 404 */}
+        <Route path="*" element={<NotFoundRoutes />} />
 
       </Routes>
     </div>
-  )
-}
+  );
+};

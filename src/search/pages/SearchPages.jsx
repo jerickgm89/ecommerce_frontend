@@ -4,12 +4,19 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useSearchProductsByNameQuery } from '../../store/api';
 import { Grid, Card, CardContent, Typography, Box, Link as MuiLink, Button } from '@mui/material';
 import { EcommerceUI } from '../../ui';
+import { useDispatch } from 'react-redux';
 import Loading from '../../components/loading/Loading';
+import { addToCart } from '../../store/cartShopping/cartSlice';
 
 export const SearchPages = () => {
+    const dispatch = useDispatch()
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const name = params.get('name') || '';
+
+    const handleAddToCart = (product) => {
+        dispatch(addToCart(product));
+    };
 
     const { data, isLoading, refetch, error } = useSearchProductsByNameQuery(name, {
         refetchOnMountOrArgChange: true,
@@ -102,6 +109,7 @@ export const SearchPages = () => {
                                         </Box>
                                         <Box sx={{ display: 'flex', mt: 2 }}>
                                             <Button
+                                                onClick={() => handleAddToCart((product))}
                                                 variant="contained"
                                                 sx={{ backgroundColor: "rgb(210, 63, 87)", color: "white" }}
                                             >
