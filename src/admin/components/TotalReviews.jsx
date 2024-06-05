@@ -12,16 +12,16 @@ export const TotalReviews = () => {
 
     return (
         <Box mb={2}>
-            <Paper elevation={3} sx={{ borderRadius: '16px', padding: '20px', backgroundColor: '#f0f0f0' }}>
+            <Paper elevation={3} sx={{ backgroundColor: '#4caf50', padding: '16px', borderRadius:'30px', display: 'flex', alignItems: 'center', }}>
                 <Grid container alignItems="center">
                     <Grid item>
-                        <Avatar sx={{ backgroundColor: '#ff5722', marginRight: '16px', width: 56, height: 56 }}>
-                            <RateReviewIcon sx={{ color: '#ffffff', fontSize: 32 }} />
+                        <Avatar sx={{ backgroundColor: '#388e3c', marginRight: '16px'}}>
+                            <RateReviewIcon sx={{ color: '#ffffff' }} />
                         </Avatar>
                     </Grid>
                     <Grid item xs>
-                        <Typography variant="h6" gutterBottom color="textPrimary">Total de Reviews</Typography>
-                        <Typography variant="body1" color="textSecondary" gutterBottom>Total Reviews: {totalReviews}</Typography>
+                        <Typography variant="h6" color="textPrimary">Total de Reviews</Typography>
+                        <Typography variant="body1" color="textSecondary">Total Reviews: {totalReviews}</Typography>
                         {/* <Typography variant="body1" color="textSecondary">Average Score: {totalAverageScore.toFixed(2)}</Typography> */}
                     </Grid>
                 </Grid>
