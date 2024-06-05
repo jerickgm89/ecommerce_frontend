@@ -15,34 +15,33 @@ export const data = [
     link: 'products/category/3',
     
   },
-  
   {
-    id: 3, imgUrl: imagen3,
-  },
-  {
-    id: 4, 
+    id: 2, 
     imgUrl: imagen4,
     link: 'products/category/7',
   },
   {
-    id: 5, 
+    id: 3, 
     imgUrl: imagen5,
     link: 'products/brand/14',
   },
   {
-    id: 6, 
+    id: 4, 
     imgUrl: imagen6,
     link: 'products/brand/5',
   },
   {
-    id: 7, 
+    id: 5, 
     imgUrl: imagen7,
     link: 'products/brand/1'
   },
   {
-    id: 8, 
+    id: 6, 
     imgUrl: imagen8,
     link: 'products/category/1'
+  },
+  {
+    id: 7, imgUrl: imagen3,
   },
 ];
   
