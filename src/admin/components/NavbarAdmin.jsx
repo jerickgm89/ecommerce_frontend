@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { 
   AppBar, 
   Box, 
@@ -18,6 +18,9 @@ import {
   MoreVert      as MoreIcon 
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { useGetDeactivedReviewsQuery } from '../../store/api/ecommerceReviewApi';
+import { useGetQuestionsQuery } from '../../store/api/ecommerceQuestionsApi';
+import { setReviewsCount, setUnansweredCount } from '../../store/adminNotifications/notificationsSlice';
 
 export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -27,6 +30,18 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const { data: reviews = [], error, isLoading, refetch } = useGetDeactivedReviewsQuery()
+    const { data: questions = [], errorQuestions, isLoadingQuestions, refetchQuestions } = useGetQuestionsQuery()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+      const count = reviews.length;
+      const unansweredCount = questions.filter(question => !question.responseComments).length;
+      dispatch(setReviewsCount(count));
+      dispatch(setUnansweredCount(unansweredCount));
+      refetch()
+    }, [reviews, questions])
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -92,7 +107,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
                 size="large" 
                 aria-label="show 4 new mails" 
                 color="inherit">
-                <Badge badgeContent={notifications.unansweredCount} color="error">
+                <Badge badgeContent={notifications?.unansweredCount} color="error">
                     <MailIcon />
                 </Badge>
               </IconButton>
@@ -105,7 +120,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
               aria-label="show 17 new notifications"
               color="inherit"
               >
-              <Badge badgeContent={notifications.reviewsCount} color="error">
+              <Badge badgeContent={notifications?.reviewsCount} color="error">
                   <NotificationsIcon />
               </Badge>
               </IconButton>

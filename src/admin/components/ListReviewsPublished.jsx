@@ -1,19 +1,30 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import { useGetReviewsQuery } from '../../store/api/ecommerceReviewApi'
+import { useGetDeactivedReviewsQuery, useGetReviewsQuery } from '../../store/api/ecommerceReviewApi'
 import { useGetProductsQuery } from '../../hooks/useGetProductsByIdsQuery'
 import { useBlockReviewMutation } from '../../store/api/ecommerceReviewApi'
+import { setReviewsCount } from '../../store/adminNotifications/notificationsSlice'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 import BlockIcon from '@mui/icons-material/Block'
 import Swal from 'sweetalert2'
 
 export const ListReviewsPublished = () => {
 
-    const { data: reviews = [], error, isLoading, refetch } = useGetReviewsQuery()
+    const { data: reviews = [], error, isLoading } = useGetReviewsQuery()
+    const { data: reviewsDeactived = [], errorDeactives, isLoadingDeactived, refetch } = useGetDeactivedReviewsQuery()
     const idProductReview = [...new Set(reviews.map(review => review.idProduct))]
     const { data: products = [], error: errorProduct, isLoading: isLoadingProduct } = useGetProductsQuery(idProductReview)
     const [blockReview] = useBlockReviewMutation()
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const count = reviewsDeactived.length;
+        dispatch(setReviewsCount(count));
+        refetch()
+    }, [reviewsDeactived, reviews])
 
     const handleBlock = async(id) => {
         await blockReview(id)
