@@ -10,6 +10,7 @@ import { CartShoppingRoutes } from "../cartShooping/routes/";
 import { ShippingInfoRoutes } from "../shippingInfo/routes";
 import { NotFoundRoutes } from "../notFound/routes";
 import { PrivateRoute } from "../components/privateRoute/PrivateRoute";
+import { ContactFormRoutes } from "../contactForm/routes";
 
 export const AppRouter = () => {
   return (
@@ -25,6 +26,8 @@ export const AppRouter = () => {
           
 
           <Route path="/search/*" element={ <SearchRoutes/>}/>
+
+          <Route path="/contact/*" element={ <ContactFormRoutes /> }/>
 
 
           {/* CartShopping */}
