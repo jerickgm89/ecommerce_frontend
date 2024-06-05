@@ -15,21 +15,18 @@ import styles from './NavBar.module.css';
 const pages = ['Inicio', 'Productos', 'Carrito de Compras'];
 const settings = ['Perfil', 'Panel Administrador', 'Salir'];
 
+
 export const NavBar = () => {
+
     const { loginWithRedirect } = useAuth0();
     const { logout } = useAuth0();
     const { user, isAuthenticated } = useAuth0();
     
     const { data: isActive, errorUser, isLoading, refetch } = useGetIsActiveQuery(user?.email, { skip: !isAuthenticated })
-    // console.log(user);
-    // console.log(user?.email);
     const userData  = useUserAuthentication(user, isAuthenticated);
  
-    // console.log(isActive)
     const [anchorNav, setAnchorNav] = React.useState(null);
     const [anchorUser, setAnchorUser] = React.useState(null);
-
-    
 
     const handleOpenNavMenu = (event) => {
         setAnchorNav(event.currentTarget);
@@ -68,21 +65,20 @@ export const NavBar = () => {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
         
-                
-                <Link to="/">
-                    <Box 
-                        component="img"
-                        alt="logo"
-                        href="#app-bar-with-responsive-menu"
-                        sx={{ 
-                            mr: 2,
-                            height: 80, 
-                            width: 80, 
-                            display: { xs: 'none', md: 'flex'}
-                        }}
-                        src="/logo.svg"
-                    />
-                </Link>
+                    <Link to="/">
+                        <Box 
+                            component="img"
+                            alt="logo"
+                            href="#app-bar-with-responsive-menu"
+                            sx={{ 
+                                mr: 2,
+                                height: 80, 
+                                width: 80, 
+                                display: { xs: 'none', md: 'flex'}
+                            }}
+                            src="/logo.svg"
+                        />
+                    </Link>
                   
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
@@ -163,8 +159,6 @@ export const NavBar = () => {
                         ))}
                     </Box>
 
-                
-
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, alignItems: 'center', justifyContent: { xs: 'center', md: 'flex-start' } }}>
                         <SearchBar />   
                     </Box>
@@ -175,14 +169,14 @@ export const NavBar = () => {
                                 {isAuthenticated ? (
                                     <>
                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                            <Typography 
-                                            variant="body1" 
-                                            color={user.given_name === "User" ? "error" : "black"}
-                                            sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
-                                            >
-                                            {userData ? userData.nameUser : user.given_name}
-                                            </Typography>
-                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>                                                
+                                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>  
+                                                <Typography 
+                                                    variant="body1" 
+                                                    color={user.given_name === "User" ? "error" : "black"}
+                                                    sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
+                                                >
+                                                    {userData ? userData.nameUser : user.given_name}
+                                                </Typography>                                              
                                                 <Avatar alt={userData ? userData.nameUser : user.given_name} src={userData ? userData.pictureUser : user.picture} />
                                             </IconButton>                                            
                                         </Box>
@@ -190,17 +184,17 @@ export const NavBar = () => {
                                 ) : (
                                     <>
                                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                            <Typography 
-                                                variant="body1" 
-                                                color="black"
-                                                sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
-                                            >
-                                                Iniciar sesión
-                                            </Typography>
                                             <IconButton 
                                                 sx={{ p: 0 }}
                                                 onClick={loginWithRedirect}
                                             >
+                                                <Typography 
+                                                    variant="body1" 
+                                                    color="black"
+                                                    sx={{ mr: 1, display: { xs: 'none', md: 'flex'} }}
+                                                >
+                                                    Iniciar sesión
+                                                </Typography>
                                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                             </IconButton>
                                         </Box>
