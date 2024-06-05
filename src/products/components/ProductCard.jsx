@@ -15,7 +15,7 @@ import { addFavorite, removeFavorite } from '../utils/localStorage';
 
 import { addToCart, decreaseCart } from '../../store/cartShopping/cartSlice';
 
-const ProductCard = ({ product, dispatch, cart }) => {
+const ProductCard = ({ product, dispatch, cart = [] }) => {
   const quantityInCart = cart?.find(item => item.idProduct === product.idProduct)?.quantity || 0;
 
   const handleAddToCart = () => {
@@ -86,6 +86,17 @@ const ProductCard = ({ product, dispatch, cart }) => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(product.priceProduct);
+
+  const formattedPriceDiscount = product.discountPriceProduct !== null ? 
+    new Intl.NumberFormat('es-ES', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(product.discountPriceProduct) : null;
+
+  const discountQuantityString = product.entityDiscounts[0]?.quantity;
+  const discountQuantity = parseFloat(discountQuantityString || 0);
+
+  const discountPercentage = discountQuantity * 100;
 
   function shortenProductName(name, maxLength) {
     if (name.length > maxLength) {
@@ -191,16 +202,35 @@ const ProductCard = ({ product, dispatch, cart }) => {
             <Typography sx={{ mb: 1, fontSize: '14px', color: '#777' }}>Sin calificación</Typography>
           )}
 
-          <Box display="flex" alignItems="center" justifyContent="space-between">
-            <Box>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize:"18px", marginBottom: '8px', fontWeight:600, color:"#D23F57" }}
-              >
-                $ {formattedPrice}
-              </Typography>
-            </Box>
+<Box key={product.idProduct}>
+            {formattedPriceDiscount ? (
+              <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Box>
+                  <Typography variant="body1" component="span" style={{ textDecoration: 'line-through' }}>
+                    $ {formattedPrice}
+                  </Typography> <br />
+                  <Typography
+                    gutterBottom
+                    variant="caption"
+                    sx={{ fontSize: "18px", marginBottom: '8px', fontWeight: 600, color: "#D23F57" }}
+                  >
+                    $ {formattedPriceDiscount} -{discountPercentage.toFixed()}%
+                  </Typography>
+                </Box>
+              </Box>
+            ) : (
+              <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Box>
+                  <Typography
+                    gutterBottom
+                    variant="caption"
+                    sx={{ fontSize: "18px", marginBottom: '8px', fontWeight: 600, color: "#D23F57" }}
+                  >
+                    $ {formattedPrice}
+                  </Typography>
+                </Box>
+              </Box>
+            )}
           </Box>
           <Box display="flex" justifyContent="center" alignItems="center" sx={{ backgroundColor: 'primary.main', borderRadius: '5px' }}>
             {quantityInCart > 0 && (
@@ -285,9 +315,20 @@ const ProductCard = ({ product, dispatch, cart }) => {
             {product.description}
           </Typography>
 
-          <Typography style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>
-            $ {formattedPrice}
-          </Typography>
+          {formattedPriceDiscount ? (
+            <>
+              <Typography variant="body1" component="span" style={{ textDecoration: 'line-through' }}>
+                $ {formattedPrice}
+              </Typography>
+              <Typography gutterBottom style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>
+                $ {formattedPriceDiscount} -{discountPercentage.toFixed()}%
+              </Typography>
+            </>
+          ) : (
+            <Typography style={{ fontSize: '25px', fontWeight: 700, marginBottom: '8px', color: 'rgb(210, 63, 87)' }}>
+              $ {formattedPrice}
+            </Typography>
+          )}
 
           <Button
             variant="contained"

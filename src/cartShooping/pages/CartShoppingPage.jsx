@@ -2,27 +2,26 @@ import React, { useEffect } from 'react';
 import { Box, Typography, Grid, Paper, Button, IconButton, Link as MuiLink, Divider } from '@mui/material';
 import { EcommerceUI } from '../../ui';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth0 } from "@auth0/auth0-react"; // Importa useAuth0
-import Swal from 'sweetalert2'; // Importa SweetAlert2
+import { useAuth0 } from "@auth0/auth0-react";
+import Swal from 'sweetalert2';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, clearCart, decreaseCart, removeFromCart } from '../../store/cartShopping/cartSlice';
 import { setShippingInfo } from '../../store/shippingInfo/shippingInfoSlice';
-import { useGetUserByIdQuery, useGetUserByTokenQuery } from '../../store/api';
 
 export const CartShoppingPage = () => {
     const { cartItems, cartTotalAmount } = useSelector(state => state.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { loginWithRedirect, isAuthenticated } = useAuth0(); // Obtiene isAuthenticated y loginWithRedirect de useAuth0
+    const { loginWithRedirect, isAuthenticated } = useAuth0();
 
     const handleRemoveFromCart = (productId) => {
         dispatch(removeFromCart({ id: productId }));
     };
 
     const handleDecreaseCart = (product) => {
-        dispatch(decreaseCart({ id: product.idProduct, priceProduct: product.priceProduct }));
+        dispatch(decreaseCart({ idProduct: product.idProduct, priceProduct: product.priceProduct }));
     };
 
     const handleAddToCart = (product) => {
@@ -50,7 +49,7 @@ export const CartShoppingPage = () => {
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    loginWithRedirect();
+                    loginWithRedirect('/shippingInfo');
                 }
             });
         }
@@ -65,7 +64,6 @@ export const CartShoppingPage = () => {
                 <Typography variant="h4" gutterBottom>
                     Carrito de compras
                 </Typography>
-                
                 {cartItems.length === 0 ? (
                     <Box textAlign="center" mt={5}>
                         <ShoppingCartOutlinedIcon sx={{ fontSize: 80 }} />
@@ -113,7 +111,20 @@ export const CartShoppingPage = () => {
                                                 </Box>
                                             </Grid>
                                             <Grid item xs={2}>
-                                                <Typography variant="body1" textAlign="center">$ {formattedPrice(cartItem.priceProduct)}</Typography>
+                                                {cartItem.discountPriceProduct ? (
+                                                    <>
+                                                        <Typography variant="body1" textAlign="center" sx={{ textDecoration: 'line-through' }}>
+                                                            $ {formattedPrice(cartItem.priceProduct)}
+                                                        </Typography>
+                                                        <Typography variant="body1" textAlign="center" sx={{ color: 'red' }}>
+                                                            $ {formattedPrice(cartItem.discountPriceProduct)}
+                                                        </Typography>
+                                                    </>
+                                                ) : (
+                                                    <Typography variant="body1" textAlign="center">
+                                                        $ {formattedPrice(cartItem.priceProduct)}
+                                                    </Typography>
+                                                )}
                                             </Grid>
                                             <Grid item xs={2}>
                                                 <Box display="flex" justifyContent="center" alignItems="center">
@@ -123,7 +134,15 @@ export const CartShoppingPage = () => {
                                                 </Box>
                                             </Grid>
                                             <Grid item xs={2}>
-                                                <Typography variant="body1" textAlign="center">$ {formattedPrice(cartItem.priceProduct * cartItem.quantity)}</Typography>
+                                                {cartItem.discountPriceProduct ? (
+                                                    <Typography variant="body1" textAlign="center">
+                                                        $ {formattedPrice(cartItem.discountPriceProduct * cartItem.quantity)}
+                                                    </Typography>
+                                                ) : (
+                                                    <Typography variant="body1" textAlign="center">
+                                                        $ {formattedPrice(cartItem.priceProduct * cartItem.quantity)}
+                                                    </Typography>
+                                                )}
                                             </Grid>
                                         </Grid>
                                     ))}
