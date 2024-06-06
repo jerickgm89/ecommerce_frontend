@@ -35,7 +35,8 @@ export const HomePage = () => {
     orderBy: orderBy,
     orderDirection: orderDirection,
     category: category,
-    brand: brand
+    brand: brand,
+    pageIn: 1,
   });
 
   // Asegúrate de manejar los estados de carga y error adecuadamente

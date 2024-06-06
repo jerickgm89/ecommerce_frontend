@@ -9,7 +9,7 @@ export const BannerInfo = () => {
       <Box display="flex" justifyContent="center" alignItems="center" mr={2}>
         <LocalShippingOutlinedIcon fontSize="large" sx={{color: "#4a4a4a"}}/>
         <Typography variant="h8" ml={1} sx={{color:"#4a4a4a"}}>
-            Envios a todo el pais
+            Envíos a todo el pais
           
         </Typography>
       </Box>

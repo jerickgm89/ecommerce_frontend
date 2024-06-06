@@ -22,6 +22,10 @@ export const ecommerceMetricsApi = createApi({
             query: () => 'dash/top-selling',
             providesTags: ['Metrics'],
         }),
+        getTotalRenevue: builder.query({
+            query: () => 'dash/total_revenue',
+            providesTags: ['Metrics'],
+        }),
           
 
 
@@ -33,6 +37,8 @@ export const {
 
     useGetAverageScoresQuery,
     useGetLastRegisteredUsersQuery,
+    useGetTopSellingProductsQuery,
+    useGetTotalRenevueQuery
 
 } = ecommerceMetricsApi;
 
