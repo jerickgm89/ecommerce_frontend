@@ -21,13 +21,14 @@ class ErrorBoundary extends React.Component {
 
   static getDerivedStateFromError(error) {
     // Update state so the next render will show the fallback UI.
+    // console.log("ERROR %%%%", error)
     return { hasError: true };
   }
 
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <Typography variant="h3">Something went wrong.</Typography>;
+      return <Typography variant="h3">Algo salió mal.</Typography>;
     }
 
     return this.props.children; 
@@ -140,7 +141,7 @@ export const ProductsPage = () => {
                 ) : isLoading ? (
                   <Loading/>
                 ) : !products ? (
-                  <Typography variant="h3">Waiting for data...</Typography>
+                  <Typography variant="h3">Cargando la información...</Typography>
                 ) : (
                   products.rows.map(product => (
                     <Grid item key={product.idProduct} xs={12} sm={12} md={4.5} lg={3.1}>

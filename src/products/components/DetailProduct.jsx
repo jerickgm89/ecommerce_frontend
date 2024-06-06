@@ -118,7 +118,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, discountPriceProd
             gutterBottom
             style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
           >
-            {stockProduct > 0 ? 'Stock:' : 'Out of Stock'} {stockProduct} unidades
+            {stockProduct > 0 ? 'Stock:' : 'Out of Stock'} {stockProduct} {stockProduct === 1 ? 'unidad' : 'unidades'}
           </Typography >
 
           <Box mt={2}>

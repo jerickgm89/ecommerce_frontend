@@ -42,6 +42,7 @@ export const data = [
   },
   {
     id: 7, imgUrl: imagen3,
+    link: 'https://api.whatsapp.com/send?phone=5493855782915&text=Hola%2C%20quisiera%20saber%20m%C3%A1s%20sobre%20los%20servicios%20de%20asistencia%20t%C3%A9cnica%20que%20ofrecen.%20%C2%BFPodr%C3%ADas%20proporcionarme%20algunos%20detalles%3F'
   },
 ];
   

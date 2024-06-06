@@ -35,12 +35,12 @@ export const DetailsProductsPage = () => {
   }, [brands, product]);
 
   if (!product) {
-    return <Typography variant="h3">Product not found</Typography>;
+    return <Typography variant="h3">Producto no encontrado.</Typography>;
 
     
   }
 
-  console.log("Image URLs:", product.imageProducts);
+  // console.log("Image URLs:", product.imageProducts);
 
 
   return (
@@ -50,7 +50,7 @@ export const DetailsProductsPage = () => {
             <ArrowBackIcon />
         </MuiLink>
         <Box mt={8} mb={8} ml={8} mr={8}>
-          <Typography variant="h3" gutterBottom>Detalle productos</Typography>
+          {/* <Typography variant="h3" gutterBottom>Detalle producto</Typography> */}
           <DetailProduct 
             idProduct = {product.idProduct}
             nameProduct = {product.nameProduct}
@@ -66,7 +66,6 @@ export const DetailsProductsPage = () => {
             brandLogo = {brand?.logoBrand}
 
             characteristicsProduct = {product.characteristicsProduct}
-       
           /> 
         </Box>
       </EcommerceUI>
