@@ -90,7 +90,11 @@ export const ecommerceApi = createApi({
         }),
 
         searchProductsByName: builder.query({
-            query: (name) => `/filterproducts/?name=${name}`,
+            query: ({name, pageIn}) => {
+                const queryUrl = `/filterproducts?pageIn=${pageIn}&name=${name}`;
+                return queryUrl;
+            },
+            providesTags: ['Products'],
         }),
 
         postOrder: builder.mutation({
