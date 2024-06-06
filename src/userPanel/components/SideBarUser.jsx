@@ -70,7 +70,7 @@ export const SideBarUser = () => {
             >
               <Stack direction="column" spacing={2}>
                 <List component="div">
-                  <Typography variant="h6" sx={{ml:2}}>DashBoard</Typography>
+                  <Typography variant="h6" sx={{ml:2}}>Panel administrador</Typography>
                   <ListItemLink to="/user/order" icon={ShoppingBagIcon} primary="Ordenes" />
                   <ListItemLink to="/user/wishlist" icon={FavoriteIcon} primary="Lista de deseos" />
                 </List>
@@ -105,12 +105,12 @@ export const SideBarUser = () => {
             }}
           >
             <List component="div">
-              <Typography variant="h6">DashBoard</Typography>
+              <Typography variant="h6">Panel administrador</Typography>
               <ListItemLink to="/user/order" icon={ShoppingBagIcon} primary="Ordenes" />
               <ListItemLink to="/user/wishlist" icon={FavoriteIcon} primary="Lista de deseos" />
             </List>
             <List component="div">
-              <Typography variant="h6">Configuracion de Perfil</Typography>
+              <Typography variant="h6">Configuración de Perfil</Typography>
               <ListItemLink to="/user" icon={PersonIcon} primary="Información personal" />
               <ListItemLink to="/user/address" icon={PlaceIcon} primary="Direcciones" />
             </List>

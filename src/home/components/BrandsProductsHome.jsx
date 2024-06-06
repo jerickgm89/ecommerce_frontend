@@ -50,7 +50,7 @@ export const BrandsProductsHome = ({brandId}) => {
                             color: '#646464',
                             transition: 'background-color 0.5s',
                             '&:hover': {
-                              backgroundColor: '#fff',
+                            backgroundColor: '#fff',
                             //   boxShadow: "4px 4px 10px"
                             },
                         }}>

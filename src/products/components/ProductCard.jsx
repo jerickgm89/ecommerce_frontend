@@ -193,7 +193,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
             gutterBottom
             style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
           >
-            {product.stockProduct > 0 ? 'Stock ' : 'Out of Stock'}
+            {product.stockProduct > 0 ? 'Stock ' : 'Agotado'}
           </Typography>
 
           {averageScore !== null ? (
@@ -214,7 +214,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
                     variant="caption"
                     sx={{ fontSize: "18px", marginBottom: '8px', fontWeight: 600, color: "#D23F57" }}
                   >
-                    $ {formattedPriceDiscount} -{discountPercentage.toFixed()}%
+                    $ {formattedPriceDiscount}   -{discountPercentage.toFixed()}%
                   </Typography>
                 </Box>
               </Box>

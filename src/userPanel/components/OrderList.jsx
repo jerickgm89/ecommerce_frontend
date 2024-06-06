@@ -25,7 +25,7 @@ export const OrderList = () => {
         <Typography variant="h4" sx={{mt: 4, pb: 2, mb: 0, ml:2, borderRadius: 4, display: 'flex', justifyContent: 'space-between', fontWeight: 'bold'}}>
           <div>
             <ShoppingBagIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
-            Mis Ordenes
+            Mis órdenes
           </div>
         </Typography>
       <Grid xs={12} md={12} margin={3}>
@@ -54,7 +54,7 @@ export const OrderList = () => {
                 ))
               ))
             ) : (
-              <Typography variant="h5" align="left">No tienes ordenes disponibles</Typography>
+              <Typography variant="h5" align="left">No tienes órdenes disponibles</Typography>
             )
           )
         }

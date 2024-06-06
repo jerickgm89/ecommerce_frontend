@@ -148,7 +148,7 @@ export const UserAddAddress = () => {
               >
               <div>
                 <PlaceIcon sx={{fontSize: 40, mr: 3, color: 'primary.dark'}}/>
-                Agregar Direccion
+                Agregar dirección
               </div>
               <Link to="/user/address" style={{ textDecoration: 'none', color: 'inherit', width: { xs: '100%', sm: 'auto' } }}>
                 <Button variant="outlined" fullWidth={{ xs: true, sm: false }}>Volver</Button>
