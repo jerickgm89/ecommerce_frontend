@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton } from '@mui/material'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useGetUsersBlockedQuery, useRestoreUserMutation } from '../../store/api/ecommerceUserApi'
 import { useNavigate } from 'react-router-dom'
@@ -10,6 +10,27 @@ export const LockedUsers = () => {
     const { data: usersLocked = [], error, isLoading, refetch } = useGetUsersBlockedQuery()
     const [restoreUser] = useRestoreUserMutation()
     const navigate = useNavigate()
+
+    if (isLoading) {
+        return (                            
+            <Box
+                display="flex" 
+                justifyContent="left" 
+                alignItems="center" 
+                height="100vh"
+                sx={{ mt: -12 }}
+            >
+                <CircularProgress />
+                <Typography
+                    variant="h6" 
+                    component="div" 
+                    sx={{ ml: 2 }}
+                >
+                    Cargando...
+                </Typography>
+            </Box>
+        )               
+    }
 
     const handleRestore = async (id) => {
         try {
