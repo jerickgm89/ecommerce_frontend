@@ -5,7 +5,8 @@ import { ListQuestionsPage } from "../pages/ListQuestionsPage"
 export const AdminRoutes = () => {
   return (
     <Routes>
-        <Route path="/" element={<ListProductsPage />} />
+        <Route path="/" element={<MetricsDashPage />} />
+        <Route path="/listProducts" element={<ListProductsPage />} />
         <Route path="/createProducts" element={<CreateProductsPage />} />
         <Route path="/editProducts/:id" element={<EditProductsPage />} />
         <Route path="/lockedProducts" element={<LockedProductsPage />} />
@@ -14,7 +15,7 @@ export const AdminRoutes = () => {
         <Route path="/updateUsers/:id" element={<EditUsersPage />} />
         <Route path="/postUsers" element={<PostUsersPage />} />
         <Route path="/questions" element={<ListQuestionsPage />} />
-        <Route path="/metrics" element={<MetricsDashPage />} />
+        {/* <Route path="/metrics" element={<MetricsDashPage />} /> */}
         <Route path="/reviews" element={<ListReviewsPage />}/>
         <Route path="/reviews/published" element={<ListReviewsPublishedPage />}/>
 
