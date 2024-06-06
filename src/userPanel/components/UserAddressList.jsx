@@ -8,8 +8,9 @@ import Swal from 'sweetalert2'
 const TOKEN = localStorage.getItem('token');
 
 export const UserAddressList = () => {
-  const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
-  console.log(userData);
+  const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN, {
+    refetchOnMountOrArgChange: true,
+  });
   const [deleteAddress] = useDeleteAddressMutation();
 
   if (isLoading) return null;

@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
+const baseURl = import.meta.env.VITE_BASE_URL;
 
 export const ecommerceApi = createApi({
     reducerPath: 'ecommerceApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'http://localhost:3001',//'http://35.167.78.208',
+        baseUrl: 'https://www.ecommercetech.software', //http://localhost:3001, www.ecommercetech.software
     }),
     tagTypes: ['Products', 'Categories', 'Brands'],
     endpoints: (builder) => ({
@@ -81,8 +81,8 @@ export const ecommerceApi = createApi({
         }),
 
         filterProducts: builder.query({
-            query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand }) => {
-                const queryUrl = `/filterproducts?name=${name}&price=${price}&year=${year}&orderBy=${orderBy}&orderDirection=${orderDirection}&priceMin=${priceMin}&priceMax=${priceMax}&category=${category}&brand=${brand}`;
+            query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand, pageIn }) => {
+                const queryUrl = `/filterproducts?pageIn=${pageIn}&name=${name}&price=${price}&year=${year}&orderBy=${orderBy}&orderDirection=${orderDirection}&priceMin=${priceMin}&priceMax=${priceMax}&category=${category}&brand=${brand}`;
                 console.log('Parámetros enviados:', { name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand });
                 return queryUrl;
             },

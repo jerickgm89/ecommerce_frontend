@@ -6,8 +6,9 @@ import Carousel from 'react-material-ui-carousel';
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 
-export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
-    const { data: categories, error, isLoading } = useGetCategoriesQuery();
+export const CategoryProductsHome = ({ categoryId }) => {
+    const { data: categories, error, isLoading } = useGetCategoriesQuery({
+        refetchOnMountOrArgChange: true});
 
     if (isLoading) {
         return (
@@ -50,6 +51,10 @@ export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
 
     const carouselItems = getCarouselItems(categories, itemsPerSlide.lg);
 
+    // const onCategoryClick = (id) => {
+    //     console.log(`Category clicked: ${id}`);
+    // };
+
     return (
         <Box sx={{width: '100%'}}>
         <Carousel
@@ -86,7 +91,7 @@ export const CategoryProductsHome = ({ onCategoryClick, categoryId }) => {
                                 component={RouterLink}
                                 to={`/products/category/${category.idCategory}`}
                                 underline="none"
-                                onClick={() => onCategoryClick(category.idCategory)}
+                                // onClick={() => onCategoryClick(category.idCategory)}
                                 style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}
                             >
                                 <Box

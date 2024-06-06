@@ -11,6 +11,7 @@ import { ShippingInfoRoutes } from "../shippingInfo/routes";
 import { NotFoundRoutes } from "../notFound/routes";
 import { PrivateRoute } from "../components/privateRoute/PrivateRoute";
 import { ContactFormRoutes } from "../contactForm/routes";
+import { RepetanceRoutes } from "../repetance/routes";
 
 export const AppRouter = () => {
   return (
@@ -21,13 +22,15 @@ export const AppRouter = () => {
         <Route path="/" element={<HomeRoutes />} />
 
           {/* Products */}        
-          <Route path="/products/*" element={ <ProductsRoutes />}/>
+        <Route path="/products/*" element={ <ProductsRoutes />}/>
 
           
 
-          <Route path="/search/*" element={ <SearchRoutes/>}/>
+        <Route path="/search/*" element={ <SearchRoutes/>}/>
 
-          <Route path="/contact/*" element={ <ContactFormRoutes /> }/>
+        <Route path="/contact/*" element={ <ContactFormRoutes /> }/>
+
+        <Route path="/arrepentimiento/*" element={ <RepetanceRoutes/> }/>
 
 
         {/* CartShopping */}
