@@ -25,6 +25,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
   const handleRemoveFromCart = () => {
     dispatch(decreaseCart({ idProduct: product.idProduct, priceProduct: product.priceProduct }));
   };
+  
 
   const { data: categories } = useGetCategoriesQuery();
   const [category, setCategory] = useState(null);
