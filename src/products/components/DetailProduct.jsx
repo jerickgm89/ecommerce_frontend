@@ -126,7 +126,7 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, discountPriceProd
               variant="contained"
               size="medium"
               sx={{
-                backgroundColor: "rgb(210, 63, 87)",
+                backgroundColor: "#2e8fea",
                 color: "rgb(255, 255, 255)",
                 cursor: "pointer",
                 fontWeight: 600,
@@ -134,12 +134,12 @@ const DetailProduct = ({ idProduct, nameProduct, priceProduct, discountPriceProd
                 textTransform: 'capitalize',
                 transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
                 '&:hover': {
-                  backgroundColor: "rgb(210, 63, 87)",
+                  backgroundColor: "#2e8fea",
                 }
               }}
               onClick={handleAddToCart}
             >
-              Add to Cart
+              Añadir al carrito
             </Button>
           </Box>
         </Grid>

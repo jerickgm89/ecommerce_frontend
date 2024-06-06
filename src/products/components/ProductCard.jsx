@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Typography, Paper, Box, Button, CardContent, Modal } from '@mui/material';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import IndeterminateCheckBoxOutlinedIcon from '@mui/icons-material/IndeterminateCheckBoxOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -187,7 +187,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
             style={{ fontSize: '18px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
             title={product.nameProduct}
           >
-            {shortenProductName(product.nameProduct, 15)}
+            {shortenProductName(product.nameProduct, 20)}
           </Typography>
           
           <Typography
@@ -238,7 +238,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
               <Box display="flex" alignItems="center" sx={{ marginRight: 1 }}>
                 <Button
                   onClick={() => handleRemoveFromCart(({ id: product.idProduct }))}
-                  startIcon={<RemoveShoppingCartIcon sx={{ color: '#000000' }} />}
+                  startIcon={<RemoveIcon sx={{ color: '#000000' }} />}
                   size="large"
                   sx={{ minWidth: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: '20px' }}
                 />
@@ -249,7 +249,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
             )}
             <Button
               onClick={() => handleAddToCart((product))}
-              startIcon={<AddShoppingCartIcon sx={{ color: '#000000' }} />}
+              startIcon={<AddIcon sx={{ color: '#000000' }} />}
               size="large"
               sx={{
                 minWidth: 'auto',
@@ -348,7 +348,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
             }}
             onClick={() => { dispatch(addToCart(product)); handleToggleModal(); }}
           >
-            Agregar al carrito
+            Añadir al carrito
           </Button>
         </Box>
       </Modal>
