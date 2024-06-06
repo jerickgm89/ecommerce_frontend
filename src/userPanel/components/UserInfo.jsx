@@ -1,3 +1,5 @@
+import { useAuth0 } from "@auth0/auth0-react"
+import { useUserAuthentication } from './../../hooks/useUserAuthentication';
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material"
 import { Person as PersonIcon } from "@mui/icons-material"
 import { useGetUserByTokenQuery } from "../../store/api/ecommerceUserApi";

@@ -22,8 +22,9 @@ export const NavBar = () => {
     const { logout } = useAuth0();
     const { user, isAuthenticated } = useAuth0();
     
-    const { data: isActive, errorUser, isLoading, refetch } = useGetIsActiveQuery(user?.email, { skip: !isAuthenticated })
+    const { data: isActive, errorUser, isLoading, refetch } = useGetIsActiveQuery(user?.email, {refetchOnMountOrArgChange: true}, { skip: !isAuthenticated })
     const userData  = useUserAuthentication(user, isAuthenticated);
+    console.log(userData);
  
     const [anchorNav, setAnchorNav] = React.useState(null);
     const [anchorUser, setAnchorUser] = React.useState(null);
