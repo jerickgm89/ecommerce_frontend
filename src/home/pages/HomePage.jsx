@@ -37,7 +37,8 @@ export const HomePage = () => {
     category: category,
     brand: brand,
     pageIn: 1,
-  });
+  }, {
+    refetchOnMountOrArgChange: true});
 
   // Asegúrate de manejar los estados de carga y error adecuadamente
   if (isError) {
