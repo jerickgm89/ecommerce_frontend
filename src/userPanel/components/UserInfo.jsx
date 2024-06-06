@@ -10,6 +10,7 @@ export const UserInfo = () => {
   const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN, {
     refetchOnMountOrArgChange: true,
   });
+  
   const { data: orderData, isLoading: isLoadingOrder } = useGetOrderByIdQuery(userData?.idUser);
 
   const inProcessCount = isLoadingOrder || !Array.isArray(orderData) ? 0 : orderData.reduce((acc, order) => {

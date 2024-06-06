@@ -18,7 +18,7 @@ export const OrderList = () => {
   });
   const idUser = userData ? userData.idUser : '';
   const {data: orderList, isLoading: isLoadingOrder } = useGetOrderByIdQuery(idUser);
-  console.log(orderList);
+
 
   
   return (

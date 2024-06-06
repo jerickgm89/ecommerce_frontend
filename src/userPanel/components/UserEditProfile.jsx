@@ -38,7 +38,8 @@ const validationSchema = yup.object({
 export const UserEditProfile = () => {
 
   const navigate = useNavigate();
-  const { data: userData, isLoading: isLoadingDataUser } = useGetUserByTokenQuery(TOKEN);
+  const { data: userData, isLoading: isLoadingDataUser } = useGetUserByTokenQuery(TOKEN, {
+    refetchOnMountOrArgChange: true});
   const [updateUserMutation, { isSuccess, isError, error }] = usePutUpdateUserMutation();
 
   const fields = [

@@ -11,7 +11,6 @@ export const UserAddressList = () => {
   const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN, {
     refetchOnMountOrArgChange: true,
   });
-  console.log(userData);
   const [deleteAddress] = useDeleteAddressMutation();
 
   if (isLoading) return null;

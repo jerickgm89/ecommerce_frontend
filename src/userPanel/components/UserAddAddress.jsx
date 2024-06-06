@@ -42,7 +42,8 @@ const validationSchema = yup.object({
 export const UserAddAddress = () => {
   const navigate = useNavigate();
 
-  const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
+  const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN, {
+    refetchOnMountOrArgChange: true});
 
   const { data: provinces, isLoading: isLoadingProvinces } = useGetProvinceQuery();
   const [selectProvince, setSelectProvince] = useState('');
