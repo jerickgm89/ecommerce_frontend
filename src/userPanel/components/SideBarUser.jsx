@@ -31,7 +31,7 @@ const ListItemLink = ({ to, icon: Icon, primary }) => {
         }}
       >
         <ListItemIcon>
-          <Icon color='icon'/>
+          <Icon />
         </ListItemIcon>
         <ListItemText primary={primary} sx={{ color: isActive ? '#fff' : 'inherit' }}/>
       </ListItemButton>
