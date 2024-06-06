@@ -1,75 +1,71 @@
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/system';
 import { Box } from '@mui/material';
 import Carousel from 'react-material-ui-carousel';
-import { data } from '../data/data';
 import KeyboardArrowLeftOutlinedIcon from '@mui/icons-material/KeyboardArrowLeftOutlined';
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import { data } from '../data/data';
 
-const useStyles = makeStyles((theme) => ({
-  mainContainer: {
-    width: '100%',
-    margin: '0 auto',
-    overflow: 'hidden',
+const MainContainer = styled(Box)({
+  width: '100%',
+  margin: '0 auto',
+  overflow: 'hidden',
+});
+
+const ContainerImages = styled(Box)({
+  position: 'relative',
+  width: '100%',
+  overflow: 'hidden',
+});
+
+const Image = styled('img')(({ theme }) => ({
+  width: '100%',
+  height: 'auto',
+  maxHeight: '400px',
+  objectFit: 'cover',
+  display: 'block',
+  [theme.breakpoints.up('lg')]: {
+    maxHeight: '600px',
   },
-  containerImages: {
-    position: 'relative',
-    width: '100%',
-    overflow: 'hidden',
+  [theme.breakpoints.down('md')]: {
+    maxHeight: '300px',
   },
-  image: {
-    width: '100%',
-    height: '300px',
-    // minHeight: '300px',
-    // objectFit: 'contain',
-    [theme.breakpoints.down('sm')]: {
-      minHeight: '200px',
-    },
-  },
-  dotContainerItem: {
-    cursor: 'pointer',
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  active: {
-    background: '#ccc',
-    width: 15,
-    height: 15,
-    borderRadius: '50%',
+  [theme.breakpoints.down('sm')]: {
+    maxHeight: '200px',
   },
 }));
 
 export const ImageSlider = () => {
-  const classes = useStyles();
-
   return (
-    <Box className={classes.mainContainer}>
+    <MainContainer>
       <Carousel
         indicators={false}
         navButtonsAlwaysVisible={true}
-        NextIcon={<KeyboardArrowRightOutlinedIcon sx={{ color: '#000' }} />}
-        PrevIcon={<KeyboardArrowLeftOutlinedIcon sx={{ color: '#000' }} />}
+        NextIcon={<KeyboardArrowRightOutlinedIcon sx={{ color: 'gray' }} />}
+        PrevIcon={<KeyboardArrowLeftOutlinedIcon sx={{ color: 'gray' }} />}
         navButtonsProps={{
           style: {
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backgroundColor: 'transparent',
+            
             borderRadius: 50,
+            
           },
+          size: 'small',
         }}
+        
       >
         {data.map((item) => (
-          <Box key={item.id} className={classes.containerImages}>
+          <ContainerImages key={item.id}>
             <Link to={item.link}>
-              <Box
-                component="img"
+              <Image
                 src={item.imgUrl}
-                className={classes.image}
                 alt={`Slide ${item.id}`}
                 loading="lazy"
               />
             </Link>
-          </Box>
+          </ContainerImages>
         ))}
       </Carousel>
-    </Box>
+    </MainContainer>
   );
 };

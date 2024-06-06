@@ -25,6 +25,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
   const handleRemoveFromCart = () => {
     dispatch(decreaseCart({ idProduct: product.idProduct, priceProduct: product.priceProduct }));
   };
+  
 
   const { data: categories } = useGetCategoriesQuery();
   const [category, setCategory] = useState(null);
@@ -193,7 +194,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
             gutterBottom
             style={{ fontSize: '12px', fontWeight: 500, marginBottom: '8px', color: '#373F50' }}
           >
-            {product.stockProduct > 0 ? 'Stock ' : 'Out of Stock'}
+            {product.stockProduct > 0 ? 'Stock ' : 'Agotado'}
           </Typography>
 
           {averageScore !== null ? (
@@ -214,7 +215,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
                     variant="caption"
                     sx={{ fontSize: "18px", marginBottom: '8px', fontWeight: 600, color: "#D23F57" }}
                   >
-                    $ {formattedPriceDiscount} -{discountPercentage.toFixed()}%
+                    $ {formattedPriceDiscount}   -{discountPercentage.toFixed()}%
                   </Typography>
                 </Box>
               </Box>
@@ -294,7 +295,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
           </Typography>
 
           <Typography style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px', color: 'rgb(174, 180, 190)' }}>
-            CATEGORY: {category?.nameCategory}
+            Categoria: {category?.nameCategory}
           </Typography>
           
           <Box
@@ -334,7 +335,7 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
             variant="contained"
             size="medium"
             sx={{
-              backgroundColor: "rgb(210, 63, 87)",
+              backgroundColor: "#2e8fea",
               color: "rgb(255, 255, 255)",
               cursor: "pointer",
               fontWeight: 600,
@@ -342,12 +343,12 @@ const ProductCard = ({ product, dispatch, cart = [] }) => {
               textTransform: 'capitalize',
               transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
               '&:hover': {
-                backgroundColor: "rgb(210, 63, 87)",
+                backgroundColor: "#2e8fea",
               }
             }}
             onClick={() => { dispatch(addToCart(product)); handleToggleModal(); }}
           >
-            Add to Cart
+            Agregar al carrito
           </Button>
         </Box>
       </Modal>

@@ -6,6 +6,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import ReviewsIcon from '@mui/icons-material/Reviews';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
@@ -13,6 +14,7 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
   const [openUsers, setOpenUsers] = useState(false)
   const [openQuestions, setOpenQuestions] = useState(false)
   const [openReviews, setOpenReviews] = useState(false)
+  const [openMetrics, setOpenMetrics] = useState(false)
 
   const handleClick = () => {
     setOpen(!open)
@@ -20,6 +22,9 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
   const handleClickUsers = () => {
     setOpenUsers(!openUsers)
+  }
+  const handleClickMetrics = () => {
+    setOpenMetrics(!openMetrics)
   }
 
   const handleClickQuestions = () => {
@@ -32,12 +37,22 @@ export const SideBar = ({drawerWith, handleDrawerToggle}) => {
 
   const menuItems = [
     {
+      name: "Dashboard",
+      icon: <DashboardIcon color='icon'/>,
+      open: openMetrics,
+      handleClick: handleClickMetrics,
+      subItems: [
+        { name: "Metricas", link: "/admin/", icon: <Checklist color='icon'/> },
+        
+      ]
+    },
+    {
       name: "Productos",
       icon: <InboxIcon color='icon'/>,
       open: open,
       handleClick: handleClick,
       subItems: [
-        { name: "Lista de Productos Activos", link: "/admin/", icon: <Checklist color='icon'/> },
+        { name: "Lista de Productos Activos", link: "/admin/listProducts", icon: <Checklist color='icon'/> },
         { name: "Lista de Productos Bloqueados", link: "/admin/lockedProducts", icon: <Checklist color='icon'/> },
         { name: "Crear Producto", link: "/admin/createProducts", icon: <Create color='icon'/> }
       ]

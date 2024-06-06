@@ -111,9 +111,9 @@ export const SearchPages = () => {
                                             <Button
                                                 onClick={() => handleAddToCart((product))}
                                                 variant="contained"
-                                                sx={{ backgroundColor: "rgb(210, 63, 87)", color: "white" }}
+                                                sx={{ backgroundColor: "#2e8fea", color: "white" }}
                                             >
-                                                Add to Cart
+                                                Agregar al carrito
                                             </Button>
                                         </Box>
                                     </CardContent>

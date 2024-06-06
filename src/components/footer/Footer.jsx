@@ -1,15 +1,38 @@
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography, Box, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 import style from "./Footer.module.css";
 
 export const Footer = () => {
 
     return (
-        <Grid container sx={{ backgroundColor: "primary.dark", display: 'flex', position: 'relative', bottom: 0, }}>
-            <Container style={{ marginTop: "50px"}}>
+        <Grid container sx={{ backgroundColor: "primary.dark", display: 'flex', position: 'relative', height: '310px' }}>
+            <Container style={{ marginTop: "50px" }}>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6} md={4} lg={3}>
-                        <Typography variant="h5" sx={{ margin: "15px", fontWeight: "bold", color: "white" }}>LOGO</Typography>
-                        <Typography variant="h7" sx={{ margin: "5px 15px", color: "#C2C2C2" }}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec velit id nulla lacinia scelerisque. Nulla facilisi. Vivamus vitae felis nec turpis dictum gravida.</Typography>
+                    <Grid 
+                        item 
+                        xs={12} 
+                        sm={6} 
+                        md={4} 
+                        lg={3}
+                        container 
+                        direction="column" 
+                        alignItems="center" 
+                        justifyContent="center" 
+                    >
+                        <Link to="/">
+                            <Box 
+                                component="img"
+                                alt="logo"
+                                sx={{ 
+                                    mr: 2,
+                                    height: 80, 
+                                    width: 80, 
+                                    display: { xs: 'none', md: 'flex' }
+                                }}
+                                src="/logo.svg"
+                            />
+                        </Link>
+                        <Typography variant="h7" sx={{ margin: "5px 15px", color: "#C2C2C2" }} className={style.icon}>Soporte Técnico: ecommercetech2024@gmail.com</Typography>
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={4} lg={3} container direction="column" alignItems="left">
@@ -39,7 +62,7 @@ export const Footer = () => {
                     <Grid item xs={12} sm={6} md={4} lg={3} container direction="column" alignItems="left">
                         <Typography variant="h5" sx={{ margin: "15px", fontWeight: "bold", color: "white" }}>Back-End Developers</Typography>
                         <Typography variant="h7" sx={{ margin: "5px 15px" }}>
-                            <a href="https://www.linkedin.com/in/javier-arangue-ba9897108/" target="_blank" rel="noopener noreferrer" className={style.link}>
+                            <a href="https://www.linkedin.com/in/anthony-depablos/" target="_blank" rel="noopener noreferrer" className={style.link}>
                                 Anthony Depablos
                             </a>
                         </Typography>
@@ -69,7 +92,28 @@ export const Footer = () => {
                             <Typography variant="h4" sx={{ margin: "9px" }} className={style.icon}><i className="devicon-postgresql-plain-wordmark"></i></Typography>
                             <Typography variant="h4" sx={{ margin: "9px" }} className={style.icon}><i className="devicon-vitejs-plain"></i></Typography>
                         </Grid>
+                        <Link to="/arrepentimiento" style={{ textDecoration: "none" }}>
+                            <Button 
+                                variant="outlined" 
+                                sx={{ 
+                                    marginTop: "10px", 
+                                    color: "white",
+                                    backgroundColor: "primary.dark",
+                                    borderColor: "gray",
+                                    borderRadius: '30px',
+                                    textTransform: 'none',
+                                    '&:hover': {
+                                        backgroundColor: "primary.dark",
+                                        borderColor: "gray"
+                                    }
+                                }}
+                            >
+                                Botón de Arrepentimiento
+                            </Button>
+                        </Link>
                     </Grid>
+
+                    
                 </Grid>
             </Container>
         </Grid>
