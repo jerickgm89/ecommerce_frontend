@@ -1,4 +1,4 @@
-import { Container, Grid, Typography, Box } from "@mui/material";
+import { Container, Grid, Typography, Box, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import style from "./Footer.module.css";
 
@@ -92,7 +92,28 @@ export const Footer = () => {
                             <Typography variant="h4" sx={{ margin: "9px" }} className={style.icon}><i className="devicon-postgresql-plain-wordmark"></i></Typography>
                             <Typography variant="h4" sx={{ margin: "9px" }} className={style.icon}><i className="devicon-vitejs-plain"></i></Typography>
                         </Grid>
+                        <Link to="/arrepentimiento" style={{ textDecoration: "none" }}>
+                            <Button 
+                                variant="outlined" 
+                                sx={{ 
+                                    marginTop: "10px", 
+                                    color: "white",
+                                    backgroundColor: "primary.dark",
+                                    borderColor: "gray",
+                                    borderRadius: '30px',
+                                    textTransform: 'none',
+                                    '&:hover': {
+                                        backgroundColor: "primary.dark",
+                                        borderColor: "gray"
+                                    }
+                                }}
+                            >
+                                Botón de Arrepentimiento
+                            </Button>
+                        </Link>
                     </Grid>
+
+                    
                 </Grid>
             </Container>
         </Grid>
