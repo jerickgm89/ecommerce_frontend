@@ -11,11 +11,13 @@ export const productSlice = createSlice({
         orderBy: '',
         orderDirection: 'ASC',
         category: '',
+        page: 1,
     },
     reducers: {
         setProducts: (state, action) => {
             state.products = action.payload;
             state.filteredProducts = action.payload;
+            state.page = action.payload.page;
         },
         setFilteredProducts: (state, action) => {
             state.filteredProducts = action.payload;

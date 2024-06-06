@@ -81,8 +81,8 @@ export const ecommerceApi = createApi({
         }),
 
         filterProducts: builder.query({
-            query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand }) => {
-                const queryUrl = `/filterproducts?name=${name}&price=${price}&year=${year}&orderBy=${orderBy}&orderDirection=${orderDirection}&priceMin=${priceMin}&priceMax=${priceMax}&category=${category}&brand=${brand}`;
+            query: ({ name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand, pageIn }) => {
+                const queryUrl = `/filterproducts?pageIn=${pageIn}&name=${name}&price=${price}&year=${year}&orderBy=${orderBy}&orderDirection=${orderDirection}&priceMin=${priceMin}&priceMax=${priceMax}&category=${category}&brand=${brand}`;
                 console.log('Parámetros enviados:', { name, price, year, orderBy, orderDirection, priceMin, priceMax, category, brand });
                 return queryUrl;
             },
