@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton } from '@mui/material'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useGetUsersQuery, useUnlockUserMutation } from '../../store/api/ecommerceUserApi'
 import { useNavigate } from 'react-router-dom'
@@ -23,6 +23,27 @@ export const Users = () => {
     useEffect(() => {
         setLocalUsers(users)
     }, [users])
+
+    if (isLoading) {
+        return (                            
+            <Box
+                display="flex" 
+                justifyContent="left" 
+                alignItems="center" 
+                height="100vh"
+                sx={{ mt: -12 }}
+            >
+                <CircularProgress />
+                <Typography
+                    variant="h6" 
+                    component="div" 
+                    sx={{ ml: 2 }}
+                >
+                    Cargando...
+                </Typography>
+            </Box>
+        )               
+    }
 
     const handleEdit = (user) => {
         console.log('Edit user', user.idUser)

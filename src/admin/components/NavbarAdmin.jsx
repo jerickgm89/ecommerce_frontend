@@ -66,7 +66,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
         <Menu
           anchorEl={anchorEl}
           anchorOrigin={{
-              vertical: 'top',
+              vertical: 'bottom',
               horizontal: 'right',
           }}
           id={menuId}
@@ -78,7 +78,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
           open={isMenuOpen}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={handleMenuClose}>Mi Perfil</MenuItem>
+          {/* <MenuItem onClick={handleMenuClose}>Mi Perfil</MenuItem> */}
           <Link to='/' style={{textDecoration: 'none', color: 'black'}}>
             <MenuItem onClick={handleMenuClose}>Salir del Administrador</MenuItem>
           </Link>
@@ -136,7 +136,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
               >
               <AccountCircle />
               </IconButton>
-              <p>Perfil</p>
+              {/* <p>Perfil</p> */}
           </MenuItem>
         </Menu>
     );

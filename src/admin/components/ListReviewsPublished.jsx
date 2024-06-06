@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton } from '@mui/material'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useGetDeactivedReviewsQuery, useGetReviewsQuery } from '../../store/api/ecommerceReviewApi'
 import { useGetProductsQuery } from '../../hooks/useGetProductsByIdsQuery'
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2'
 export const ListReviewsPublished = () => {
 
     const { data: reviews = [], error, isLoading } = useGetReviewsQuery()
-    const { data: reviewsDeactived = [], errorDeactives, isLoadingDeactived, refetch } = useGetDeactivedReviewsQuery()
+    const { data: reviewsDeactived = [], error: errorDeactives, isLoading: isLoadingDeactived, refetch } = useGetDeactivedReviewsQuery()
     const idProductReview = [...new Set(reviews.map(review => review.idProduct))]
     const { data: products = [], error: errorProduct, isLoading: isLoadingProduct } = useGetProductsQuery(idProductReview)
     const [blockReview] = useBlockReviewMutation()
@@ -25,6 +25,27 @@ export const ListReviewsPublished = () => {
         dispatch(setReviewsCount(count));
         refetch()
     }, [reviewsDeactived, reviews])
+
+    if (isLoading) {
+        return (                            
+            <Box
+                display="flex" 
+                justifyContent="left" 
+                alignItems="center" 
+                height="100vh"
+                sx={{ mt: -12 }}
+            >
+                <CircularProgress />
+                <Typography
+                    variant="h6" 
+                    component="div" 
+                    sx={{ ml: 2 }}
+                >
+                    Cargando...
+                </Typography>
+            </Box>
+        )               
+    }
 
     const handleBlock = async(id) => {
         await blockReview(id)
