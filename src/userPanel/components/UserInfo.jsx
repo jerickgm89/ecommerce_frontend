@@ -9,7 +9,10 @@ import { Link } from "react-router-dom";
 const TOKEN = localStorage.getItem('token');
 
 export const UserInfo = () => {
-  const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN);
+  const { data: userData, isLoading } = useGetUserByTokenQuery(TOKEN, {
+    refetchOnMountOrArgChange: true,
+  });
+  
   const { data: orderData, isLoading: isLoadingOrder } = useGetOrderByIdQuery(userData?.idUser);
 
   const inProcessCount = isLoadingOrder || !Array.isArray(orderData) ? 0 : orderData.reduce((acc, order) => {
@@ -28,7 +31,7 @@ export const UserInfo = () => {
     { count: (orderData ? orderData.length : 0).toString().padStart(2, '0'), status: 'Ordenes' },
     { count: (inProcessCount || 0).toString().padStart(2, '0'), status: 'Por pagar' },
     { count: (approved || 0).toString().padStart(2, '0'), status: 'Por enviar' },
-    { count: '00', status: 'Por recibir' },
+    // { count: '00', status: 'Por recibir' },
   ];
 
   const userFields = [
@@ -92,7 +95,7 @@ export const UserInfo = () => {
 
   function OrderStatuses() {
     return orderStatuses.map((status, index) => (
-      <Grid key={index} xs={5} md={2} lg={1} sx={{backgroundColor: '#fff', borderRadius:2, marginRight: index === orderStatuses.length - 1 ? 0 : 'auto'}}>
+      <Grid key={index} xs={5} md={2} lg={1.5} sx={{backgroundColor: '#fff', borderRadius:2, marginRight: index === orderStatuses.length - 1 ? 0 : 'auto'}}>
         <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%'}}>
           <Typography sx={{textAlign: 'center', color: 'primary.main', fontSize: 22}}>
             {status.count}
