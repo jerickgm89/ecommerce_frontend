@@ -47,6 +47,7 @@ export const UserEditProfile = () => {
     { name: 'emailUser', label: 'Correo', type: 'email', placeholder: 'Ingrese su correo', disabled: true },
     { name: 'numberMobileUser', label: 'Telefono', type: 'number', placeholder: 'Ingrese su telefono' },
     { name: 'DNI', label: 'DNI', type: 'number', placeholder: 'Ingrese su DNI sin puntos' },
+    { name: 'pictureUser', label: 'Foto de perfil', type: 'file' },
   ];
 
   const formik = useFormik({
@@ -59,6 +60,12 @@ export const UserEditProfile = () => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {     
+      const { pictureUser, ...otherValues } = values;
+      const formData = new FormData();
+      Object.keys(otherValues).forEach(key => formData.append(key, otherValues[key]));
+      if (pictureUser) {
+        formData.append('pictureUser', pictureUser);
+      }
       updateUserMutation({id:userData.idUser,...values})
         .unwrap()
         .then(response => {
@@ -71,7 +78,6 @@ export const UserEditProfile = () => {
           })
           setTimeout(function(){
             navigate('/user');
-            window.location.reload();
           }, 2000);
         })
         .catch(error => {
@@ -137,6 +143,16 @@ export const UserEditProfile = () => {
                       
                       {fields.map((field, index) => (
                         <Grid item xs={12} md={6} key={index}>
+                          {field.type === 'file' ? (
+                            <input
+                              type="file"
+                              name={field.name}
+                              hidden
+                              onChange={(event) => {
+                                formik.setFieldValue(field.name, event.currentTarget.files[0]);
+                              }}
+                            />
+                          ) : (
                           <TextField 
                             name={field.name}
                             label={field.label}
@@ -150,6 +166,7 @@ export const UserEditProfile = () => {
                             helperText={formik.touched[field.name] && formik.errors[field.name]}
                             disabled={field.disabled}
                           />
+                          )}
                         </Grid>
                       ))}
                       <Grid item xs={12}>

@@ -15,7 +15,6 @@ export const OrderDetails = () => {
 
   const { operation } = useParams();
   const { data: order, isLoading: isLoadingOrder, error: errorOrder } = useGetOrderOperationQuery(operation);
-  console.log(order);
 
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {

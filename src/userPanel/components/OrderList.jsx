@@ -13,7 +13,9 @@ const TOKEN = localStorage.getItem('token');
 console.log(TOKEN);
 export const OrderList = () => {
   
-  const { data: userData, isLoading: isLoadingUser } = useGetUserByTokenQuery(TOKEN);
+  const { data: userData, isLoading: isLoadingUser } = useGetUserByTokenQuery(TOKEN, {
+    refetchOnMountOrArgChange: true,
+  });
   const idUser = userData ? userData.idUser : '';
   const {data: orderList, isLoading: isLoadingOrder } = useGetOrderByIdQuery(idUser);
   console.log(orderList);

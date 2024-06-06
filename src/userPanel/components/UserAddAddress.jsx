@@ -114,7 +114,6 @@ export const UserAddAddress = () => {
           })
           setTimeout(function(){
             navigate('/user/address');
-            window.location.reload();
           }, 2000);
         })
         .catch(error => {
