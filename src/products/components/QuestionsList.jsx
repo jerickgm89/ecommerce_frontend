@@ -46,7 +46,7 @@ export const QuestionsList = () => {
           <Typography variant="h7" gutterBottom sx={{ml: 2, fontWeight: "bold" }}>
             {question.comments}
           </Typography>
-          {isHovered[index] && (
+          {/* {isHovered[index] && (
             <Button 
               variant="text" 
               color="secondary" 
@@ -57,7 +57,7 @@ export const QuestionsList = () => {
             >
               Reportar
             </Button>
-          )}
+          )} */}
         </Box>
         {question.responseComments && (
           <Typography variant="h7" gutterBottom sx={{ml: 5}}>
