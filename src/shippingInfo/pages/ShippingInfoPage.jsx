@@ -110,7 +110,7 @@ export const ShippingInfoPage = () => {
     };
 
     const formattedPrice = (price) => {
-        return new Intl.NumberFormat('es-ES', {}).format(parseFloat(price));
+        return new Intl.NumberFormat('es-ES', {}).format(Math.round(parseFloat(price)));
     };
 
     const handleShippingOptionChange = (event) => {
@@ -168,7 +168,7 @@ export const ShippingInfoPage = () => {
                     id: 'shipping',
                     category_id: 'shipping',
                     title: selectedShippingOption === 'aSucursal' ? 'Envío a Sucursal' : 'Envío a Domicilio',
-                    unit_price: shippingCost,
+                    unit_price: parseInt(shippingCost),
                     quantity: 1,
                     currency_id: "ARS"
                 });

@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton } from '@mui/material'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useGetDeactivedReviewsQuery } from '../../store/api/ecommerceReviewApi'
 import { useGetProductsQuery } from '../../hooks/useGetProductsByIdsQuery'
@@ -24,6 +24,27 @@ export const ListReviews = () => {
         dispatch(setReviewsCount(count))
         refetch()
     }, [reviews])
+
+    if (isLoading) {
+        return (                            
+            <Box
+                display="flex" 
+                justifyContent="left" 
+                alignItems="center" 
+                height="100vh"
+                sx={{ mt: -12 }}
+            >
+                <CircularProgress />
+                <Typography
+                    variant="h6" 
+                    component="div" 
+                    sx={{ ml: 2 }}
+                >
+                    Cargando...
+                </Typography>
+            </Box>
+        )               
+    }
 
     const handleRestore = async(id) => {
         await restoreReview(id)

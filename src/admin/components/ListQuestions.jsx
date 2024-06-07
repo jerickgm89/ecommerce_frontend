@@ -3,7 +3,7 @@ import { useGetQuestionsQuery, usePutUpdateQuestionMutation } from '../../store/
 import { DataGrid } from '@mui/x-data-grid'
 import { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, CircularProgress } from '@mui/material'
 import { useFormik } from 'formik'
 import { setUnansweredCount } from '../../store/adminNotifications/notificationsSlice' 
 import * as yup from 'yup'
@@ -27,6 +27,27 @@ export const ListQuestions = () => {
         const count = questions.filter(question => !question.responseComments).length;
         dispatch(setUnansweredCount(count));
     }, [questions]);
+
+    if (isLoading) {
+        return (                            
+            <Box
+                display="flex" 
+                justifyContent="left" 
+                alignItems="center" 
+                height="100vh"
+                sx={{ mt: -12 }}
+            >
+                <CircularProgress />
+                <Typography
+                    variant="h6" 
+                    component="div" 
+                    sx={{ ml: 2 }}
+                >
+                    Cargando...
+                </Typography>
+            </Box>
+        )               
+    }
 
     const validationSchema = yup.object({
         responseComments: yup

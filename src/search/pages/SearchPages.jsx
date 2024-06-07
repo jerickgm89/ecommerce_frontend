@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useSearchProductsByNameQuery } from '../../store/api';
-import { Grid, Card, CardContent, Typography, Box, Link as MuiLink, Button } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Box, Link as MuiLink, Button, Pagination } from '@mui/material';
 import { EcommerceUI } from '../../ui';
 import { useDispatch } from 'react-redux';
 import Loading from '../../components/loading/Loading';
@@ -18,21 +18,30 @@ export const SearchPages = () => {
         dispatch(addToCart(product));
     };
 
-    const { data, isLoading, refetch, error } = useSearchProductsByNameQuery(name, {
+    const [page, setPage] = useState(1);
+    
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
+    const { data, isLoading, refetch, error } = useSearchProductsByNameQuery({
+        name,
+        pageIn: page,
         refetchOnMountOrArgChange: true,
     });
 
     useEffect(() => {
         if (name) {
+            setPage(1);
             refetch();
         }
     }, [name, refetch]);
 
+    const totalPages = Math.ceil((data ? data.count : 0)/ 13);
+
     const formattedPrice = (price) => {
         return new Intl.NumberFormat('es-ES', {}).format(parseFloat(price));
     };
-
-
 
     if (isLoading) return <Loading />;
 
@@ -45,8 +54,8 @@ export const SearchPages = () => {
                 sx={{ 
                     mt: 8, 
                     mb: 8, 
-                    ml: 2, 
-                    mr: 2, 
+                    ml: 8, 
+                    mr: 8, 
                     minHeight: '60vh', 
                     display: 'flex', 
                     flexDirection: 'column',
@@ -85,18 +94,35 @@ export const SearchPages = () => {
                                         }}
                                     >
                                         <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', display: 'block', width: '100%', height: '100%' }}>
+                                           <Box
+                                                sx={{
+                                                    width: '100%',
+                                                    paddingTop: '100%', 
+                                                    position: 'relative'
+                                                }}
+                                            >
                                             <img
                                                 src={product.imageProducts}
                                                 alt={product.nameProduct}
-                                                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    padding: '15px',
+                                                  }}
                                             />
+                                            </Box>
                                         </Link>
                                     </Box>
                                     <CardContent sx={{ width: { xs: '100%', sm: '60%' }, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {product.nameProduct}
-                                            </Typography>
+                                            <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', color:"inherit"}}>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {product.nameProduct}
+                                                </Typography>
+                                            </Link>
                                             <Typography gutterBottom style={{ fontSize: "16px", marginBottom: '8px', fontWeight: 600, color: "#D23F57" }}>
                                                 $ {formattedPrice(product.priceProduct)}
                                             </Typography>
@@ -113,7 +139,7 @@ export const SearchPages = () => {
                                                 variant="contained"
                                                 sx={{ backgroundColor: "#2e8fea", color: "white" }}
                                             >
-                                                Agregar al carrito
+                                                Añadir al carrito
                                             </Button>
                                         </Box>
                                     </CardContent>
@@ -121,6 +147,19 @@ export const SearchPages = () => {
                             </Grid>
                         ))
                     )}
+                </Grid>
+                <Grid container spacing={3} sx={{justifyContent:"center", mt:3}}>
+                <Box style={{ display: 'flex', justifyContent: 'center' }}>
+                    {totalPages > 0 && (
+                        <Pagination 
+                            count={totalPages} 
+                            color="primary" 
+                            page={page} 
+                            onChange={handlePageChange} 
+                            size="large" 
+                        />
+                    )}
+                </Box>
                 </Grid>
             </Box>
         </EcommerceUI>
