@@ -7,14 +7,21 @@ import Swal from 'sweetalert2';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, clearCart, decreaseCart, removeFromCart } from '../../store/cartShopping/cartSlice';
-import { setShippingInfo } from '../../store/shippingInfo/shippingInfoSlice';
+import { addToCart, clearCart, decreaseCart, removeFromCart, setHasVisitedCart } from '../../store/cartShopping/cartSlice';
 
 export const CartShoppingPage = () => {
     const { cartItems, cartTotalAmount } = useSelector(state => state.cart);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loginWithRedirect, isAuthenticated } = useAuth0();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            dispatch(setHasVisitedCart(false)); // Marcar que no necesita redirigir si ya está autenticado
+        } else {
+            dispatch(setHasVisitedCart(true)); // Marcar que necesita redirigir si no está autenticado
+        }
+    }, [isAuthenticated, dispatch]);
 
     const handleRemoveFromCart = (productId) => {
         dispatch(removeFromCart({ id: productId }));
