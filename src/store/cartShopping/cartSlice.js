@@ -8,6 +8,7 @@ const loadStateFromLocalStorage = () => {
         cartItems: [],
         cartTotalQuantity: 0,
         cartTotalAmount: 0,
+        hasVisitedCart: false, // Estado inicial para hasVisitedCart
       };
     }
     return JSON.parse(serializedState);
@@ -17,6 +18,7 @@ const loadStateFromLocalStorage = () => {
       cartItems: [],
       cartTotalQuantity: 0,
       cartTotalAmount: 0,
+      hasVisitedCart: false, // Estado inicial para hasVisitedCart
     };
   }
 };
@@ -94,9 +96,17 @@ const cartSlice = createSlice({
       state.cartTotalQuantity = 0;
       state.cartTotalAmount = 0;
       saveStateToLocalStorage(state);
+    },
+    setHasVisitedCart(state, action) {
+      state.hasVisitedCart = action.payload;
+      saveStateToLocalStorage(state);
+    },
+    loadHasVisitedCart(state) {
+      const storedValue = localStorage.getItem('hasVisitedCart');
+      state.hasVisitedCart = storedValue === 'true';
     }
   },
 });
 
-export const { addToCart, decreaseCart, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, decreaseCart, removeFromCart, clearCart, setHasVisitedCart, loadHasVisitedCart } = cartSlice.actions;
 export default cartSlice.reducer;
