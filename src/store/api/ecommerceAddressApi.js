@@ -58,7 +58,7 @@ export const ecommerceAddressApi = createApi({
         }),
         getPostalCodes: builder.query({
 			query: ({ province, department }) => {
-				const queryUrl = `/address?province=${province}&department=${department}`;
+				const queryUrl = `/address?province=${province}&departament=${department}`;
 				console.log('provincias:', { province, department });
 				return queryUrl;
 			},
