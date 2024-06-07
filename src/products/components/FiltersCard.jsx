@@ -8,13 +8,14 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
   const [orderBy, setOrderBy] = useState('');
-  const [category, setCategory] = useState('');
   const [orderDirection, setOrderDirection] = useState('');
-  const [brand, setBrand] = useState('');
+  const [category, setCategory] = useState([]);
+  const [brand, setBrand] = useState([]);
   const [openCategory, setOpenCategory] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
   const [openBrand, setOpenBrand] = useState(false);
-  
+  const [selectedOrder, setSelectedOrder] = useState('');
+
   const { data: filterBrands = [] } = useGetBrandsQuery();
   const { data: filterCategories = [] } = useGetCategoriesQuery();
   
@@ -43,18 +44,55 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
   };
 
   const handleCategoryChange = (categoryId) => {
-    setCategory(categoryId);
-    applyCategoryFilter(categoryId);
-  };
+    setCategory(prevCategory => {
+      const isCategoryPresent = prevCategory.includes(categoryId);
+      if (isCategoryPresent) {
+        return prevCategory.filter(id => id !== categoryId);
+      } else {
+        return [...prevCategory, categoryId].sort((a, b) => a - b);
 
-  const handleBrandChange = (brandId) => {
-    setBrand(brandId);
-    applyBrandFilter(brandId);
+
+      }
+    });
   };
+  
+  useEffect(() => {
+    applyCategoryFilter(category.join(','));
+    // console.log("CATEGORY ->  ", category.join(',') );
+    }, [category]);
+    
+    const handleBrandChange = (brandId) => {
+      setBrand(prevBrand => {
+        const isBrandPresent = prevBrand.includes(brandId);
+        if (isBrandPresent) {
+          return prevBrand.filter(id => id !== brandId);
+        } else {
+          return [...prevBrand, brandId].sort((a, b) => a - b);;
+        }
+      });
+    };
+          
+    useEffect(() => {
+      applyBrandFilter(brand.join(','));
+      console.log("BRAND ->  ", brand.join(',') );
+      }, [brand]);
+            
+    // const handleCategoryChange = (categoryId) => {
+    
+  //   setCategory(categoryId);
+  //   applyCategoryFilter(categoryId);
+  // };
+
+  // const handleBrandChange = (brandId) => {
+  //   setBrand(brandId);
+  //   applyBrandFilter(brandId);
+  // };
 
   const handleOrderByChange = (orderByValue) => {
     setOrderBy(orderByValue);
     applySorting(orderByValue, orderDirection);
+    setSelectedOrder(orderByValue); // Set the selected order
+
   };
 
   const handleOrderDirectionChange = (orderDirectionValue) => {
@@ -94,19 +132,19 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
     setPriceMin('');
     setPriceMax('');
     applyPriceFilter('', '');
-    setBrand('');
+    setBrand([]);
     applyBrandFilter('');
     setOrderBy('');
     setOrderDirection('');
     applySorting('', '');
-    setCategory('');
+    setCategory([]);
     applyCategoryFilter('');
   };
   
   return (
     <Paper elevation={3} style={{ maxHeight: '100%', padding: '18px 27px', borderRadius: '8px', display: 'flex', flexDirection: 'column', maxWidth: '85%' }}>
       {/* <Typography style={{ fontSize: '14px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }}>Ordenar</Typography> */}
-    
+    {/*
       <ListItemButton onClick={handleToggleOrder} style={{marginBottom: '0px'}}>
         <ListItemText primary="Ordenar" /> 
         {openOrder ? <ExpandLess /> : <ExpandMoreRounded />}
@@ -116,18 +154,34 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
           {/* <ListItemButton onClick={handleClearOrder} sx={{ pl: 4 }}>
             {/* <ListItemText primary="Select Order" /> */}
           {/* </ListItemButton> */}
-          <ListItemButton onClick={() => {handleOrderByChange("nameProduct"); handleOrderDirectionChange("ASC"); }} sx={{ pl: 4 }}>
+          {/* <ListItemButton 
+            onClick={() => {handleOrderByChange("nameProduct"); handleOrderDirectionChange("ASC"); }} 
+            sx={{ pl: 4 }}
+            style={{ backgroundColor: selectedOrder === "nameProduct" ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+            >
             <ListItemText primary="Nombre A - Z" />
           </ListItemButton>
-          <ListItemButton onClick={() => {handleOrderByChange("nameProduct"); handleOrderDirectionChange("DESC")}} sx={{ pl: 4 }}>
+          <ListItemButton 
+            onClick={() => {handleOrderByChange("nameProduct"); handleOrderDirectionChange("DESC")}} 
+            sx={{ pl: 4 }}
+            style={{ backgroundColor: selectedOrder === "nameProduct" ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+          >
             <ListItemText primary="Nombre Z - A" />
           </ListItemButton>
-          <ListItemButton onClick={() => {handleOrderByChange("priceProduct"); handleOrderDirectionChange("ASC")}} sx={{ pl: 4 }}>
-            <ListItemText primary="Precio menor a mayor" />
+          <ListItemButton 
+            onClick={() => {handleOrderByChange("priceProduct"); handleOrderDirectionChange("ASC")}} 
+            sx={{ pl: 4 }}
+            style={{ backgroundColor: selectedOrder === "nameProduct" ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+          > */}
+            {/* <ListItemText primary="Precio menor a mayor" />
           </ListItemButton>
-          <ListItemButton onClick={() => {handleOrderByChange("priceProduct"); handleOrderDirectionChange("DESC")}} sx={{ pl: 4 }}>
+          <ListItemButton 
+          onClick={() => {handleOrderByChange("priceProduct"); handleOrderDirectionChange("DESC")}} 
+          sx={{ pl: 4 }}
+          style={{ backgroundColor: selectedOrder === "priceProduct" ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+          >
             <ListItemText primary="Precio mayor a menor" />
-          </ListItemButton>
+          </ListItemButton> */}
           {/* <ListItemButton onClick={() => handleOrderByChange("yearProduct")} sx={{ pl: 4 }}>
             <ListItemText primary="Year" />
           </ListItemButton> */}
@@ -137,18 +191,58 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
           </ListItemButton>
           <ListItemButton onClick={() => handleOrderDirectionChange("DESC")} sx={{ pl: 4 }}>
             <ListItemText primary="Descending" />
-          </ListItemButton> */}
+          </ListItemButton>
         </List>
-      </Collapse>
+      </Collapse>*/}
+            
     
-    
-
+    <ListItemButton onClick={handleToggleOrder} style={{marginBottom: '0px'}}>
+    <ListItemText primary="Ordenar" /> 
+    {openOrder ? <ExpandLess /> : <ExpandMoreRounded />}
+      </ListItemButton>
+      <Collapse in={openOrder} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton 
+            onClick={() => {handleOrderByChange("nameProduct"); handleOrderDirectionChange("ASC"); }} 
+            sx={{ pl: 4 }}
+            style={{ backgroundColor: selectedOrder === "nameProduct" && orderDirection === "ASC" ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+          >
+            <ListItemText primary="Nombre A - Z" />
+          </ListItemButton>
+          <ListItemButton 
+            onClick={() => {handleOrderByChange("nameProduct"); handleOrderDirectionChange("DESC")}} 
+            sx={{ pl: 4 }}
+            style={{ backgroundColor: selectedOrder === "nameProduct" && orderDirection === "DESC" ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+          >
+            <ListItemText primary="Nombre Z - A" />
+          </ListItemButton>
+          <ListItemButton 
+            onClick={() => {handleOrderByChange("priceProduct"); handleOrderDirectionChange("ASC")}} 
+            sx={{ pl: 4 }}
+            style={{ backgroundColor: selectedOrder === "priceProduct" && orderDirection === "ASC" ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+          >
+            <ListItemText primary="Precio menor a mayor" />
+          </ListItemButton>
+          <ListItemButton 
+            onClick={() => {handleOrderByChange("priceProduct"); handleOrderDirectionChange("DESC")}} 
+            sx={{ pl: 4 }}
+            style={{ backgroundColor: selectedOrder === "priceProduct" && orderDirection === "DESC" ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+          >
+            <ListItemText primary="Precio mayor a menor" />
+          </ListItemButton>
+        </List>
+      </Collapse>      
+      
 
       {idCategory ? null : ( 
         <>
         <Divider style={{ margin: '16px 0', borderColor: 'rgba(0, 0, 0, 0.2)' }} />
         {/* <Typography style={{ fontSize: '15px', fontWeight: '500', marginBottom: '16px', color: '#2B3445' }} gutterBottom>Categorías</Typography> */}
-        <ListItemButton style={{marginTop: '0px'}} onClick={handleToggleCategory}>
+        <ListItemButton 
+          style={{marginTop: '0px'}} 
+          onClick={handleToggleCategory}
+          
+          >
           <ListItemText primary="Categoría" />
           {openCategory ? <ExpandLess /> : <ExpandMoreRounded />}
         </ListItemButton>
@@ -157,9 +251,14 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
             {/* <ListItemButton onClick={handleClearCategory} sx={{ pl: 4 }}> */}
               {/* <ListItemText primary="Select category" /> */}
             {/* </ListItemButton> */}
-            {filterCategories.map(category => (
-              <ListItemButton key={category.idCategory} onClick={() => handleCategoryChange(category.idCategory)} sx={{ pl: 4 }}>
-                <ListItemText primary={category.nameCategory} />
+            {filterCategories.map(categories => (
+              <ListItemButton 
+                key={categories.idCategory} 
+                onClick={() => handleCategoryChange(categories.idCategory)} 
+                sx={{ pl: 4 }}
+                style={{ backgroundColor: category.includes(categories.idCategory) ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+                >
+                <ListItemText primary={categories.nameCategory} />
               </ListItemButton>
             ))}
           </List>
@@ -182,13 +281,20 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
           {/* <ListItemButton onClick={handleClearBrand} sx={{ pl: 4 }}> */}
             {/* <ListItemText primary="Seleccione una marca" /> */}
           {/* </ListItemButton> */}
-          {filterBrands.map(brand => (
-            
-            <ListItemButton key={brand.idBrand} onClick={() => handleBrandChange(brand.idBrand)} sx={{ pl: 4 }}>
+          {filterBrands.map(eachBrand => (
+            <ListItemButton
+              key={eachBrand.idBrand}
+              onClick={() => handleBrandChange(eachBrand.idBrand)}
+              sx={{ pl: 4 }}
+              style={{ backgroundColor: brand.includes(eachBrand.idBrand) ? 'rgb(32, 100, 163, 0.1)' : 'white' }}
+
+            >
               <ListItemAvatar>
-                <img src={brand.logoBrand} alt={brand.nameBrand}  style={{ width: 20, marginRight: 10 }}/>
+                <img src={eachBrand.logoBrand} alt={eachBrand.nameBrand} style={{ width: 20, marginRight: 10 }}/>
               </ListItemAvatar>
-              <ListItemText primary={brand.nameBrand} />
+              <ListItemText
+                primary={eachBrand.nameBrand}
+              />
             </ListItemButton>
           ))}
         </List>

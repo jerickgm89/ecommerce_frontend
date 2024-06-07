@@ -183,12 +183,12 @@ export const ListQuestions = () => {
             productId: question.idProduct,
         }
     })
-  return (
-    <>
-      <Typography variant='h4'>
-                Lista de Preguntas
-      </Typography>
-      <Box sx={{height: 650, width: '87.9%', mt:2}}>
+    return (
+        <>
+        <Typography variant='h4'>
+                    Lista de Preguntas
+        </Typography>
+            <Box sx={{height: 650, width: '87.9%', mt:2}}>
                 <Box sx={{ width: '90%' }}>
                     <DataGrid
                         rows={rows}
@@ -200,14 +200,14 @@ export const ListQuestions = () => {
                                 },
                             },
                             sorting: {
-                              sortModel: [{ field: 'id', sort: 'desc' }],
-                          },
+                                sortModel: [{ field: 'id', sort: 'desc' }],
+                        },
                         }}
                         pageSizeOptions={[10]}
                         disableRowSelectionOnClick
                     />
                 </Box>
             </Box>
-    </>
-  )
+        </>
+    )
 }
