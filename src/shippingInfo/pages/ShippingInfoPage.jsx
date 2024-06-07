@@ -162,18 +162,6 @@ export const ShippingInfoPage = () => {
                 };
             });
     
-            // Añadir el costo de envío como un ítem adicional
-            if (shippingCost > 0) {
-                orderItems.push({
-                    id: 'shipping',
-                    category_id: 'shipping',
-                    title: selectedShippingOption === 'aSucursal' ? 'Envío a Sucursal' : 'Envío a Domicilio',
-                    unit_price: parseInt(shippingCost),
-                    quantity: 1,
-                    currency_id: "ARS"
-                });
-            }
-    
             const orderData = {
                 items: orderItems,
                 payer: payerData,
