@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton } from '@mui/material'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
 import { useRestoreProductMutation, useGetProductsLockedQuery } from '../../store/api'
 import { DataGrid } from '@mui/x-data-grid'
 import { useNavigate } from 'react-router-dom'
@@ -11,6 +11,27 @@ export const LockedProducts = () => {
     const { data: productsLocked = [], error, isLoading } = useGetProductsLockedQuery()
     const [restoreProduct] = useRestoreProductMutation()
     const navigate = useNavigate()
+
+    if (isLoading) {
+        return (                            
+            <Box
+                display="flex" 
+                justifyContent="left" 
+                alignItems="center" 
+                height="100vh"
+                sx={{ mt: -12 }}
+            >
+                <CircularProgress />
+                <Typography
+                    variant="h6" 
+                    component="div" 
+                    sx={{ ml: 2 }}
+                >
+                    Cargando...
+                </Typography>
+            </Box>
+        )               
+    }
 
     const handleRestore = async(id) => {
         await restoreProduct(id)

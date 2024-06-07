@@ -66,7 +66,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
         <Menu
           anchorEl={anchorEl}
           anchorOrigin={{
-              vertical: 'top',
+              vertical: 'bottom',
               horizontal: 'right',
           }}
           id={menuId}
@@ -78,7 +78,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
           open={isMenuOpen}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={handleMenuClose}>Mi Perfil</MenuItem>
+          {/* <MenuItem onClick={handleMenuClose}>Mi Perfil</MenuItem> */}
           <Link to='/' style={{textDecoration: 'none', color: 'black'}}>
             <MenuItem onClick={handleMenuClose}>Salir del Administrador</MenuItem>
           </Link>
@@ -103,18 +103,22 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
           onClose={handleMobileMenuClose}
         >
           <MenuItem>
+            <Link to='/admin/questions' style={{ color: 'inherit' }}>
               <IconButton 
                 size="large" 
                 aria-label="show 4 new mails" 
-                color="inherit">
+                color="inherit"
+              >
                 <Badge badgeContent={notifications?.unansweredCount} color="error">
                     <MailIcon />
                 </Badge>
               </IconButton>
-              <p>Mensajes</p>
+            </Link>
+            <p>Mensajes</p>  
           </MenuItem>
 
           <MenuItem>
+            <Link to='/admin/reviews' style={{ color: 'inherit' }}>
               <IconButton
               size="large"
               aria-label="show 17 new notifications"
@@ -124,7 +128,8 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
                   <NotificationsIcon />
               </Badge>
               </IconButton>
-              <p>Notificaciones</p>
+            </Link>
+            <p>Notificaciones</p>
           </MenuItem>
           <MenuItem onClick={handleProfileMenuOpen}>
               <IconButton
@@ -136,7 +141,7 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
               >
               <AccountCircle />
               </IconButton>
-              <p>Perfil</p>
+              {/* <p>Perfil</p> */}
           </MenuItem>
         </Menu>
     );
@@ -165,20 +170,24 @@ export const NavbarAdmin = ({drawerWith, handleDrawerToggle}) => {
 
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-          <IconButton size="large" aria-label={`show ${notifications.unansweredCount} new mails`} color="inherit">
-            <Badge badgeContent={notifications.unansweredCount} color="error">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <IconButton
-            size="large"
-            aria-label={`show ${notifications.reviewsCount} new notifications`}
-            color="inherit"
-          >
-            <Badge badgeContent={notifications.reviewsCount} color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <Link to='/admin/questions' style={{ color: 'inherit' }}>
+            <IconButton size="large" aria-label={`show ${notifications.unansweredCount} new mails`} color="inherit">
+              <Badge badgeContent={notifications.unansweredCount} color="error">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+          </Link>
+          <Link to='/admin/reviews' style={{ color: 'inherit' }}>
+            <IconButton
+              size="large"
+              aria-label={`show ${notifications.reviewsCount} new notifications`}
+              color="inherit"
+            >
+              <Badge badgeContent={notifications.reviewsCount} color="error">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Link>
           <IconButton
             size="large"
             edge="end"

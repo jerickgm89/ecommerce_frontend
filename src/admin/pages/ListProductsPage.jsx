@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AdminLayout } from '../layout/AdminLayout'
-import { Box, Typography, IconButton } from '@mui/material'
+import { Box, Typography, IconButton, CircularProgress } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useGetProductsQuery, useUnlockProductMutation } from '../../store/api'
 import Swal from 'sweetalert2'
@@ -15,6 +15,26 @@ export const ListProductsPage = () => {
     const { data: products = [], error, isLoading, refetch } = useGetProductsQuery()
     const [unlockProduct] = useUnlockProductMutation()
     const navigate = useNavigate()
+
+    if (isLoading) {
+        return (                            
+            <Box
+                display="flex" 
+                justifyContent="center" 
+                alignItems="center" 
+                height="100vh"
+            >
+                <CircularProgress />
+                <Typography
+                    variant="h6" 
+                    component="div" 
+                    sx={{ ml: 2 }}
+                >
+                    Cargando...
+                </Typography>
+            </Box>
+        )               
+    }
 
     const handleDelete = async (id) => {
         try {
