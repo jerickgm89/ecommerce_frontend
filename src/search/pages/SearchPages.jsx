@@ -118,9 +118,11 @@ export const SearchPages = () => {
                                     </Box>
                                     <CardContent sx={{ width: { xs: '100%', sm: '60%' }, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                                         <Box>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {product.nameProduct}
-                                            </Typography>
+                                            <Link to={`/products/details/${product.idProduct}`} style={{ textDecoration: 'none', color:"inherit"}}>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {product.nameProduct}
+                                                </Typography>
+                                            </Link>
                                             <Typography gutterBottom style={{ fontSize: "16px", marginBottom: '8px', fontWeight: 600, color: "#D23F57" }}>
                                                 $ {formattedPrice(product.priceProduct)}
                                             </Typography>
