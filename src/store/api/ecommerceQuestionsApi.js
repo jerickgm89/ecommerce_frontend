@@ -5,7 +5,7 @@ const baseURl = import.meta.env.VITE_BASE_URL;
 export const ecommerceQuestionsApi = createApi({
     reducerPath: 'ecommerceQuestionsApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'https://www.ecommercetech.software',
+        baseUrl: 'http://localhost:3001',
     }),
     tagTypes: ['Comments'],
     endpoints: (builder) => ({

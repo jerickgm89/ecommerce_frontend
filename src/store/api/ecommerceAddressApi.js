@@ -4,7 +4,7 @@ const baseURl = import.meta.env.VITE_BASE_URL;
 export const ecommerceAddressApi = createApi({
     reducerPath: 'ecommerceAddressApi',
     baseQuery: fetchBaseQuery({ 
-        baseUrl: 'https://www.ecommercetech.software',
+        baseUrl: 'http://localhost:3001',
     }),
     tagTypes: ['Address'],
     endpoints: (builder) => ({
@@ -57,8 +57,8 @@ export const ecommerceAddressApi = createApi({
             query: (province) => `/address?province=${province}`,
         }),
         getPostalCodes: builder.query({
-			query: ({ province, department }) => {
-				const queryUrl = `/address?province=${province}&departament=${department}`;
+			query: ({ department, province }) => {
+				const queryUrl = `/address?department=${department}&province=${province}`;
 				console.log('provincias:', { province, department });
 				return queryUrl;
 			},
