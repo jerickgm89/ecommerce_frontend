@@ -5,7 +5,8 @@ import style from "./Footer.module.css";
 export const Footer = () => {
 
     return (
-        <Grid container sx={{ backgroundColor: "primary.dark", display: 'flex', position: 'relative', height: '310px' }}>
+        <Grid container sx={{ backgroundColor: "primary.dark", display: 'flex', alignContent: 'flex-end', height: 'auto', paddingBottom: '3vh' }}>
+        {/* // <Grid container sx={{ backgroundColor: "primary.dark", display: 'flex', position: 'relative', height: '310vh' }}> */}
             <Container style={{ marginTop: "50px" }}>
                 <Grid container spacing={3}>
                     <Grid 
@@ -25,14 +26,14 @@ export const Footer = () => {
                                 alt="logo"
                                 sx={{ 
                                     mr: 2,
-                                    height: 80, 
-                                    width: 80, 
-                                    display: { xs: 'none', md: 'flex' }
+                                    // height: 80, 
+                                    width: 130,
+                                    display: { xs: 'none', md: 'flex' },
                                 }}
-                                src="/logo.svg"
+                                src="/logoborde.png"
                             />
                         </Link>
-                        <Typography variant="h7" sx={{ margin: "5px 15px", color: "#C2C2C2" }} className={style.icon}>Soporte Técnico: ecommercetech2024@gmail.com</Typography>
+                        <Typography variant="h7" sx={{ paddingTop: '2vh', margin: "5px 15px", color: "#C2C2C2" }} className={style.icon}>Soporte Técnico: ecommercetech2024@gmail.com</Typography>
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={4} lg={3} container direction="column" alignItems="left">

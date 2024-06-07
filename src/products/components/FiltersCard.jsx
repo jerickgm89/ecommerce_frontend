@@ -186,7 +186,7 @@ const FiltersCard = ({ openCategories, handleCategoriesClick, applyPriceFilter, 
             
             <ListItemButton key={brand.idBrand} onClick={() => handleBrandChange(brand.idBrand)} sx={{ pl: 4 }}>
               <ListItemAvatar>
-                <img src={brand.logoBrand} alt=''  style={{ width: 20, marginRight: 10 }}/>
+                <img src={brand.logoBrand} alt={brand.nameBrand}  style={{ width: 20, marginRight: 10 }}/>
               </ListItemAvatar>
               <ListItemText primary={brand.nameBrand} />
             </ListItemButton>

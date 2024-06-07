@@ -5,13 +5,14 @@ import { SideBarUser } from '../components';
 
 export const UserLayout = ({children}) => {
   return (
-    <EcommerceUI >
+    <EcommerceUI  >
         <Box 
-            sx={{
-                display: 'flex',  
-                flexDirection: 'column',
-                bgcolor: '#F6F9FC'
-            }}
+          sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              bgcolor: '#F6F9FC',
+              minHeight: '63.5vh'
+          }}
         >
           <Grid container spacing={2} >
             <SideBarUser/>
