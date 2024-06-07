@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Box, Grid, Typography, Button, Divider } from "@mui/material";
 import { EcommerceUI } from "../../ui";
 import { useFilterProductsQuery } from '../../store/api';
@@ -12,7 +12,8 @@ import { ImageSlider } from '../components/ImageSlider';
 import { BannerInfo } from '../components/BannerInfo';
 import { BannerItems } from '../components/BannerItems';
 import ArrowForwardOutlinedIcon from '@mui/icons-material/ArrowForwardOutlined';
-
+import { setHasVisitedCart } from '../../store/cartShopping/cartSlice';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export const HomePage = () => {
   const [openCategories, setOpenCategories] = useState(false);
@@ -24,7 +25,9 @@ export const HomePage = () => {
   const [brand, setBrand] = useState('');
 
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart.cartItems);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth0();
+  const { cartItems, hasVisitedCart } = useSelector((state) => state.cart);
 
   const { data: products, isError, isLoading, error } = useFilterProductsQuery({
     name: '',
@@ -38,7 +41,15 @@ export const HomePage = () => {
     brand: brand,
     pageIn: 1,
   }, {
-    refetchOnMountOrArgChange: true});
+    refetchOnMountOrArgChange: true });
+
+  useEffect(() => {
+    console.log(isAuthenticated);
+    if (isAuthenticated && hasVisitedCart) {
+      dispatch(setHasVisitedCart(false));
+      navigate('/shippingInfo');
+    }
+  }, [isAuthenticated, hasVisitedCart, dispatch, navigate]);
 
   // Asegúrate de manejar los estados de carga y error adecuadamente
   if (isError) {
@@ -74,34 +85,16 @@ export const HomePage = () => {
       <BannerInfo/>
       <Divider />
       
-
-        <Box mt={8} mb={8}>
-
+      <Box mt={8} mb={8}>
         <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
-              <CategoryProductsHome />
-            </Grid>
+          <CategoryProductsHome />
+        </Grid>
 
-
-          <Grid container spacing={3}>
-            {/* <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
-              <Typography variant="h5" gutterBottom>
-                Ofertas del día
-              </Typography>
-              <DealsHome />
-            </Grid> */}
-            
-            
-
-
-            <Grid item xs={12} marginTop={5} >
-              <Grid container justifyContent="end" alignItems="center">
-                {/* <Grid item marginLeft={2}>
-                  <Typography variant="h5" gutterBottom>
-                    Productos
-                  </Typography>
-                </Grid> */}
-                <Grid item marginRight={6}>
-                  <Link to={'/products'} style={{ textDecoration: 'none' }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} marginTop={5} >
+            <Grid container justifyContent="end" alignItems="center">
+              <Grid item marginRight={6}>
+                <Link to={'/products'} style={{ textDecoration: 'none' }}>
                   <Typography
                     variant="h6"
                     sx={{
@@ -112,7 +105,6 @@ export const HomePage = () => {
                       transition: 'color 0.3s',
                       '&:hover': { color: '#4a4a4a' },
                       position: 'relative',
-
                       '&:hover::after': {
                         content: '""',
                         position: 'absolute',
@@ -141,33 +133,31 @@ export const HomePage = () => {
                   >
                     Más productos <ArrowForwardOutlinedIcon sx={{ ml: 1 }} />
                   </Typography>
-                  </Link>
-                </Grid>
+                </Link>
               </Grid>
-              <Carousel>
-                {carouselItems.map((chunk, index) => (
-                  <Grid container spacing={1} key={index} justifyContent={'center'}>
-                    {chunk.map(product => (
-                      <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={2.5} marginTop={5}>
-                        <ProductCard
-                          product={product}
-                          dispatch={dispatch}
-                          cart={cart}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
-                ))}
-              </Carousel>
             </Grid>
-
-            <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
-              {/* <Typography variant="h5" gutterBottom>Marcas</Typography> */}
-              <BrandsProductsHome />
-            </Grid>
-           
+            <Carousel>
+              {carouselItems.map((chunk, index) => (
+                <Grid container spacing={1} key={index} justifyContent={'center'}>
+                  {chunk.map(product => (
+                    <Grid item key={product.idProduct} xs={12} sm={12} md={4} lg={2.5} marginTop={5}>
+                      <ProductCard
+                        product={product}
+                        dispatch={dispatch}
+                        cart={cartItems}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              ))}
+            </Carousel>
           </Grid>
-        </Box>
+
+          <Grid item xs={12} marginTop={5} marginBottom={5} marginLeft={2}>
+            <BrandsProductsHome />
+          </Grid>
+        </Grid>
+      </Box>
     </EcommerceUI>
   );
 };
